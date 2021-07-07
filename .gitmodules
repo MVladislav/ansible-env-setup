@@ -1,30 +1,30 @@
 [submodule "roles/ansible-backup"]
-	path = roles/ansible-backup
-	url = https://github.com/MVladislav/ansible-backup.git
+path = roles/ansible-backup
+url = https://github.com/MVladislav/ansible-backup.git
 [submodule "roles/ansible-docker"]
-	path = roles/ansible-docker
-	url = https://github.com/MVladislav/ansible-docker.git
-[submodule "roles/ansible-install-client"]
-	path = roles/ansible-install-client
-	url = https://github.com/MVladislav/ansible-install-client.git
+path = roles/ansible-docker
+url = https://github.com/MVladislav/ansible-docker.git
+[submodule "roles/ansible-netplan"]
+path = roles/ansible-netplan
+url = https://github.com/MVladislav/ansible-netplan.git
+[submodule "roles/ansible-security"]
+path = roles/ansible-security
+url = https://github.com/MVladislav/ansible-security.git
+[submodule "roles/ansible-ssh"]
+path = roles/ansible-ssh
+url = https://github.com/MVladislav/ansible-ssh.git
+[submodule "roles/ansible-updater"]
+path = roles/ansible-updater
+url = https://github.com/MVladislav/ansible-updater.git
+[submodule "roles/ansible-ufw"]
+path = roles/ansible-ufw
+url = https://github.com/Oefenweb/ansible-ufw.git
+[submodule "roles/ubuntu2004_cis"]
+path = roles/ubuntu2004_cis
+url = https://github.com/florianutz/ubuntu2004_cis.git
 [submodule "roles/ansible-install-server"]
 	path = roles/ansible-install-server
 	url = https://github.com/MVladislav/ansible-install-server.git
-[submodule "roles/ansible-netplan"]
-	path = roles/ansible-netplan
-	url = https://github.com/MVladislav/ansible-netplan.git
-[submodule "roles/ansible-security"]
-	path = roles/ansible-security
-	url = https://github.com/MVladislav/ansible-security.git
-[submodule "roles/ansible-ssh"]
-	path = roles/ansible-ssh
-	url = https://github.com/MVladislav/ansible-ssh.git
-[submodule "roles/ansible-updater"]
-	path = roles/ansible-updater
-	url = https://github.com/MVladislav/ansible-updater.git
-[submodule "roles/ansible-ufw"]
-	path = roles/ansible-ufw
-	url = https://github.com/Oefenweb/ansible-ufw.git
-[submodule "roles/ubuntu2004_cis"]
-	path = roles/ubuntu2004_cis
-	url = https://github.com/florianutz/ubuntu2004_cis.git
+[submodule "roles/ansible-install-client"]
+	path = roles/ansible-install-client
+	url = https://github.com/MVladislav/ansible-install-client.git
