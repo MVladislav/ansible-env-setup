@@ -18,13 +18,22 @@
 
 ---
 
+![client](__docs/client_ubuntu_2104.png)
+
+**client installer runs around `1h`**
+
 ## clone
+
+clone this repo recursive, because the roles are</br>
+included as submoduls
 
 ```sh
 $git clone --recursive https://github.com/MVladislav/ansible-env-setup.git
 ```
 
 ## install
+
+install ansible on host to run the playbook
 
 ```sh
 $sudo apt install python3 python3-pip sshpass
@@ -36,6 +45,9 @@ $sudo pip3 install ansible
 
 ### device
 
+copy `inventory/inventory-example.yml` to `inventory/inventory.yml`</br>
+`$cp inventory/inventory-example.yml inventory/inventory.yml`
+
 add the device informations into: `inventory/inventory.yml`
 
 from default the base setup is defined in each file:
@@ -46,6 +58,9 @@ from default the base setup is defined in each file:
 if needed you can update this, like you need to install services.
 
 ### ssh-key
+
+copy `playbooks/vars/default-example.yml` to `playbooks/vars/default.yml`</br>
+`$cp playbooks/vars/default-example.yml playbooks/vars/default.yml`
 
 every setup will add a **ssh-key** to the **nodes**, for that</br>
 you need to add a **ssh-pub-key** into `playbooks/vars/default.yml`</br>
