@@ -46,6 +46,7 @@
       when: skip_default_setup is not defined
     ### -------------------------
     - role: ansible-ufw
+      become: yes
       ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
       when: skip_default_setup is not defined
     ### -------------------------
@@ -78,7 +79,7 @@
         mongodb: no
         java: yes # base|dev
     ### -------------------------
-    - role: netplan
+    - role: ansible-netplan
       netplan_service_name: "{{ service_name }}"
       when: netplan_setup is defined and netplan_setup | bool
     ### -------------------------
