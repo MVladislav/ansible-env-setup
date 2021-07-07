@@ -62,6 +62,7 @@
       when: skip_default_setup is not defined
     ### -------------------------
     - role: ansible-ufw
+      become: yes
       ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
       when: skip_default_setup is not defined
     ### -------------------------
