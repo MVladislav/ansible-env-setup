@@ -50,6 +50,9 @@ if needed you can update this, like you need to install services.
 
 ### ssh-key
 
+copy `playbooks/vars/default-example.yml` to `playbooks/vars/default.yml`</br>
+`$cp playbooks/vars/default-example.yml playbooks/vars/default.yml`
+
 every setup will add a **ssh-key** to the **nodes**, for that</br>
 you need to add a **ssh-pub-key** into `playbooks/vars/default.yml`</br>
 where the **key**, in the file, will be selected by: `"{{ ansible_user }}-{{ ansible_host }}"`.
