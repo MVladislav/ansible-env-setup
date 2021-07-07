@@ -36,6 +36,9 @@ $sudo pip3 install ansible
 
 ### device
 
+copy `inventory/inventory-example.yml` to `inventory/inventory.yml`</br>
+`$cp inventory/inventory-example.yml inventory/inventory.yml`
+
 add the device informations into: `inventory/inventory.yml`
 
 from default the base setup is defined in each file:
