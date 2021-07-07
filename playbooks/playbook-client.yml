@@ -1,0 +1,156 @@
+---
+# playbook client
+
+# ------------------------------------------------------------------------------
+- name: include pre-task playbook
+  import_playbook: ./tasks/pre-tasks.yml
+  remote_user: "{{ ansible_user }}"
+  vars:
+    ansible_user_conf_on_hosts:
+      - clients
+    ansible_user_conf_name: "{{ ansible_user }}"
+    ansible_user_conf_update: "{{ ansible_user_config.is_update | bool }}"
+    ansible_user_conf_shell: "{{ ansible_user_config.shell | default('/bin/bash') }}"
+    ansible_user_conf_password: "{{ ansible_user_config.password }}"
+    ansible_user_conf_group: "{{ ansible_user_config.group | default('adm,cdrom,sudo') }}"
+    ansible_user_conf_system: "{{ ansible_user_config.system | default('no') | bool }}"
+    ansible_user_conf_append: "{{ ansible_user_config.append | default('yes') | bool }}"
+    ansible_user_conf_createhome: "{{ ansible_user_config.createhome | default('yes') | bool }}"
+    ansible_user_conf_home: "{{ ansible_user_config.home | default('/home/' + ansible_user) }}"
+    ansible_user_conf_add_ssh_key: "{{ ansible_user_config.add_ssh_key | default('yes') | bool }}"
+  when: skip_default_setup is not defined and (ansible_user_setup is defined and ansible_user_setup | bool)
+  # ----------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: pre installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+  vars:
+    ufw_rules_default:
+      - rule: allow
+        to_port: 22
+        protocol: tcp
+        interface: "{{ ansible_default_ipv4['interface'] }}"
+        comment: "allow incoming connection on standard ssh port"
+  roles:
+    ### -------------------------
+    - role: ansible-security
+      when: skip_default_setup is not defined
+    ### -------------------------
+    - role: ansible-updater
+      when: skip_default_setup is not defined
+    ### -------------------------
+    - role: ansible-ssh
+      when: skip_default_setup is not defined
+    ### -------------------------
+    - role: ansible-ufw
+      ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
+      when: skip_default_setup is not defined
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: server installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+  roles:
+    ### -------------------------
+    - role: ansible-install-server
+      install_server_service_name: "{{ service_name }}"
+      install_server_config:
+        dev: yes
+        apt_base: yes
+        apt_dev: yes
+        apt_exfat: yes
+        apt_libs: yes # base|dev
+        apt_vpn: yes
+        snap_microk8s: no
+        git: yes
+        zsh: yes
+        tmux: yes
+        python: yes # base|dev
+        go: yes
+        go_kompose: no
+        npm: yes
+        mongodb: no
+        java: yes # base|dev
+    ### -------------------------
+    - role: netplan
+      netplan_service_name: "{{ service_name }}"
+      when: netplan_setup is defined and netplan_setup | bool
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: client installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+  roles:
+    ### -------------------------
+    - role: ansible-install-client
+      install_client_service_name: "{{ service_name }}"
+      install_client_config:
+        dev: yes
+        fonts: yes
+        gnome_gui_setup: yes
+        gnome_gui_setup_theme: yes
+        gnome_gui_setup_extensions: yes
+        gnome_gui_setup_keybinding: yes
+        apt_base: yes
+        apt_thunderbird: no
+        apt_libreoffice_impress: no
+        apt_libreoffice_writer: yes
+        apt_libreoffice_calc: yes
+        apt_wireshark: yes
+        apt_wireshark_dev: yes
+        apt_vpn: yes
+        apt_latex: no
+        dpkg_virtualbox: yes
+        dpkg_mongodb: no
+        dpkg_veracrypt: yes
+        dpkg_google_chrome: yes
+        dpkg_getferdi: no
+        snap_signal_desktop: yes
+        snap_telegram_desktop: yes
+        snap_zoom_client: yes
+        snap_spotify: yes
+        snap_inkscape: yes
+        snap_drawio: yes
+        snap_gimp: yes
+        snap_vlc: yes
+        snap_obs_studio: yes
+        snap_flameshot: yes
+        snap_1password: no
+        snap_okular: yes
+        snap_code: yes
+        snap_android_studio: no
+        snap_insomnia: yes
+        snap_postman: yes
+        snap_dbeaver_ce: yes
+        snap_beekeeper_studio: yes
+        snap_cornyjokes: no
+        flatpak: no # base(empty)|dev(empty)
+        vs_code_ext: yes
+        latex: no
+        thunderbird_theme: no
+        firefox_dev: no
+        java: yes
+        steam: no
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: docker installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - docker
+  roles:
+    ### -------------------------
+    - role: ansible-docker
+      docker_user_shell: /bin/zsh
+      docker_users_to_add_group: "{{ clients }}"
+    ### -------------------------

@@ -1,0 +1,132 @@
+---
+all:
+  hosts:
+    # CLIENT:: setup
+    client:
+      # skip_default_setup:
+      # ansible defaults
+      #_______________________
+      # NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
+      # NOTE: by "{{ ansible_user }}-{{ ansible_host }}"
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      ansible_user: username
+      ansible_host: 192.168.250.0
+      ansible_port: 22
+      service_name: "server_{{ ansible_user }}"
+      install_server_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
+      install_server_git_user: "{{ ansible_user }}"
+      install_server_git_email: "{{ ansible_user }}"
+      # ansible client access setup
+      #_______________________
+      ansible_user_setup: yes
+      ansible_user_config:
+        is_update: yes
+        # sudo apt install whois && mkpasswd --method=sha-512
+        password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
+        group: adm,cdrom,sudo,dip,plugdev
+        system: no
+        append: yes
+        add_ssh_key: yes
+      # client used for adding to services
+      #_______________________
+      clients:
+        - name: "{{ ansible_user }}"
+          dev: yes
+          updateOrCreate: no
+      # netplan
+      #_______________________
+      netplan_setup: yes
+      netplan_remove_existing: yes
+      netplan_interface_name: eth0
+      netplan_dhcp_4: yes
+      netplan_dhcp_6: no
+      netplan_addresses:
+        - "{{ ansible_host }}/24"
+      netplan_gateway_4: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
+      netplan_nameserver_addresses:
+        - 1.1.1.1
+        - 1.0.0.1
+      # docker
+      #_______________________
+      docker_user_shell: /bin/zsh
+      # ufw
+      #_______________________
+      ufw_setup: yes
+      ufw_rules_extended:
+        - rule: allow
+          to_port: 22
+          protocol: tcp
+          interface: "{{ ansible_default_ipv4['interface'] }}"
+          comment: "allow incoming connection on standard ssh port"
+    # SERVER:: setup
+    server:
+      # skip_default_setup:
+      # ansible defaults
+      #_______________________
+      # NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
+      # NOTE: by "{{ ansible_user }}-{{ ansible_host }}"
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      ansible_user: username
+      ansible_host: 192.168.250.0
+      ansible_port: 22
+      service_name: "server_{{ ansible_user }}"
+      install_server_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
+      install_server_git_user: "{{ ansible_user }}"
+      install_server_git_email: "{{ ansible_user }}"
+      # ansible client access setup
+      #_______________________
+      ansible_user_setup: yes
+      ansible_user_config:
+        is_update: yes
+        # sudo apt install whois && mkpasswd --method=sha-512
+        password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
+        group: adm,cdrom,sudo,dip,plugdev
+        system: no
+        append: yes
+        add_ssh_key: yes
+      # client used for adding to services
+      #_______________________
+      clients:
+        - name: "{{ ansible_user }}"
+          dev: yes
+          updateOrCreate: no
+      # netplan
+      #_______________________
+      netplan_setup: yes
+      netplan_remove_existing: yes
+      netplan_interface_name: eth0
+      netplan_dhcp_4: yes
+      netplan_dhcp_6: no
+      netplan_addresses:
+        - "{{ ansible_host }}/24"
+      netplan_gateway_4: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
+      netplan_nameserver_addresses:
+        - 1.1.1.1
+        - 1.0.0.1
+      # docker
+      #_______________________
+      docker_user_shell: /bin/zsh
+      # ufw
+      #_______________________
+      ufw_setup: yes
+      ufw_rules_extended:
+        - rule: allow
+          to_port: 22
+          protocol: tcp
+          interface: "{{ ansible_default_ipv4['interface'] }}"
+          comment: "allow incoming connection on standard ssh port"
+  # ----------------------------------------------------------------------------
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  children:
+    clients:
+      hosts:
+        client:
+    servers:
+      hosts:
+        client:
+        server:
+    docker:
+      hosts:
+        client:
+        server:

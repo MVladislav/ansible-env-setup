@@ -1,0 +1,113 @@
+---
+# playbook server
+
+# ------------------------------------------------------------------------------
+- name: include pre-task playbook
+  import_playbook: ./tasks/pre-tasks.yml
+  remote_user: "{{ ansible_user }}"
+  vars:
+    ansible_user_conf_on_hosts:
+      - servers
+    ansible_user_conf_name: "{{ ansible_user }}"
+    ansible_user_conf_update: "{{ ansible_user_config.is_update | bool }}"
+    ansible_user_conf_shell: "{{ ansible_user_config.shell | default('/bin/bash') }}"
+    ansible_user_conf_password: "{{ ansible_user_config.password }}"
+    ansible_user_conf_group: "{{ ansible_user_config.group | default('adm,cdrom,sudo') }}"
+    ansible_user_conf_system: "{{ ansible_user_config.system | default('no') | bool }}"
+    ansible_user_conf_append: "{{ ansible_user_config.append | default('yes') | bool }}"
+    ansible_user_conf_createhome: "{{ ansible_user_config.createhome | default('yes') | bool }}"
+    ansible_user_conf_home: "{{ ansible_user_config.home | default('/home/' + ansible_user) }}"
+    ansible_user_conf_add_ssh_key: "{{ ansible_user_config.add_ssh_key | default('yes') | bool }}"
+  when: skip_default_setup is not defined and (ansible_user_setup is defined and ansible_user_setup | bool)
+  # ----------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: cis installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - servers
+  become: yes
+  roles:
+    ### -------------------------
+    - role: ubuntu2004_cis
+      ubuntu2004cis_rule_1_5_2: false # not work on ubuntu 21.03 pi
+      ubuntu2004cis_rule_1_6_1: false # not work on ubuntu 21.03 pi
+      ubuntu2004cis_rule_1_7_1_2: false # not work on ubuntu 21.03 pi
+      ubuntu2004cis_rule_4_1_1_3: false # not work on ubuntu 21.03 pi
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: pre installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - servers
+  vars:
+    ufw_rules_default:
+      - rule: allow
+        to_port: 22
+        protocol: tcp
+        interface: "{{ ansible_default_ipv4['interface'] }}"
+        comment: "allow incoming connection on standard ssh port"
+  roles:
+    ### -------------------------
+    - role: ansible-security
+      when: skip_default_setup is not defined
+    ### -------------------------
+    - role: ansible-updater
+      when: skip_default_setup is not defined
+    ### -------------------------
+    - role: ansible-ssh
+      when: skip_default_setup is not defined
+    ### -------------------------
+    - role: ansible-ufw
+      ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
+      when: skip_default_setup is not defined
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: server installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - servers
+  roles:
+    ### -------------------------
+    - role: ansible-install-server
+      install_server_service_name: "{{ service_name }}"
+      install_server_config:
+        dev: yes
+        apt_base: yes
+        apt_dev: yes
+        apt_exfat: yes
+        apt_libs: yes # base|dev
+        apt_vpn: yes
+        snap_microk8s: no
+        git: yes
+        zsh: yes
+        tmux: yes
+        python: yes # base|dev
+        go: yes
+        go_kompose: no
+        npm: yes
+        mongodb: no
+        java: yes # base|dev
+    ### -------------------------
+    - role: ansible-netplan
+      netplan_service_name: "{{ service_name }}"
+      when: netplan_setup is defined and netplan_setup | bool
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: docker installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - docker
+  roles:
+    ### -------------------------
+    - role: ansible-docker
+      docker_user_shell: /bin/zsh
+      docker_users_to_add_group: "{{ clients }}"
+    ### -------------------------
