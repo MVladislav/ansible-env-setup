@@ -111,10 +111,10 @@
         apt_wireshark_dev: yes
         apt_vpn: yes
         # apt_gnome_boxes: no
-        apt_latex: yes
+        # apt_latex: no
         # apt_pandoc: no
         apt_virtualbox_guest: yes
-        dpkg_virtualbox: yes
+        # dpkg_virtualbox: no
         # dpkg_mongodb: no
         dpkg_veracrypt: yes
         dpkg_google_chrome: yes
