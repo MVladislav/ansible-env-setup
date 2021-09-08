@@ -77,7 +77,7 @@
         # go_kompose: no
         npm: yes
         # mongodb: no
-        java: yes # base|dev
+        # java: no # base|dev
     ### -------------------------
     - role: ansible-netplan
       netplan_service_name: "{{ service_name }}"
