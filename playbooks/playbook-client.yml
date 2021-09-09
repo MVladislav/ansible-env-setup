@@ -113,10 +113,10 @@
         # apt_gnome_boxes: no
         apt_latex: yes
         # apt_pandoc: no
-        apt_virtualbox_guest: yes
+        # apt_virtualbox_guest: no
         dpkg_virtualbox: yes
         # dpkg_mongodb: no
-        dpkg_veracrypt: yes
+        # dpkg_veracrypt: yes # => TODO: CURRENT NOT WORKING PAGE
         dpkg_google_chrome: yes
         # dpkg_getferdi: no
         snap_signal_desktop: yes
