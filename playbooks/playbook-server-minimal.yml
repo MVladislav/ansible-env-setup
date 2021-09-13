@@ -77,7 +77,8 @@
     ### -------------------------
     - role: ansible-install-server
       install_server_service_name: "{{ service_name }}"
-      install_server_config:        dev: yes
+      install_server_config:
+        dev: yes
         apt_base: yes
         # apt_dev: no
         # apt_exfat: no
@@ -89,7 +90,7 @@
         git: yes
         zsh: yes
         tmux: yes
-        # python: no # base|dev
+        python: yes # base|dev
         # go: no
         # go_kompose: no
         # ruby: no
