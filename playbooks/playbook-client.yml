@@ -102,13 +102,13 @@
         gnome_gui_setup_extensions: yes
         gnome_gui_setup_keybinding: yes
         apt_base: yes
-        # apt_thunderbird: no
+        apt_thunderbird: yes
         # apt_libreoffice_impress: no
         apt_libreoffice_writer: yes
         apt_libreoffice_calc: yes
         apt_peek: yes
-        apt_wireshark: yes
-        apt_wireshark_dev: yes
+        # apt_wireshark: no
+        # apt_wireshark_dev: no
         apt_vpn: yes
         # apt_gnome_boxes: no
         apt_latex: yes
@@ -134,8 +134,8 @@
         snap_code: yes
         # snap_android_studio: no
         snap_insomnia: yes
-        snap_postman: yes
-        snap_dbeaver_ce: yes
+        # snap_postman: no
+        # snap_dbeaver_ce: no
         snap_beekeeper_studio: yes
         # snap_microk8s: no
         # snap_zaproxy: no
@@ -144,7 +144,7 @@
         vs_code_ext: yes
         # thunderbird_theme: no
         # firefox_dev: no
-        java: yes
+        # java: no
         # steam: no
     ### -------------------------
 
