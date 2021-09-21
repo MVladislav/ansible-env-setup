@@ -35,6 +35,7 @@
       ubuntu2004cis_rule_1_6_1: false # not work on ubuntu 21.03 pi
       ubuntu2004cis_rule_1_7_1_2: false # not work on ubuntu 21.03 pi
       ubuntu2004cis_rule_4_1_1_3: false # not work on ubuntu 21.03 pi
+      when: cis_setup is defined and cis_setup | bool
     ### -------------------------
 
 # ------------------------------------------------------------------------------
