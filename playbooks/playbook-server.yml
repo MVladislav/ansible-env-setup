@@ -85,15 +85,16 @@
         apt_exfat: yes
         apt_libs: yes # base|dev
         apt_vpn: yes
-        snap_microk8s: no
+        # snap_microk8s: no
+        snap_btop: yes
         git: yes
         zsh: yes
         tmux: yes
         python: yes # base|dev
         go: yes
-        go_kompose: no
+        # go_kompose: no
         npm: yes
-        mongodb: no
+        # mongodb: no
         java: yes # base|dev
     ### -------------------------
     - role: ansible-netplan

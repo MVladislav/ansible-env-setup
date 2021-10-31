@@ -68,13 +68,17 @@
         apt_exfat: yes
         apt_libs: yes # base|dev
         apt_vpn: yes
+        # dpkg_...: no
+        # snap_...: no
         # snap_microk8s: no
+        snap_btop: yes
         git: yes
         zsh: yes
         tmux: yes
         python: yes # base|dev
         go: yes
         # go_kompose: no
+        ruby: yes
         npm: yes
         # mongodb: no
         # java: no # base|dev
@@ -115,6 +119,7 @@
         # apt_pandoc: no
         # apt_virtualbox_guest: no
         dpkg_virtualbox: yes
+        # apt_virt_viewer: no
         # dpkg_mongodb: no
         # dpkg_veracrypt: yes # => TODO: CURRENT NOT WORKING PAGE
         dpkg_google_chrome: yes

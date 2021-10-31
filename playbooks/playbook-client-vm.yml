@@ -69,6 +69,7 @@
         apt_libs: yes # base|dev
         apt_vpn: yes
         # snap_microk8s: no
+        snap_btop: yes
         git: yes
         zsh: yes
         tmux: yes
