@@ -68,6 +68,8 @@
         apt_exfat: yes
         apt_libs: yes # base|dev
         apt_vpn: yes
+        # dpkg_...: no
+        # snap_...: no
         # snap_microk8s: no
         snap_btop: yes
         git: yes
@@ -76,6 +78,7 @@
         python: yes # base|dev
         go: yes
         # go_kompose: no
+        ruby: yes
         npm: yes
         # mongodb: no
         # java: no # base|dev
@@ -103,7 +106,7 @@
         gnome_gui_setup_extensions: yes
         gnome_gui_setup_keybinding: yes
         apt_base: yes
-        # apt_thunderbird: no
+        apt_thunderbird: yes
         # apt_libreoffice_impress: no
         apt_libreoffice_writer: yes
         apt_libreoffice_calc: yes
@@ -112,10 +115,11 @@
         apt_wireshark_dev: yes
         apt_vpn: yes
         # apt_gnome_boxes: no
-        # apt_latex: no
-        # apt_pandoc: no
-        apt_virtualbox_guest: yes
-        # dpkg_virtualbox: no
+        apt_latex: yes
+        apt_pandoc: yes
+        # apt_virtualbox_guest: no
+        dpkg_virtualbox: yes
+        # apt_virt_viewer: no
         # dpkg_mongodb: no
         dpkg_veracrypt: yes
         dpkg_google_chrome: yes
@@ -134,15 +138,15 @@
         snap_okular: yes
         snap_code: yes
         # snap_android_studio: no
-        snap_insomnia: yes
-        snap_postman: yes
-        snap_dbeaver_ce: yes
+        # snap_insomnia: no
+        # snap_postman: no
+        # snap_dbeaver_ce: no
         snap_beekeeper_studio: yes
         # snap_microk8s: no
         # snap_zaproxy: no
-        # snap_cornyjokes: no
+        snap_cornyjokes: yes
         # flatpak: no # base(empty)|dev(empty)
-        vs_code_ext: yes
+        # vs_code_ext: no
         # thunderbird_theme: no
         # firefox_dev: no
         java: yes

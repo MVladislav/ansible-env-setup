@@ -64,8 +64,8 @@
       install_server_config:
         dev: yes
         apt_base: yes
-        apt_dev: yes
-        apt_exfat: yes
+        # apt_dev: no
+        # apt_exfat: no
         apt_libs: yes # base|dev
         apt_vpn: yes
         # dpkg_...: no
@@ -76,10 +76,10 @@
         zsh: yes
         tmux: yes
         python: yes # base|dev
-        go: yes
+        # go: no
         # go_kompose: no
-        ruby: yes
-        npm: yes
+        # ruby: no
+        # npm: no
         # mongodb: no
         # java: no # base|dev
     ### -------------------------
@@ -115,13 +115,13 @@
         # apt_wireshark_dev: no
         apt_vpn: yes
         # apt_gnome_boxes: no
-        apt_latex: yes
+        # apt_latex: no
         # apt_pandoc: no
         # apt_virtualbox_guest: no
-        dpkg_virtualbox: yes
+        # dpkg_virtualbox: no
         # apt_virt_viewer: no
         # dpkg_mongodb: no
-        # dpkg_veracrypt: yes # => TODO: CURRENT NOT WORKING PAGE
+        dpkg_veracrypt: yes
         dpkg_google_chrome: yes
         # dpkg_getferdi: no
         snap_signal_desktop: yes
@@ -134,19 +134,19 @@
         snap_vlc: yes
         snap_obs_studio: yes
         snap_flameshot: yes
-        # snap_1password: no
+        snap_1password: yes
         snap_okular: yes
         snap_code: yes
         # snap_android_studio: no
-        snap_insomnia: yes
+        # snap_insomnia: no
         # snap_postman: no
         # snap_dbeaver_ce: no
-        snap_beekeeper_studio: yes
+        # snap_beekeeper_studio: no
         # snap_microk8s: no
         # snap_zaproxy: no
         # snap_cornyjokes: no
         # flatpak: no # base(empty)|dev(empty)
-        vs_code_ext: yes
+        # vs_code_ext: no
         # thunderbird_theme: no
         # firefox_dev: no
         # java: no
