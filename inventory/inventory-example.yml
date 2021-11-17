@@ -35,17 +35,22 @@ all:
           updateOrCreate: no
       # netplan
       #_______________________
-      netplan_setup: yes
-      netplan_remove_existing: yes
-      netplan_interface_name: eth0
-      netplan_dhcp_4: yes
-      netplan_dhcp_6: no
-      netplan_addresses:
-        - "{{ ansible_host }}/24"
-      netplan_gateway_4: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
-      netplan_nameserver_addresses:
-        - 1.1.1.1
-        - 1.0.0.1
+      netplan_setup: no
+      netplan_remove_existing: no
+      netplan_service_name: default
+      netplan_configuration:
+        network:
+          ethernets:
+            eth0:
+              dhcp4: yes
+              dhcp6: no
+              addresses:
+                - "{{ ansible_host }}/24"
+              nameservers:
+                addresses:
+                  - 1.1.1.1
+                  - 1.0.0.1
+              gateway4: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
       # docker
       #_______________________
       docker_user_shell: /bin/zsh
@@ -58,6 +63,9 @@ all:
           protocol: tcp
           interface: "{{ ansible_default_ipv4['interface'] }}"
           comment: "allow incoming connection on standard ssh port"
+      # Ubuntu2004 CIS
+      #_______________________
+      cis_setup: no
     # SERVER:: setup
     server:
       # skip_default_setup:
@@ -93,16 +101,21 @@ all:
       # netplan
       #_______________________
       netplan_setup: yes
-      netplan_remove_existing: yes
-      netplan_interface_name: eth0
-      netplan_dhcp_4: yes
-      netplan_dhcp_6: no
-      netplan_addresses:
-        - "{{ ansible_host }}/24"
-      netplan_gateway_4: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
-      netplan_nameserver_addresses:
-        - 1.1.1.1
-        - 1.0.0.1
+      netplan_remove_existing: no
+      netplan_service_name: default
+      netplan_configuration:
+        network:
+          ethernets:
+            eth0:
+              dhcp4: yes
+              dhcp6: no
+              addresses:
+                - "{{ ansible_host }}/24"
+              nameservers:
+                addresses:
+                  - 1.1.1.1
+                  - 1.0.0.1
+              gateway4: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
       # docker
       #_______________________
       docker_user_shell: /bin/zsh
@@ -115,6 +128,9 @@ all:
           protocol: tcp
           interface: "{{ ansible_default_ipv4['interface'] }}"
           comment: "allow incoming connection on standard ssh port"
+      # Ubuntu2004 CIS
+      #_______________________
+      cis_setup: yes
   # ----------------------------------------------------------------------------
   vars:
     ansible_python_interpreter: /usr/bin/python3

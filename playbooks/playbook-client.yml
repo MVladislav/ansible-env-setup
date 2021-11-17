@@ -23,6 +23,38 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
+- name: cis installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - servers
+  become: yes
+  roles:
+    ### -------------------------
+    - role: ubuntu2004_cis
+      ubuntu2004cis_rule_1_5_2: false # not work on ubuntu 21.03 pi
+      ubuntu2004cis_rule_1_6_1: false # not work on ubuntu 21.03 pi
+      ubuntu2004cis_rule_1_7_1_2: false # not work on ubuntu 21.03 pi
+      ubuntu2004cis_rule_4_1_1_3: false # not work on ubuntu 21.03 pi
+      ubuntu2004cis_rule_2_2_2: false # do not remove xorg for client
+      when: cis_setup is defined and cis_setup | bool
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: run hardening scan
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+  become: yes
+  roles:
+    ### -------------------------
+    - role: mablanco.lynis
+      lynis_deploy_method: git
+      lynis_git_repo: "https://github.com/CISOfy/lynis"
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 - name: pre installer
   remote_user: "{{ ansible_user }}"
   hosts:
