@@ -36,3 +36,6 @@ url = https://github.com/florianutz/ubuntu2004_cis.git
 	path = roles/ansible-install-client
 	url = https://github.com/MVladislav/ansible-install-client.git
 	branch = develop
+[submodule "roles/ansible-lynis"]
+	path = roles/ansible-lynis
+	url = https://github.com/mablanco/ansible-lynis.git
