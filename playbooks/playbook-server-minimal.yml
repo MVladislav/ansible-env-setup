@@ -40,6 +40,20 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
+- name: run hardening scan
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - servers
+  become: yes
+  roles:
+    ### -------------------------
+    - role: mablanco.lynis
+      lynis_deploy_method: git
+      lynis_git_repo: "https://github.com/CISOfy/lynis"
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 - name: pre installer
   remote_user: "{{ ansible_user }}"
   hosts:
@@ -52,9 +66,9 @@
         interface: "{{ ansible_default_ipv4['interface'] }}"
         comment: "allow incoming connection on standard ssh port"
   roles:
-    ### -------------------------
-    - role: ansible-security
-      when: skip_default_setup is not defined
+    # ### -------------------------
+    # - role: ansible-security
+    #   when: skip_default_setup is not defined
     ### -------------------------
     - role: ansible-updater
       when: skip_default_setup is not defined
@@ -91,7 +105,7 @@
         snap_btop: yes
         git: yes
         zsh: yes
-        tmux: yes
+        # tmux: no
         python: yes # base|dev
         # go: no
         # go_kompose: no

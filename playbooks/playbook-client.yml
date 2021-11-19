@@ -26,7 +26,7 @@
 - name: cis installer
   remote_user: "{{ ansible_user }}"
   hosts:
-    - servers
+    - clients
   become: yes
   roles:
     ### -------------------------
@@ -67,9 +67,9 @@
         interface: "{{ ansible_default_ipv4['interface'] }}"
         comment: "allow incoming connection on standard ssh port"
   roles:
-    ### -------------------------
-    - role: ansible-security
-      when: skip_default_setup is not defined
+    # ### -------------------------
+    # - role: ansible-security
+    #   when: skip_default_setup is not defined
     ### -------------------------
     - role: ansible-updater
       when: skip_default_setup is not defined
@@ -106,8 +106,8 @@
         snap_btop: yes
         git: yes
         zsh: yes
-        tmux: yes
-        python: yes # base|dev
+        # tmux: no
+        # python: no # base|dev
         # go: no
         # go_kompose: no
         # ruby: no
@@ -142,7 +142,7 @@
         # apt_libreoffice_impress: no
         apt_libreoffice_writer: yes
         apt_libreoffice_calc: yes
-        apt_peek: yes
+        # apt_peek: no
         # apt_wireshark: no
         # apt_wireshark_dev: no
         apt_vpn: yes
