@@ -24,13 +24,22 @@ all:
         is_update: yes
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
-        group: adm,cdrom,sudo,dip,plugdev,lpadmin,lxd,sambashare
+        group: sudo,adm,cdrom,lpadmin,dip,plugdev,lxd,sambashare
         system: no
         append: yes
         add_ssh_key: yes
       # client used for adding to services
       #_______________________
       clients:
+        # rename to any user, to use without sudo
+        - name: local_user
+          shell: /bin/bash
+          group: adm,cdrom,lpadmin,dip,plugdev,lxd,sambashare
+          createhome: yes
+          # sudo apt install whois && mkpasswd --method=sha-512
+          # password: "$6$Il3FROvn/RU9dfpy$kaTLw4ch.TQyY8KkBJdoZ1CkFiM19ypkJTG5I2sItsPGplwzknayHIHa0lllaSMqF4jpHbkb8vymTAks4yXuD."
+          password: "!"
+          updateOrCreate: yes
         - name: "{{ ansible_user }}"
           dev: yes
           updateOrCreate: no
@@ -100,7 +109,7 @@ all:
         is_update: yes
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
-        group: adm,cdrom,sudo,dip,plugdev,lpadmin,lxd,sambashare
+        group: sudo,adm,cdrom,lpadmin,dip,plugdev,lxd,sambashare
         system: no
         append: yes
         add_ssh_key: yes
