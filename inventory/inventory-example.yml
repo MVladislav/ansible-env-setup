@@ -67,15 +67,17 @@ all:
       # Ubuntu2004 CIS
       #_______________________
       cis_setup: yes
-      # Hardening SCAN
-      #_______________________
-      hardening_scan: yes
       # POSTFIX SETUP
       #_______________________
       postfix_setup: no
       postfix_mail_username: example@local
       postfix_mail_password: "mysecret"
       postfix_smtp_host: smtp.example.local
+      # Hardening SCAN
+      #_______________________
+      hardening_scan: yes
+      hardening_lynis_report_from: "{{ postfix_mail_username }}"
+      hardening_lynis_report_to: "{{ postfix_mail_username }}"
     # SERVER:: setup
     server:
       # skip_default_setup:
@@ -141,15 +143,17 @@ all:
       # Ubuntu2004 CIS
       #_______________________
       cis_setup: yes
-      # Hardening SCAN
-      #_______________________
-      hardening_scan: yes
       # POSTFIX SETUP
       #_______________________
       postfix_setup: yes
       postfix_mail_username: example@local
       postfix_mail_password: "mysecret"
       postfix_smtp_host: smtp.example.local
+      # Hardening SCAN
+      #_______________________
+      hardening_scan: yes
+      hardening_lynis_report_from: "{{ postfix_mail_username }}"
+      hardening_lynis_report_to: "{{ postfix_mail_username }}"
   # ----------------------------------------------------------------------------
   vars:
     ansible_python_interpreter: /usr/bin/python3
