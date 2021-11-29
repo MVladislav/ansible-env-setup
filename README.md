@@ -31,6 +31,15 @@ included as submoduls
 $git clone --recursive https://github.com/MVladislav/ansible-env-setup.git
 ```
 
+to load or update submodules run:
+
+```sh
+: 'load'
+$git submodule update --init --recursive
+: 'update'
+$git submodule update --recursive --remote
+```
+
 ## install
 
 install Ansible on host to run the playbook
