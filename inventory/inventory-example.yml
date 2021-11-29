@@ -37,9 +37,11 @@ all:
           group: adm,cdrom,lpadmin,dip,plugdev,lxd,sambashare
           createhome: yes
           # sudo apt install whois && mkpasswd --method=sha-512
-          # password: "$6$Il3FROvn/RU9dfpy$kaTLw4ch.TQyY8KkBJdoZ1CkFiM19ypkJTG5I2sItsPGplwzknayHIHa0lllaSMqF4jpHbkb8vymTAks4yXuD."
-          password: "!"
+          password: "$6$Il3FROvn/RU9dfpy$kaTLw4ch.TQyY8KkBJdoZ1CkFiM19ypkJTG5I2sItsPGplwzknayHIHa0lllaSMqF4jpHbkb8vymTAks4yXuD."
+          # password: "!"
           updateOrCreate: yes
+          locale: de_DE.UTF-8
+          language: de_DE.UTF-8
         - name: "{{ ansible_user }}"
           dev: yes
           updateOrCreate: no
