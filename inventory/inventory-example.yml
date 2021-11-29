@@ -3,6 +3,7 @@ all:
   hosts:
     # CLIENT:: setup
     client:
+      # NOTE: if some defaults needs to be skipped, en-commit next line
       # skip_default_setup:
       # ansible defaults
       #_______________________
@@ -23,7 +24,7 @@ all:
         is_update: yes
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
-        group: adm,cdrom,sudo,dip,plugdev
+        group: adm,cdrom,sudo,dip,plugdev,lpadmin,lxd,sambashare
         system: no
         append: yes
         add_ssh_key: yes
@@ -65,7 +66,10 @@ all:
           comment: "allow incoming connection on standard ssh port"
       # Ubuntu2004 CIS
       #_______________________
-      cis_setup: no
+      cis_setup: yes
+      # Hardening SCAN
+      #_______________________
+      hardening_scan: yes
     # SERVER:: setup
     server:
       # skip_default_setup:
@@ -88,7 +92,7 @@ all:
         is_update: yes
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
-        group: adm,cdrom,sudo,dip,plugdev
+        group: adm,cdrom,sudo,dip,plugdev,lpadmin,lxd,sambashare
         system: no
         append: yes
         add_ssh_key: yes
@@ -131,6 +135,9 @@ all:
       # Ubuntu2004 CIS
       #_______________________
       cis_setup: yes
+      # Hardening SCAN
+      #_______________________
+      hardening_scan: yes
   # ----------------------------------------------------------------------------
   vars:
     ansible_python_interpreter: /usr/bin/python3
