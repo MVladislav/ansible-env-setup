@@ -1,6 +1,7 @@
 ---
 # pre-task for all playbooks, to install ansible on nodes and add ssh-key, etc.
 
+# ------------------------------------------------------------------------------
 - name: "pre-install - print debug"
   check_mode: yes
   gather_facts: no
@@ -18,6 +19,7 @@
     ansible_user_conf_createhome: null
     ansible_user_conf_home: null
     ansible_user_conf_add_ssh_key: null
+    ansible_user_conf_clients: []
   tasks:
     - name: "pre-install - print debug all vars"
       check_mode: yes
@@ -34,6 +36,7 @@
           - "createhome:  {{ ansible_user_conf_createhome | bool }}"
           - "home:        {{ ansible_user_conf_home }}"
           - "add_ssh_key: {{ ansible_user_conf_add_ssh_key | bool }}"
+          - "clients:     {{ ansible_user_conf_clients }}"
 
 - name: "pre-install - remote-user: update user and deploy ssh-key"
   gather_facts: no
@@ -101,7 +104,6 @@
       when: ansible_user_conf_add_ssh_key is defined and ansible_user_conf_add_ssh_key | bool
 
 # ------------------------------------------------------------------------------
-
 - name: "pre-install - install python3 and dependencies"
   become: yes
   gather_facts: no
@@ -120,3 +122,25 @@
     - name: "pre-install - install python3 and dependencies"
       raw: apt update && apt install -y python3 python3-psutil python3-pexpect
       when: check_python is failed
+
+# ------------------------------------------------------------------------------
+- name: "pre-install - update/create user accounts"
+  gather_facts: no
+  remote_user: "{{ ansible_user_conf_name }}"
+  hosts: "{{ ansible_user_conf_on_hosts }}"
+  vars:
+    ansible_user_conf_clients: []
+  tasks:
+    - name: update/create user accounts
+      become: yes
+      user:
+        name: "{{ item.name }}"
+        state: present
+        # shell: "{{ item.shell | default('/bin/bash')}}"
+        groups: "{{ item.group | default('adm, cdrom, sudo') }}"
+        createhome: "{{ item.createhome | default('yes') | bool }}"
+        # sudo apt install whois && mkpasswd --method=sha-512
+        password: "{{ item.password }}"
+        #update_password: on_create
+      loop: "{{ ansible_user_conf_clients | flatten(levels=1) }}"
+      when: item.updateOrCreate is defined and item.updateOrCreate | bool
