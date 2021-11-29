@@ -40,20 +40,6 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: run hardening scan
-  remote_user: "{{ ansible_user }}"
-  hosts:
-    - servers
-  become: yes
-  roles:
-    ### -------------------------
-    - role: mablanco.lynis
-      lynis_deploy_method: git
-      lynis_git_repo: "https://github.com/CISOfy/lynis"
-    ### -------------------------
-
-# ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
 - name: pre installer
   remote_user: "{{ ansible_user }}"
   hosts:
@@ -99,13 +85,14 @@
         apt_exfat: yes
         apt_libs: yes # base|dev
         apt_vpn: yes
+        apt_go: yes
         # snap_microk8s: no
         snap_btop: yes
         git: yes
         zsh: yes
         tmux: yes
         python: yes # base|dev
-        go: yes
+        # go: no
         # go_kompose: no
         npm: yes
         # mongodb: no
@@ -127,4 +114,21 @@
     - role: ansible-docker
       docker_user_shell: /bin/zsh
       docker_users_to_add_group: "{{ clients }}"
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: run hardening scan
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - servers
+  become: yes
+  roles:
+    ### -------------------------
+    - role: ansible-lynis
+      lynis_deploy_method: git
+      lynis_git_repo: "https://github.com/CISOfy/lynis"
+      lynis_report_from: root@localhost
+      lynis_report_to: root@localhost
+      when: hardening_scan is defined and hardening_scan | bool
     ### -------------------------

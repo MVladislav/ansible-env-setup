@@ -23,6 +23,43 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
+- name: cis installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+  become: yes
+  roles:
+    ### -------------------------
+    - role: ubuntu2004_cis
+      ubuntu2004cis_pwquality:
+        - key: "minlen"
+          value: "8"
+        - key: "dcredit"
+          value: "-1"
+        - key: "ucredit"
+          value: "-1"
+        - key: "ocredit"
+          value: "-1"
+        - key: "lcredit"
+          value: "-1"
+      ubuntu2004cis_xwindows_required: true
+      ubuntu2004cis_rule_2_2_2: false # do not remove xorg for client
+      #
+      ubuntu2004cis_rule_1_1_1_7: false # not work on ubuntu 21.10
+      ubuntu2004cis_rule_1_5_2: false # not work on ubuntu 21.03
+      ubuntu2004cis_rule_1_6_1: false # not work on ubuntu 21.03
+      ubuntu2004cis_rule_1_7_1_2: false # not work on ubuntu 21.03
+      ubuntu2004cis_rule_4_1_1_3: false # not work on ubuntu 21.03
+      #
+      ubuntu2004cis_rule_5_3_1: false # ubuntu 21.10 test, password after change not working
+      ubuntu2004cis_rule_5_3_2: false # ubuntu 21.10 test, password after change not working
+      ubuntu2004cis_rule_5_3_3: false # ubuntu 21.10 test, password after change not working
+      ubuntu2004cis_rule_5_3_4: false # ubuntu 21.10 test, password after change not working
+      when: cis_setup is defined and cis_setup | bool
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 - name: pre installer
   remote_user: "{{ ansible_user }}"
   hosts:
@@ -35,9 +72,9 @@
         interface: "{{ ansible_default_ipv4['interface'] }}"
         comment: "allow incoming connection on standard ssh port"
   roles:
-    ### -------------------------
-    - role: ansible-security
-      when: skip_default_setup is not defined
+    # ### -------------------------
+    # - role: ansible-security
+    #   when: skip_default_setup is not defined
     ### -------------------------
     - role: ansible-updater
       when: skip_default_setup is not defined
@@ -68,14 +105,18 @@
         apt_exfat: yes
         apt_libs: yes # base|dev
         apt_vpn: yes
+        apt_go: yes
+        # dpkg_...: no
+        # snap_...: no
         # snap_microk8s: no
         snap_btop: yes
         git: yes
         zsh: yes
         tmux: yes
         python: yes # base|dev
-        go: yes
+        # go: no
         # go_kompose: no
+        ruby: yes
         npm: yes
         # mongodb: no
         # java: no # base|dev
@@ -103,7 +144,7 @@
         gnome_gui_setup_extensions: yes
         gnome_gui_setup_keybinding: yes
         apt_base: yes
-        # apt_thunderbird: no
+        apt_thunderbird: yes
         # apt_libreoffice_impress: no
         apt_libreoffice_writer: yes
         apt_libreoffice_calc: yes
@@ -114,8 +155,9 @@
         # apt_gnome_boxes: no
         # apt_latex: no
         # apt_pandoc: no
-        apt_virtualbox_guest: yes
+        # apt_virtualbox_guest: no
         # dpkg_virtualbox: no
+        # apt_virt_viewer: no
         # dpkg_mongodb: no
         dpkg_veracrypt: yes
         dpkg_google_chrome: yes
@@ -134,15 +176,15 @@
         snap_okular: yes
         snap_code: yes
         # snap_android_studio: no
-        snap_insomnia: yes
-        snap_postman: yes
-        snap_dbeaver_ce: yes
+        # snap_insomnia: no
+        # snap_postman: no
+        # snap_dbeaver_ce: no
         snap_beekeeper_studio: yes
         # snap_microk8s: no
         # snap_zaproxy: no
-        # snap_cornyjokes: no
+        snap_cornyjokes: yes
         # flatpak: no # base(empty)|dev(empty)
-        vs_code_ext: yes
+        # vs_code_ext: no
         # thunderbird_theme: no
         # firefox_dev: no
         java: yes
@@ -160,4 +202,21 @@
     - role: ansible-docker
       docker_user_shell: /bin/zsh
       docker_users_to_add_group: "{{ clients }}"
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: run hardening scan
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+  become: yes
+  roles:
+    ### -------------------------
+    - role: ansible-lynis
+      lynis_deploy_method: git
+      lynis_git_repo: "https://github.com/CISOfy/lynis"
+      lynis_report_from: root@localhost
+      lynis_report_to: root@localhost
+      when: hardening_scan is defined and hardening_scan | bool
     ### -------------------------
