@@ -33,12 +33,13 @@ $git clone --recursive https://github.com/MVladislav/ansible-env-setup.git
 
 ## install
 
-install ansible on host to run the playbook
+install Ansible on host to run the playbook
 
 ```sh
 $sudo apt install python3 python3-pip sshpass
 : 'optional: openssh-sftp-server'
-$sudo pip3 install ansible
+$sudo python3 -m pip install Ansible
+$sudo python3 -m pip install molecule[docker] ansible-lint
 ```
 
 ## setup
@@ -48,7 +49,7 @@ $sudo pip3 install ansible
 copy `inventory/inventory-example.yml` to `inventory/inventory.yml`</br>
 `$cp inventory/inventory-example.yml inventory/inventory.yml`
 
-add the device informations into: `inventory/inventory.yml`
+add the device information into: `inventory/inventory.yml`
 
 from default the base setup is defined in each file:
 
@@ -72,6 +73,8 @@ this will be done in: `playbooks/tasks/pre-tasks.yml`
 
 ### setup a client
 
+> HINT: change `playbooks/playbook-client.yml` in example command, in what ever you want to run
+
 on first run:
 
 > `-k` => will use **ssh with a password**, as a fresh setup has no **ssh-key**
@@ -80,13 +83,15 @@ on first run:
 $ansible-playbook playbooks/playbook-client.yml --ask-become-pass -k
 ```
 
-on other runs:
+on other runs (because ssh is/should be configured with ssh-key):
 
 ```sh
 $ansible-playbook playbooks/playbook-client.yml --ask-become-pass
 ```
 
 ### setup a server
+
+> HINT: change `playbooks/playbook-server.yml` in example command, in what ever you want to run
 
 on first run:
 
