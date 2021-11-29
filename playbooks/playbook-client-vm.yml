@@ -69,8 +69,8 @@
       ubuntu2004cis_rule_5_3_4: false # ubuntu 21.10 test, password after change not working
       when: cis_setup is defined and cis_setup | bool
     ### -------------------------
+  tasks:
     - name: set env variables
-      become: yes
       lineinfile:
         dest: "/etc/environment"
         state: present
@@ -80,6 +80,7 @@
         - key: MAILTO
           value: "{{ postfix_mail_username }}"
       when: cis_setup is defined and cis_setup | bool and (item.value is defined)
+    ### -------------------------
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
