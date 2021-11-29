@@ -204,8 +204,8 @@
         # apt_virt_viewer: no
         # dpkg_mongodb: no
         dpkg_veracrypt: yes
-        dpkg_google_chrome: yes
         # dpkg_getferdi: no
+        snap_chromium: yes
         snap_signal_desktop: yes
         snap_telegram_desktop: yes
         snap_zoom_client: yes
