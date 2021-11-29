@@ -133,14 +133,20 @@
   tasks:
     - name: update/create user accounts
       become: yes
-      user:
+      ansible.builtin.user:
         name: "{{ item.name }}"
         state: present
-        # shell: "{{ item.shell | default('/bin/bash')}}"
+        shell: "{{ item.shell | default('/bin/bash')}}"
         groups: "{{ item.group | default('adm, cdrom, sudo') }}"
         createhome: "{{ item.createhome | default('yes') | bool }}"
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "{{ item.password }}"
-        #update_password: on_create
+        update_password: on_create
       loop: "{{ ansible_user_conf_clients | flatten(levels=1) }}"
+      register: user_creation
       when: item.updateOrCreate is defined and item.updateOrCreate | bool
+    - name: "Force user: '{{ item.name }}' to change password on login"
+      become: yes
+      shell: "chage -d 0 {{ item.name }}"
+      loop: "{{ ansible_user_conf_clients | flatten(levels=1) }}"
+      when: (item.updateOrCreate is defined and item.updateOrCreate | bool) and (user_creation is defined and user_creation.changed | bool)
