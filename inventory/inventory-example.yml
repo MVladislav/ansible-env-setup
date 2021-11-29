@@ -70,6 +70,12 @@ all:
       # Hardening SCAN
       #_______________________
       hardening_scan: yes
+      # POSTFIX SETUP
+      #_______________________
+      postfix_setup: no
+      postfix_mail_username: example@local
+      postfix_mail_password: "mysecret"
+      postfix_smtp_host: smtp.example.local
     # SERVER:: setup
     server:
       # skip_default_setup:
@@ -138,6 +144,12 @@ all:
       # Hardening SCAN
       #_______________________
       hardening_scan: yes
+      # POSTFIX SETUP
+      #_______________________
+      postfix_setup: yes
+      postfix_mail_username: example@local
+      postfix_mail_password: "mysecret"
+      postfix_smtp_host: smtp.example.local
   # ----------------------------------------------------------------------------
   vars:
     ansible_python_interpreter: /usr/bin/python3

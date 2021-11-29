@@ -52,9 +52,6 @@
         interface: "{{ ansible_default_ipv4['interface'] }}"
         comment: "allow incoming connection on standard ssh port"
   roles:
-    # ### -------------------------
-    # - role: ansible-security
-    #   when: skip_default_setup is not defined
     ### -------------------------
     - role: ansible-updater
       when: skip_default_setup is not defined
@@ -66,6 +63,29 @@
       become: yes
       ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
       when: skip_default_setup is not defined
+    ### -------------------------
+    - role: ansible-postfix
+      become: yes
+      postfix_hostname: "{{ postfix_mail_username.split('@')[1] }}.local"
+      postfix_mailname: "{{ postfix_mail_username.split('@')[1] }}"
+      postfix_aliases:
+        - user: root
+          alias: "{{ postfix_mail_username }}"
+        - user: "{{ ansible_user }}"
+          alias: "{{ postfix_mail_username }}"
+      postfix_header_checks:
+        - pattern: "/From:.*/"
+          action: REPLACE
+          text: "From: {{ postfix_mail_username }}"
+      postfix_inet_interfaces: loopback-only
+      postfix_relayhost: "{{ postfix_smtp_host }}"
+      postfix_relaytls: true
+      postfix_sasl_user: "{{ postfix_mail_username }}"
+      postfix_sasl_password: "{{ postfix_mail_password }}"
+      postfix_raw_options:
+        - |
+          sender_canonical_classes = envelope_sender
+      when: skip_default_setup is not defined or (postfix_setup is defined and postfix_setup | bool)
     ### -------------------------
 
 # ------------------------------------------------------------------------------
