@@ -26,16 +26,60 @@
 - name: cis installer
   remote_user: "{{ ansible_user }}"
   hosts:
-    - servers
+    - clients
   become: yes
   roles:
     ### -------------------------
     - role: ubuntu2004_cis
-      ubuntu2004cis_rule_1_5_2: false # not work on ubuntu 21.03 pi
-      ubuntu2004cis_rule_1_6_1: false # not work on ubuntu 21.03 pi
-      ubuntu2004cis_rule_1_7_1_2: false # not work on ubuntu 21.03 pi
-      ubuntu2004cis_rule_4_1_1_3: false # not work on ubuntu 21.03 pi
+      ubuntu2004cis_pwquality:
+        - key: "minlen"
+          value: "8"
+        - key: "dcredit"
+          value: "-1"
+        - key: "ucredit"
+          value: "-1"
+        - key: "ocredit"
+          value: "-1"
+        - key: "lcredit"
+          value: "-1"
+      # AIDE cron settings
+      ubuntu2004cis_config_aide: true
+      ubuntu2004cis_aide_cron:
+        cron_user: root
+        cron_file: /etc/crontab
+        aide_job: "/usr/bin/aide --config /etc/aide/aide.conf --check"
+        aide_minute: 0
+        aide_hour: 5
+        aide_day: "*"
+        aide_month: "*"
+        aide_weekday: "*"
+      #
+      ubuntu2004cis_xwindows_required: true
+      ubuntu2004cis_rule_2_2_2: false # do not remove xorg for client
+      #
+      ubuntu2004cis_rule_1_1_1_7: false # not work on ubuntu 21.10
+      ubuntu2004cis_rule_1_5_2: false # not work on ubuntu 21.03
+      ubuntu2004cis_rule_1_6_1: false # not work on ubuntu 21.03
+      ubuntu2004cis_rule_1_7_1_2: false # not work on ubuntu 21.03
+      ubuntu2004cis_rule_4_1_1_3: false # not work on ubuntu 21.03
+      #
+      ubuntu2004cis_rule_5_3_1: false # ubuntu 21.10 test, password after change not working
+      ubuntu2004cis_rule_5_3_2: false # ubuntu 21.10 test, password after change not working
+      ubuntu2004cis_rule_5_3_3: false # ubuntu 21.10 test, password after change not working
+      ubuntu2004cis_rule_5_3_4: false # ubuntu 21.10 test, password after change not working
       when: cis_setup is defined and cis_setup | bool
+    ### -------------------------
+    - name: set env variables
+      become: yes
+      lineinfile:
+        dest: "/etc/environment"
+        state: present
+        regexp: "^{{ item.key }}="
+        line: "{{ item.key }}={{ item.value}}"
+      with_items:
+        - key: MAILTO
+          value: "{{ postfix_mail_username }}"
+      when: cis_setup is defined and cis_setup | bool and (item.value is defined)
     ### -------------------------
 
 # ------------------------------------------------------------------------------

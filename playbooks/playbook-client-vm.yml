@@ -42,6 +42,18 @@
           value: "-1"
         - key: "lcredit"
           value: "-1"
+      # AIDE cron settings
+      ubuntu2004cis_config_aide: true
+      ubuntu2004cis_aide_cron:
+        cron_user: root
+        cron_file: /etc/crontab
+        aide_job: "/usr/bin/aide --config /etc/aide/aide.conf --check"
+        aide_minute: 0
+        aide_hour: 5
+        aide_day: "*"
+        aide_month: "*"
+        aide_weekday: "*"
+      #
       ubuntu2004cis_xwindows_required: true
       ubuntu2004cis_rule_2_2_2: false # do not remove xorg for client
       #
@@ -57,6 +69,17 @@
       ubuntu2004cis_rule_5_3_4: false # ubuntu 21.10 test, password after change not working
       when: cis_setup is defined and cis_setup | bool
     ### -------------------------
+    - name: set env variables
+      become: yes
+      lineinfile:
+        dest: "/etc/environment"
+        state: present
+        regexp: "^{{ item.key }}="
+        line: "{{ item.key }}={{ item.value}}"
+      with_items:
+        - key: MAILTO
+          value: "{{ postfix_mail_username }}"
+      when: cis_setup is defined and cis_setup | bool and (item.value is defined)
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
@@ -236,7 +259,7 @@
     - role: ansible-lynis
       lynis_deploy_method: git
       lynis_git_repo: "https://github.com/CISOfy/lynis"
-      lynis_report_from: root@localhost
-      lynis_report_to: root@localhost
+      lynis_report_from: "{{ hardening_lynis_report_from }}"
+      lynis_report_to: "{{ hardening_lynis_report_to }}"
       when: hardening_scan is defined and hardening_scan | bool
     ### -------------------------
