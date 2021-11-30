@@ -15,6 +15,7 @@
   - [run](#run)
     - [setup a client](#setup-a-client)
     - [setup a server](#setup-a-server)
+  - [Other](#other)
 
 ---
 
@@ -114,4 +115,20 @@ on other runs:
 
 ```sh
 $ansible-playbook playbooks/playbook-server.yml --ask-become-pass
+```
+
+---
+
+## Other
+
+change username at once with current user:
+
+> change
+>
+> - <newname>
+> - <oldname>
+
+```sh
+$sudo su
+$nohup bash -c "groupadd <newname> ; pkill -u <oldname> ; usermod -d /home/<newname> -m -g <newname> -l <newname> <oldname>" </dev/null &>/dev/null &
 ```
