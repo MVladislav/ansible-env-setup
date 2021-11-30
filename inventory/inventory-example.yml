@@ -31,6 +31,9 @@ all:
       # client used for adding to services
       #_______________________
       clients:
+        - name: "{{ ansible_user }}"
+          dev: yes
+          updateOrCreate: no
         # rename to any user, to use without sudo
         - name: local_user
           shell: /bin/bash
@@ -42,9 +45,6 @@ all:
           updateOrCreate: yes
           locale: de_DE.UTF-8
           language: de_DE.UTF-8
-        - name: "{{ ansible_user }}"
-          dev: yes
-          updateOrCreate: no
       # netplan
       #_______________________
       netplan_setup: no
