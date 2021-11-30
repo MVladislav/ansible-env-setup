@@ -263,5 +263,5 @@
       lynis_git_repo: "https://github.com/CISOfy/lynis"
       lynis_report_from: "{{ hardening_lynis_report_from }}"
       lynis_report_to: "{{ hardening_lynis_report_to }}"
-      when: hardening_scan is defined and hardening_scan | bool
+      when: (hardening_scan is defined and hardening_scan | bool) and (hardening_lynis_report_from is defined and hardening_lynis_report_from|length > 0 and hardening_lynis_report_to is defined and hardening_lynis_report_to|length > 0)
     ### -------------------------
