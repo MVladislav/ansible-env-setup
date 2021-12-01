@@ -55,7 +55,7 @@
         aide_month: "*"
         aide_weekday: "*"
       #
-      ubuntu2004cis_xwindows_required: true
+      ubuntu2004cis_xwindows_required: true # do not remove xorg for client
       ubuntu2004cis_rule_2_2_2: false # do not remove xorg for client
       #
       ubuntu2004cis_rule_1_1_1_7: false # not work on ubuntu 21.10
@@ -71,16 +71,29 @@
       when: cis_setup is defined and cis_setup | bool
     ### -------------------------
   tasks:
-    - name: set env variables
+    - name: set/update aide variables
       lineinfile:
-        dest: "/etc/environment"
+        dest: "/etc/default/aide"
         state: present
         regexp: "^{{ item.key }}="
         line: "{{ item.key }}={{ item.value}}"
       with_items:
+        - key: CRON_DAILY_RUN
+          value: "yes"
         - key: MAILTO
-          value: "{{ postfix_mail_username }}"
-      when: cis_setup is defined and cis_setup | bool and (item.value is defined)
+          value: "{{ postfix_mail_username | default('root') }}"
+        - key: COPYNEWDB
+          value: "yes"
+        - key: TRUNCATEDETAILS
+          value: "yes"
+        - key: FILTERUPDATES
+          value: "yes"
+        - key: FILTERINSTALLATIONS
+          value: "yes"
+      when: cis_setup is defined and cis_setup | bool
+    - name: re-init aide after conf change
+      ansible.builtin.command: /usr/sbin/aideinit -y -f
+      when: cis_setup is defined and cis_setup | bool
     ### -------------------------
 
 # ------------------------------------------------------------------------------
@@ -106,6 +119,7 @@
     ### -------------------------
     - role: ansible-ufw
       become: yes
+      ufw_logging: "full"
       ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
       when: skip_default_setup is not defined
     ### -------------------------
@@ -130,6 +144,10 @@
       postfix_raw_options:
         - |
           sender_canonical_classes = envelope_sender
+        - |
+          mailbox_size_limit = 0
+        - |
+          message_size_limit = 0
       when: skip_default_setup is not defined or (postfix_setup is defined and postfix_setup | bool)
     ### -------------------------
 
