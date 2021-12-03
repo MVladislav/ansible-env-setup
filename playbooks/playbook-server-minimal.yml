@@ -88,9 +88,6 @@
         - key: FILTERINSTALLATIONS
           value: "yes"
       when: cis_setup is defined and cis_setup | bool
-    - name: re-init aide after conf change
-      ansible.builtin.command: /usr/sbin/aideinit -y -f
-      when: cis_setup is defined and cis_setup | bool
     ### -------------------------
 
 # ------------------------------------------------------------------------------
@@ -129,10 +126,10 @@
           alias: "{{ postfix_mail_username }}"
         - user: "{{ ansible_user }}"
           alias: "{{ postfix_mail_username }}"
-      postfix_header_checks:
-        - pattern: "/From:.*/"
-          action: REPLACE
-          text: "From: {{ postfix_mail_username }}"
+      # postfix_header_checks:
+      #   - pattern: "/From:.*/"
+      #     action: REPLACE
+      #     text: "From: {{ postfix_mail_username }}"
       postfix_inet_interfaces: loopback-only
       postfix_relayhost: "{{ postfix_smtp_host }}"
       postfix_relaytls: true
