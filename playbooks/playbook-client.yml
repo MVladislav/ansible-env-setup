@@ -216,11 +216,11 @@
         # apt_latex: no
         # apt_pandoc: no
         # apt_virtualbox_guest: no
-        # dpkg_virtualbox: no
         # apt_virt_viewer: no
         # dpkg_mongodb: no
         dpkg_veracrypt: yes
         # dpkg_getferdi: no
+        # distribution_key_virtualbox: no
         # snap_chromium: no
         snap_signal_desktop: yes
         snap_telegram_desktop: yes
