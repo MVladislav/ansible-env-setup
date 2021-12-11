@@ -109,6 +109,12 @@
   roles:
     ### -------------------------
     - role: ansible-updater
+      updater_config:
+        set_timezone: yes
+        sync_time: yes
+        set_language: yes
+        update_upgrade: yes
+        setup_zfs: yes
       when: skip_default_setup is not defined
     ### -------------------------
     - role: ansible-ssh
@@ -145,7 +151,9 @@
           mailbox_size_limit = 0
         - |
           message_size_limit = 0
-      when: skip_default_setup is not defined or (postfix_setup is defined and postfix_setup | bool)
+        - |
+          compatibility_level = 2
+      when: skip_default_setup is not defined and (postfix_setup is defined and postfix_setup | bool)
     ### -------------------------
 
 # ------------------------------------------------------------------------------
@@ -276,7 +284,7 @@
     - role: ansible-lynis
       lynis_deploy_method: git
       lynis_git_repo: "https://github.com/CISOfy/lynis"
-      lynis_report_from: "{{ hardening_lynis_report_from }}"
-      lynis_report_to: "{{ hardening_lynis_report_to }}"
-      when: (hardening_scan is defined and hardening_scan | bool) and (hardening_lynis_report_from is defined and hardening_lynis_report_from|length > 0 and hardening_lynis_report_to is defined and hardening_lynis_report_to|length > 0)
+      lynis_report_from: "{{ hardening_lynis_report_from | default('root') }}"
+      lynis_report_to: "{{ hardening_lynis_report_to | default('root') }}"
+      when: hardening_scan is defined and hardening_scan | bool
     ### -------------------------
