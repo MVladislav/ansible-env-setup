@@ -57,6 +57,8 @@
       #
       ubuntu2004cis_xwindows_required: true # do not remove xorg for client
       ubuntu2004cis_rule_2_2_2: false # do not remove xorg for client
+      ubuntu2004cis_allow_autofs: true # allow to auto mount usb devices
+      ubuntu2004cis_rule_1_1_24: false # do not Disable USB Storage
       #
       ubuntu2004cis_rule_1_1_1_7: false # not work on ubuntu 21.10
       ubuntu2004cis_rule_1_5_2: false # not work on ubuntu 21.03
