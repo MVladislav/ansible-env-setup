@@ -24,6 +24,23 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
+- name: pre installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+  roles:
+    ### -------------------------
+    - role: ansible-updater
+      updater_config:
+        set_timezone: yes
+        sync_time: yes
+        set_language: yes
+        update_upgrade: yes
+        setup_zfs: yes
+      when: skip_default_setup is not defined
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 - name: cis installer
   remote_user: "{{ ansible_user }}"
   hosts:
@@ -47,7 +64,7 @@
       ubuntu2004cis_config_aide: true
       ubuntu2004cis_aide_cron:
         cron_user: root
-        cron_file: /etc/crontab
+        cron_file: aide-cron-scan
         aide_job: "/usr/bin/aide --config /etc/aide/aide.conf --check"
         aide_minute: 0
         aide_hour: 5
@@ -73,7 +90,27 @@
       when: cis_setup is defined and cis_setup | bool
     ### -------------------------
   tasks:
-    - name: set/update aide variables
+    - name: set/update system variables for aide
+      lineinfile:
+        dest: "/etc/environment"
+        state: present
+        regexp: "^{{ item.key }}="
+        line: "{{ item.key }}={{ item.value}}"
+      with_items:
+        - key: CRON_DAILY_RUN
+          value: "yes"
+        - key: MAILTO
+          value: "{{ postfix_mail_username | default('root') }}"
+        - key: COPYNEWDB
+          value: "yes"
+        - key: TRUNCATEDETAILS
+          value: "yes"
+        - key: FILTERUPDATES
+          value: "yes"
+        - key: FILTERINSTALLATIONS
+          value: "yes"
+      when: cis_setup is defined and cis_setup | bool
+    - name: set/update aide variables for aide
       lineinfile:
         dest: "/etc/default/aide"
         state: present
@@ -110,14 +147,14 @@
         comment: "allow incoming connection on standard ssh port"
   roles:
     ### -------------------------
-    - role: ansible-updater
-      updater_config:
-        set_timezone: yes
-        sync_time: yes
-        set_language: yes
-        update_upgrade: yes
-        setup_zfs: yes
-      when: skip_default_setup is not defined
+    # - role: ansible-updater
+    #   updater_config:
+    #     set_timezone: yes
+    #     sync_time: yes
+    #     set_language: yes
+    #     update_upgrade: yes
+    #     setup_zfs: yes
+    #   when: skip_default_setup is not defined
     ### -------------------------
     - role: ansible-ssh
       when: skip_default_setup is not defined
