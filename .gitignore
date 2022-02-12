@@ -7,4 +7,19 @@
 # End of https://www.toptal.com/developers/gitignore/api/ansible
 
 inventory/inventory.yml
-playbooks/vars/default.yml
+
+playbooks/
+!playbooks/*
+
+!playbooks/tasks/
+!playbooks/tasks/*
+
+!playbooks/vars/
+playbooks/vars/*
+!playbooks/vars/default-example.yml
+
+!playbooks/playbook-client-dev.yml
+!playbooks/playbook-client-vm.yml
+!playbooks/playbook-client.yml
+!playbooks/playbook-server-minimal.yml
+!playbooks/playbook-server.yml

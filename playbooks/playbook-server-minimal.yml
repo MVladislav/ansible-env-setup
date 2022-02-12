@@ -162,8 +162,8 @@
     ### -------------------------
     - role: ansible-postfix
       become: yes
-      postfix_hostname: "{{ postfix_mail_username.split('@')[1] }}.local"
-      postfix_mailname: "{{ postfix_mail_username.split('@')[1] }}"
+      postfix_hostname: "{{ postfix_mail_username.split('@')[1] }}"
+      # postfix_mailname: "{{ postfix_mail_username.split('@')[1] }}"
       postfix_aliases:
         - user: root
           alias: "{{ postfix_mail_username }}"
@@ -173,7 +173,12 @@
       #   - pattern: "/From:.*/"
       #     action: REPLACE
       #     text: "From: {{ postfix_mail_username }}"
+      postfix_mydestination:
+        - localhost.$myhostname
+        - localhost
+        - localhost.localdomain
       postfix_inet_interfaces: loopback-only
+      postfix_inet_protocols: ipv4
       postfix_relayhost: "{{ postfix_smtp_host }}"
       postfix_relaytls: true
       postfix_sasl_user: "{{ postfix_mail_username }}"
@@ -181,11 +186,8 @@
       postfix_raw_options:
         - |
           sender_canonical_classes = envelope_sender
-        - |
           mailbox_size_limit = 0
-        - |
           message_size_limit = 0
-        - |
           compatibility_level = 2
       when: skip_default_setup is not defined and (postfix_setup is defined and postfix_setup | bool)
     ### -------------------------
