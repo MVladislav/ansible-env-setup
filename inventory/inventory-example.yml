@@ -79,6 +79,7 @@ all:
       # Ubuntu2004 CIS
       #_______________________
       cis_setup: yes
+      cis_setup_aide: yes
       # POSTFIX SETUP
       #_______________________
       postfix_setup: no
@@ -156,6 +157,7 @@ all:
       # Ubuntu2004 CIS
       #_______________________
       cis_setup: yes
+      cis_setup_aide: yes
       # POSTFIX SETUP
       #_______________________
       postfix_setup: yes
