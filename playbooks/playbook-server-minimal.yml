@@ -61,7 +61,8 @@
         - key: "lcredit"
           value: "-1"
       # AIDE cron settings
-      ubuntu2004cis_config_aide: true
+      ubuntu2004cis_config_aide: "{{ cis_setup_aide | default(true) | bool }}"
+      ubuntu2004cis_rule_1_4_2: "{{ cis_setup_aide | default(true) | bool }}"
       ubuntu2004cis_aide_cron:
         cron_user: root
         cron_file: aide-cron-scan
@@ -104,7 +105,7 @@
           value: "yes"
         - key: FILTERINSTALLATIONS
           value: "yes"
-      when: cis_setup is defined and cis_setup | bool
+      when: (cis_setup is defined and cis_setup | bool) and (cis_setup_aide is not defined or cis_setup_aide | bool)
     - name: set/update aide variables for aide
       lineinfile:
         dest: "/etc/default/aide"
@@ -124,7 +125,7 @@
           value: "yes"
         - key: FILTERINSTALLATIONS
           value: "yes"
-      when: cis_setup is defined and cis_setup | bool
+      when: (cis_setup is defined and cis_setup | bool) and (cis_setup_aide is not defined or cis_setup_aide | bool)
     ### -------------------------
 
 # ------------------------------------------------------------------------------
@@ -210,6 +211,8 @@
         apt_libs: yes # base|dev
         # apt_vpn: no
         # apt_go: no
+        # apt_rasp_pi_pkg: no
+        # apt_qemu_guest_agent: no
         # dpkg_...: no
         # snap_...: no
         # snap_microk8s: no
