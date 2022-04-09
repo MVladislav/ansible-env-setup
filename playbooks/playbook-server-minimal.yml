@@ -45,7 +45,7 @@
   remote_user: "{{ ansible_user }}"
   hosts:
     - servers
-  become: yes
+  become: true
   roles:
     ### -------------------------
     - role: ubuntu2004_cis
@@ -156,13 +156,13 @@
       when: skip_default_setup is not defined
     ### -------------------------
     - role: ansible-ufw
-      become: yes
+      become: true
       ufw_logging: "full"
       ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
       when: skip_default_setup is not defined
     ### -------------------------
     - role: ansible-postfix
-      become: yes
+      become: true
       postfix_hostname: "{{ postfix_mail_username.split('@')[1] }}"
       # postfix_mailname: "{{ postfix_mail_username.split('@')[1] }}"
       postfix_aliases:
@@ -252,7 +252,7 @@
   remote_user: "{{ ansible_user }}"
   hosts:
     - servers
-  become: yes
+  become: true
   roles:
     ### -------------------------
     - role: ansible-lynis
