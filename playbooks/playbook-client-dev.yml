@@ -1,26 +1,237 @@
 ---
 # playbook client
 
-# ------------------------------------------------------------------------------
-- name: include pre-task playbook
-  import_playbook: ./tasks/pre-tasks.yml
-  remote_user: "{{ ansible_user }}"
-  vars:
-    ansible_user_conf_on_hosts:
-      - clients
-    ansible_user_conf_name: "{{ ansible_user }}"
-    ansible_user_conf_update: "{{ ansible_user_config.is_update | bool }}"
-    ansible_user_conf_shell: "{{ ansible_user_config.shell | default('/bin/bash') }}"
-    ansible_user_conf_password: "{{ ansible_user_config.password }}"
-    ansible_user_conf_group: "{{ ansible_user_config.group | default('adm,cdrom,sudo') }}"
-    ansible_user_conf_system: "{{ ansible_user_config.system | default('no') | bool }}"
-    ansible_user_conf_append: "{{ ansible_user_config.append | default('yes') | bool }}"
-    ansible_user_conf_createhome: "{{ ansible_user_config.createhome | default('yes') | bool }}"
-    ansible_user_conf_home: "{{ ansible_user_config.home | default('/home/' + ansible_user) }}"
-    ansible_user_conf_add_ssh_key: "{{ ansible_user_config.add_ssh_key | default('yes') | bool }}"
-    ansible_user_conf_clients: "{{ clients }}"
-  when: skip_default_setup is not defined and (ansible_user_setup is defined and ansible_user_setup | bool)
-  # ----------------------------------------------------------------------------
+# # ------------------------------------------------------------------------------
+# - name: include pre-task playbook
+#   import_playbook: ./tasks/pre-tasks.yml
+#   remote_user: "{{ ansible_user }}"
+#   vars:
+#     ansible_user_conf_on_hosts:
+#       - clients
+#     ansible_user_conf_name: "{{ ansible_user }}"
+#     ansible_user_conf_update: "{{ ansible_user_config.is_update | bool }}"
+#     ansible_user_conf_shell: "{{ ansible_user_config.shell | default('/bin/bash') }}"
+#     ansible_user_conf_password: "{{ ansible_user_config.password }}"
+#     ansible_user_conf_group: "{{ ansible_user_config.group | default('adm,cdrom,sudo') }}"
+#     ansible_user_conf_system: "{{ ansible_user_config.system | default('no') | bool }}"
+#     ansible_user_conf_append: "{{ ansible_user_config.append | default('yes') | bool }}"
+#     ansible_user_conf_createhome: "{{ ansible_user_config.createhome | default('yes') | bool }}"
+#     ansible_user_conf_home: "{{ ansible_user_config.home | default('/home/' + ansible_user) }}"
+#     ansible_user_conf_add_ssh_key: "{{ ansible_user_config.add_ssh_key | default('yes') | bool }}"
+#     ansible_user_conf_clients: "{{ clients }}"
+#   when: skip_default_setup is not defined and (ansible_user_setup is defined and ansible_user_setup | bool)
+#   # ----------------------------------------------------------------------------
+
+# # ------------------------------------------------------------------------------
+# # ------------------------------------------------------------------------------
+# - name: pre installer
+#   remote_user: "{{ ansible_user }}"
+#   hosts:
+#     - clients
+#   roles:
+#     ### -------------------------
+#     - role: ansible-updater
+#       updater_config:
+#         set_timezone: yes
+#         sync_time: yes
+#         set_language: yes
+#         update_upgrade: yes
+#         setup_zfs: yes
+#       when: skip_default_setup is not defined
+
+# # ------------------------------------------------------------------------------
+# # ------------------------------------------------------------------------------
+# - name: cis installer
+#   remote_user: "{{ ansible_user }}"
+#   hosts:
+#     - clients
+#   become: true
+#   roles:
+#     ### -------------------------
+#     - role: ubuntu2004_cis
+#       ubuntu2004cis_pwquality:
+#         - key: "minlen"
+#           value: "8"
+#         - key: "dcredit"
+#           value: "-1"
+#         - key: "ucredit"
+#           value: "-1"
+#         - key: "ocredit"
+#           value: "-1"
+#         - key: "lcredit"
+#           value: "-1"
+#       # AIDE cron settings
+#       ubuntu2004cis_config_aide: "{{ cis_setup_aide | default(true) | bool }}"
+#       ubuntu2004cis_rule_1_4_2: "{{ cis_setup_aide | default(true) | bool }}"
+#       ubuntu2004cis_aide_cron:
+#         cron_user: root
+#         cron_file: aide-cron-scan
+#         aide_job: "/usr/bin/aide --config /etc/aide/aide.conf --check"
+#         aide_minute: 0
+#         aide_hour: 5
+#         aide_day: "*"
+#         aide_month: "*"
+#         aide_weekday: "*"
+#       #
+#       ubuntu2004cis_xwindows_required: true # do not remove xorg for client
+#       ubuntu2004cis_rule_2_2_2: false # do not remove xorg for client
+#       ubuntu2004cis_allow_autofs: true # allow to auto mount usb devices
+#       ubuntu2004cis_rule_1_1_24: false # do not Disable USB Storage
+#       #
+#       ubuntu2004cis_rule_1_1_1_7: false # not work on ubuntu 21.10
+#       ubuntu2004cis_rule_1_5_2: false # not work on ubuntu 21.03
+#       ubuntu2004cis_rule_1_6_1: false # not work on ubuntu 21.03
+#       ubuntu2004cis_rule_1_7_1_2: false # not work on ubuntu 21.03
+#       ubuntu2004cis_rule_4_1_1_3: false # not work on ubuntu 21.03
+#       #
+#       ubuntu2004cis_rule_5_3_1: false # ubuntu 21.10 test, password after change not working
+#       ubuntu2004cis_rule_5_3_2: false # ubuntu 21.10 test, password after change not working
+#       ubuntu2004cis_rule_5_3_3: false # ubuntu 21.10 test, password after change not working
+#       ubuntu2004cis_rule_5_3_4: false # ubuntu 21.10 test, password after change not working
+#       when: cis_setup is defined and cis_setup | bool
+#     ### -------------------------
+#   tasks:
+#     - name: set/update system variables for aide
+#       lineinfile:
+#         dest: "/etc/environment"
+#         state: present
+#         regexp: "^{{ item.key }}="
+#         line: "{{ item.key }}={{ item.value}}"
+#       with_items:
+#         - key: CRON_DAILY_RUN
+#           value: "yes"
+#         - key: MAILTO
+#           value: "{{ postfix_mail_username | default('root') }}"
+#         - key: COPYNEWDB
+#           value: "yes"
+#         - key: TRUNCATEDETAILS
+#           value: "yes"
+#         - key: FILTERUPDATES
+#           value: "yes"
+#         - key: FILTERINSTALLATIONS
+#           value: "yes"
+#       when: (cis_setup is defined and cis_setup | bool) and (cis_setup_aide is not defined or cis_setup_aide | bool)
+#     - name: set/update aide variables for aide
+#       lineinfile:
+#         dest: "/etc/default/aide"
+#         state: present
+#         regexp: "^{{ item.key }}="
+#         line: "{{ item.key }}={{ item.value}}"
+#       with_items:
+#         - key: CRON_DAILY_RUN
+#           value: "yes"
+#         - key: MAILTO
+#           value: "{{ postfix_mail_username | default('root') }}"
+#         - key: COPYNEWDB
+#           value: "yes"
+#         - key: TRUNCATEDETAILS
+#           value: "yes"
+#         - key: FILTERUPDATES
+#           value: "yes"
+#         - key: FILTERINSTALLATIONS
+#           value: "yes"
+#       when: (cis_setup is defined and cis_setup | bool) and (cis_setup_aide is not defined or cis_setup_aide | bool)
+#     ### -------------------------
+
+# # ------------------------------------------------------------------------------
+# # ------------------------------------------------------------------------------
+# - name: pre installer
+#   remote_user: "{{ ansible_user }}"
+#   hosts:
+#     - clients
+#   vars:
+#     ufw_rules_default:
+#       - rule: allow
+#         to_port: 22
+#         protocol: tcp
+#         interface: "{{ ansible_default_ipv4['interface'] }}"
+#         comment: "allow incoming connection on standard ssh port"
+#   roles:
+#     ### -------------------------
+#     - role: ansible-ssh
+#       when: skip_default_setup is not defined
+#     ### -------------------------
+#     - role: ansible-ufw
+#       become: true
+#       ufw_logging: "full"
+#       ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
+#       when: skip_default_setup is not defined
+#     ### -------------------------
+#     - role: ansible-postfix
+#       become: true
+#       postfix_hostname: "{{ postfix_mail_username.split('@')[1] }}"
+#       # postfix_mailname: "{{ postfix_mail_username.split('@')[1] }}"
+#       postfix_aliases:
+#         - user: root
+#           alias: "{{ postfix_mail_username }}"
+#         - user: "{{ ansible_user }}"
+#           alias: "{{ postfix_mail_username }}"
+#       # postfix_header_checks:
+#       #   - pattern: "/From:.*/"
+#       #     action: REPLACE
+#       #     text: "From: {{ postfix_mail_username }}"
+#       postfix_mydestination:
+#         - localhost.$myhostname
+#         - localhost
+#         - localhost.localdomain
+#       postfix_inet_interfaces: loopback-only
+#       postfix_inet_protocols: ipv4
+#       postfix_relayhost: "{{ postfix_smtp_host }}"
+#       postfix_relaytls: true
+#       postfix_sasl_user: "{{ postfix_mail_username }}"
+#       postfix_sasl_password: "{{ postfix_mail_password }}"
+#       postfix_raw_options:
+#         - |
+#           sender_canonical_classes = envelope_sender
+#           mailbox_size_limit = 0
+#           message_size_limit = 0
+#           compatibility_level = 2
+#       when: skip_default_setup is not defined and (postfix_setup is defined and postfix_setup | bool)
+#     ### -------------------------
+
+# # ------------------------------------------------------------------------------
+# # ------------------------------------------------------------------------------
+# - name: server installer
+#   remote_user: "{{ ansible_user }}"
+#   hosts:
+#     - clients
+#   roles:
+#     ### -------------------------
+#     - role: ansible-install-server
+#       install_server_service_name: "{{ service_name }}"
+#       install_server_config:
+#         dev: yes
+#         env_tun_setup: yes
+#         # APT (1) -------------------------------
+#         apt_base: yes
+#         apt_dev: yes
+#         apt_build: yes
+#         # apt_libs: no
+#         # APT (2) -------------------------------
+#         apt_vpn: yes
+#         apt_go: yes
+#         # apt_rasp_pi_pkg: no
+#         # apt_qemu_guest_agent: no
+#         # DPKG ----------------------------------
+#         # dpkg_...: no
+#         # SNAP ----------------------------------
+#         # snap_microk8s: no
+#         snap_btop: yes
+#         # OTHER --------------------------------
+#         git: yes
+#         zsh: yes
+#         tmux: yes
+#         python: yes # base|dev
+#         # go_kompose: no
+#         # ruby: no
+#         # npm: no
+#         # mongodb: no
+#         # java: no # base|dev
+#     ### -------------------------
+#     - role: ansible-netplan
+#       netplan_service_name: "{{ service_name }}"
+#       when: netplan_setup is defined and netplan_setup | bool
+#     ### -------------------------
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
@@ -33,10 +244,138 @@
     - role: ansible-install-client
       install_client_service_name: "{{ service_name }}"
       install_client_config:
+        # GENERAL -------------------------------
         dev: yes
+        fonts: no
+        # GNOME ---------------------------------
         gnome_gui_setup: yes
-        gnome_gui_setup_theme: yes
-        gnome_gui_setup_extensions: yes
+        # gnome_gui_setup_theme: no
+        # gnome_gui_setup_dependencies: no
+        gnome_gui_setup_extensions: no
         gnome_gui_setup_keybinding: yes
+        gnome_gui_setup_overlay: yes
+      #   # APT -----------------------------------
+      #   apt_base: yes
+      #   # apt_base2: no
+      #   # apt_snap: no
+      #   apt_flatpak: yes
+      #   apt_peek: yes
+      #   # apt_wireshark: no
+      #   # apt_wireshark_dev: no
+      #   apt_vpn: yes
+      #   # apt_gnome_boxes: no
+      #   # apt_latex: no
+      #   # apt_pandoc: no
+      #   # apt_virtualbox_guest: no
+      #   # apt_virt_viewer: no
+      #   apt_lutris: yes
+      #   # DPKG ----------------------------------
+      #   # dpkg_virtualbox: no
+      #   # dpkg_mongodb: no
+      #   dpkg_veracrypt: yes
+      #   # DIST KEY ------------------------------
+      #   distribution_key_virtualbox: yes
+      #   # SNAP ----------------------------------
+      #   snap_chromium: yes
+      #   snap_thunderbird: yes
+      #   # snap_libreoffice: no
+      #   snap_onlyoffice_desktopeditors: yes
+      #   snap_signal_desktop: yes
+      #   snap_telegram_desktop: yes
+      #   snap_zoom_client: yes
+      #   snap_spotify: yes
+      #   snap_inkscape: yes
+      #   snap_drawio: yes
+      #   snap_gimp: yes
+      #   snap_vlc: yes
+      #   snap_obs_studio: yes
+      #   snap_flameshot: yes
+      #   snap_1password: yes
+      #   # snap_okular: no
+      #   snap_code: yes
+      #   # snap_android_studio: no
+      #   # snap_UBports: no
+      #   # snap_insomnia: no
+      #   # snap_postman: no
+      #   # snap_dbeaver_ce: no
+      #   # snap_beekeeper_studio: no
+      #   # snap_microk8s: no
+      #   # snap_rpi_imager: no
+      #   # snap_multipass: no
+      #   # snap_zaproxy: no
+      #   # snap_cornyjokes: no
+      #   # FLATPAK -------------------------------
+      #   # flatpak_firefox: no
+      #   # flatpak_chromium: no
+      #   # flatpak_thunderbird: no
+      #   # flatpak_flameshot: no
+      #   # flatpak_onlyoffice: no
+      #   # flatpak_1password: no
+      #   # flatpak_keepassxc: no
+      #   # flatpak_signal: no
+      #   # flatpak_telegram: no
+      #   # flatpak_threemaqt: no
+      #   # flatpak_zoom: no
+      #   # flatpak_teams: no
+      #   # flatpak_discord: no
+      #   # flatpak_spotify: no
+      #   # flatpak_ferdi: no
+      #   # flatpak_vlc: no
+      #   # flatpak_inkscape: no
+      #   # flatpak_drawio: no
+      #   # flatpak_gimp: no
+      #   # flatpak_studio: no
+      #   # flatpak_blender: no
+      #   # flatpak_code: no
+      #   # flatpak_sublimetext: no
+      #   # flatpak_arduinoide: no
+      #   # flatpak_fritzing: no
+      #   # flatpak_insomnia: no
+      #   # flatpak_postman: no
+      #   # flatpak_dbeavercommunity: no
+      #   # flatpak_filezilla: no
+      #   # flatpak_jdownloader: no
+      #   flatpak_wireshark: yes
+      #   # flatpak_ghidra: no
+      #   # flatpak_zaproxy: no
+      #   # flatpak_steam: no
+      #   # flatpak_ausweisapp2: no
+      #   # flatpak_betaflightconfigurator: no
+      #   # OTHER --------------------------------
+      #   # vs_code_ext: no
+      #   java: yes
+      #   # steam: no
+      # # if you install java, by default as version is set 11, change below if you need
+      # # version is as input for openjdk java version
+      # install_client_java_version: 11
+    ### -------------------------
 
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: docker installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - docker
+  roles:
+    ### -------------------------
+    - role: ansible-docker
+      docker_user_shell: /bin/zsh
+      docker_users_to_add_group: "{{ clients }}"
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: run hardening scan
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+  become: true
+  roles:
+    ### -------------------------
+    - role: ansible-lynis
+      lynis_deploy_method: git
+      lynis_git_repo: "https://github.com/CISOfy/lynis"
+      lynis_report_from: "{{ hardening_lynis_report_from | default('root') }}"
+      lynis_report_to: "{{ hardening_lynis_report_to | default('root') }}"
+      when: hardening_scan is defined and hardening_scan | bool
     ### -------------------------
