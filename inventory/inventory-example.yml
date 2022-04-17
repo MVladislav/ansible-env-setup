@@ -6,7 +6,7 @@ all:
       # NOTE: if some defaults needs to be skipped, en-commit next line
       # skip_default_setup:
       # ansible defaults
-      #_______________________
+      # _______________________
       # NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
       # NOTE: by "{{ ansible_user }}-{{ ansible_host }}"
       ansible_ssh_private_key_file: ~/.ssh/id_ed25519
@@ -18,43 +18,43 @@ all:
       install_server_git_user: "{{ ansible_user }}"
       install_server_git_email: "{{ ansible_user }}"
       # ansible client access setup
-      #_______________________
-      ansible_user_setup: yes
+      # _______________________
+      ansible_user_setup: true
       ansible_user_config:
-        is_update: yes
+        is_update: true
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
         group: sudo,adm,cdrom,lpadmin,dip,plugdev,lxd,sambashare
-        system: no
-        append: yes
-        add_ssh_key: yes
+        system: false
+        append: true
+        add_ssh_key: true
       # client used for adding to services
-      #_______________________
+      # _______________________
       clients:
         - name: "{{ ansible_user }}"
-          dev: yes
-          updateOrCreate: no
+          dev: true
+          updateOrCreate: false
         # rename to any user, to use without sudo
         - name: local_user
           shell: /bin/bash
           group: adm,cdrom,lpadmin,dip,plugdev,lxd,sambashare
-          createhome: yes
+          createhome: true
           # sudo apt install whois && mkpasswd --method=sha-512
           password: "$6$Il3FROvn/RU9dfpy$kaTLw4ch.TQyY8KkBJdoZ1CkFiM19ypkJTG5I2sItsPGplwzknayHIHa0lllaSMqF4jpHbkb8vymTAks4yXuD."
           # password: "!"
-          updateOrCreate: yes
+          updateOrCreate: true
           locale: de_DE.UTF-8
           language: de_DE.UTF-8
       # netplan
-      #_______________________
-      netplan_setup: no
-      netplan_remove_existing: no
+      # _______________________
+      netplan_setup: false
+      netplan_remove_existing: false
       netplan_configuration:
         network:
           ethernets:
             eth0:
-              dhcp4: yes
-              dhcp6: no
+              dhcp4: true
+              dhcp6: false
               addresses:
                 - "{{ ansible_host }}/24"
               nameservers:
@@ -65,11 +65,11 @@ all:
                 - to: default
                   via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
       # docker
-      #_______________________
+      # _______________________
       docker_user_shell: /bin/zsh
       # ufw
-      #_______________________
-      ufw_setup: yes
+      # _______________________
+      ufw_setup: true
       ufw_rules_extended:
         - rule: allow
           to_port: 22
@@ -77,25 +77,25 @@ all:
           interface: "{{ ansible_default_ipv4['interface'] }}"
           comment: "allow incoming connection on standard ssh port"
       # Ubuntu2004 CIS
-      #_______________________
-      cis_setup: yes
-      cis_setup_aide: yes
+      # _______________________
+      cis_setup: true
+      cis_setup_aide: true
       # POSTFIX SETUP
-      #_______________________
-      postfix_setup: no
+      # _______________________
+      postfix_setup: false
       postfix_mail_username: example@local
       postfix_mail_password: "mysecret"
       postfix_smtp_host: smtp.example.local
       # Hardening SCAN
-      #_______________________
-      hardening_scan: yes
+      # _______________________
+      hardening_scan: true
       hardening_lynis_report_from: "{{ postfix_mail_username }}"
       hardening_lynis_report_to: "{{ postfix_mail_username }}"
     # SERVER:: setup
     server:
       # skip_default_setup:
       # ansible defaults
-      #_______________________
+      # _______________________
       # NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
       # NOTE: by "{{ ansible_user }}-{{ ansible_host }}"
       ansible_ssh_private_key_file: ~/.ssh/id_ed25519
@@ -107,32 +107,32 @@ all:
       install_server_git_user: "{{ ansible_user }}"
       install_server_git_email: "{{ ansible_user }}"
       # ansible client access setup
-      #_______________________
-      ansible_user_setup: yes
+      # _______________________
+      ansible_user_setup: true
       ansible_user_config:
-        is_update: yes
+        is_update: true
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
         group: sudo,adm,cdrom,lpadmin,dip,plugdev,lxd,sambashare
-        system: no
-        append: yes
-        add_ssh_key: yes
+        system: false
+        append: true
+        add_ssh_key: true
       # client used for adding to services
-      #_______________________
+      # _______________________
       clients:
         - name: "{{ ansible_user }}"
-          dev: yes
-          updateOrCreate: no
+          dev: true
+          updateOrCreate: false
       # netplan
-      #_______________________
-      netplan_setup: yes
-      netplan_remove_existing: no
+      # _______________________
+      netplan_setup: true
+      netplan_remove_existing: false
       netplan_configuration:
         network:
           ethernets:
             eth0:
-              dhcp4: yes
-              dhcp6: no
+              dhcp4: true
+              dhcp6: false
               addresses:
                 - "{{ ansible_host }}/24"
               nameservers:
@@ -143,11 +143,11 @@ all:
                 - to: default
                   via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
       # docker
-      #_______________________
+      # _______________________
       docker_user_shell: /bin/zsh
       # ufw
-      #_______________________
-      ufw_setup: yes
+      # _______________________
+      ufw_setup: true
       ufw_rules_extended:
         - rule: allow
           to_port: 22
@@ -155,18 +155,18 @@ all:
           interface: "{{ ansible_default_ipv4['interface'] }}"
           comment: "allow incoming connection on standard ssh port"
       # Ubuntu2004 CIS
-      #_______________________
-      cis_setup: yes
-      cis_setup_aide: yes
+      # _______________________
+      cis_setup: true
+      cis_setup_aide: true
       # POSTFIX SETUP
-      #_______________________
-      postfix_setup: yes
+      # _______________________
+      postfix_setup: true
       postfix_mail_username: example@local
       postfix_mail_password: "mysecret"
       postfix_smtp_host: smtp.example.local
       # Hardening SCAN
-      #_______________________
-      hardening_scan: yes
+      # _______________________
+      hardening_scan: true
       hardening_lynis_report_from: "{{ postfix_mail_username }}"
       hardening_lynis_report_to: "{{ postfix_mail_username }}"
   # ----------------------------------------------------------------------------

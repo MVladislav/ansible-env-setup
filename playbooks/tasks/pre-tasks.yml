@@ -3,8 +3,8 @@
 
 # ------------------------------------------------------------------------------
 - name: "pre-install - print debug"
-  check_mode: yes
-  gather_facts: no
+  check_mode: true
+  gather_facts: false
   hosts: "{{ ansible_user_conf_on_hosts }}"
   vars:
     ansible_user_conf_on_hosts: []
@@ -23,7 +23,7 @@
     ansible_user_conf_clients: []
   tasks:
     - name: "pre-install - print debug all vars"
-      check_mode: yes
+      check_mode: true
       ansible.builtin.debug:
         msg:
           - "on_hosts        (on which host to install)                : {{ ansible_user_conf_on_hosts }}"
@@ -43,7 +43,7 @@
         prompt: "Validate if above printed values are correct"
 
 - name: "pre-install - remote-user: update user and deploy ssh-key"
-  gather_facts: no
+  gather_facts: false
   remote_user: "{{ ansible_user_conf_name }}"
   hosts: "{{ ansible_user_conf_on_hosts }}"
   vars:
@@ -61,7 +61,7 @@
     ansible_user_conf_home: "/home/{{ ansible_user }}"
     ansible_user_conf_add_ssh_key: null
   tasks:
-    #- name: check if user {{ ansible_user_conf_name }} exist in sudors
+    # - name: check if user {{ ansible_user_conf_name }} exist in sudors
     #  become: true
     #  shell: grep -c "^{{ ansible_user_conf_name }}" /etc/sudoers || true
     #  changed_when: test_grep is defined and test_grep.stdout == "0"
@@ -110,7 +110,7 @@
 # ------------------------------------------------------------------------------
 - name: "pre-install - install python3 and dependencies"
   become: true
-  gather_facts: no
+  gather_facts: false
   remote_user: "{{ ansible_user_conf_name }}"
   hosts: "{{ ansible_user_conf_on_hosts }}"
   vars:
@@ -121,7 +121,7 @@
       raw: test -e /usr/bin/python3
       changed_when: false
       failed_when: false
-      ignore_errors: yes
+      ignore_errors: true
       register: check_python
     - name: "pre-install - install python3 and dependencies"
       raw: apt update && apt install -y python3 python3-psutil python3-pexpect
@@ -129,7 +129,7 @@
 
 # ------------------------------------------------------------------------------
 - name: "pre-install - update/create user accounts"
-  gather_facts: no
+  gather_facts: false
   remote_user: "{{ ansible_user_conf_name }}"
   hosts: "{{ ansible_user_conf_on_hosts }}"
   vars:
