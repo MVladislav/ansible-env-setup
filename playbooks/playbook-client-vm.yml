@@ -32,11 +32,17 @@
     ### -------------------------
     - role: ansible-updater
       updater_config:
-        set_timezone: yes
-        sync_time: yes
-        set_language: yes
-        update_upgrade: yes
-        setup_zfs: yes
+        set_timezone: true
+        sync_time: true
+        set_language: true
+        update_upgrade: true
+        setup_zfs: true
+        setup_unattended: true
+      unattended_origins_patterns:
+        - "origin=Ubuntu,archive=${distro_codename}-security"
+        - "o=Ubuntu,a=${distro_codename}"
+        - "o=Ubuntu,a=${distro_codename}-updates"
+        - "o=Ubuntu,a=${distro_codename}-proposed-updates"
       when: skip_default_setup is not defined
 
 # ------------------------------------------------------------------------------
@@ -91,12 +97,12 @@
       when: cis_setup is defined and cis_setup | bool
     ### -------------------------
   tasks:
-    - name: set/update system variables for aide
-      lineinfile:
+    - name: "set/update system variables for aide"
+      ansible.builtin.lineinfile:
         dest: "/etc/environment"
         state: present
         regexp: "^{{ item.key }}="
-        line: "{{ item.key }}={{ item.value}}"
+        line: "{{ item.key }}={{ item.value }}"
       with_items:
         - key: CRON_DAILY_RUN
           value: "yes"
@@ -111,12 +117,12 @@
         - key: FILTERINSTALLATIONS
           value: "yes"
       when: (cis_setup is defined and cis_setup | bool) and (cis_setup_aide is not defined or cis_setup_aide | bool)
-    - name: set/update aide variables for aide
-      lineinfile:
+    - name: "set/update aide variables for aide"
+      ansible.builtin.lineinfile:
         dest: "/etc/default/aide"
         state: present
         regexp: "^{{ item.key }}="
-        line: "{{ item.key }}={{ item.value}}"
+        line: "{{ item.key }}={{ item.value }}"
       with_items:
         - key: CRON_DAILY_RUN
           value: "yes"
@@ -147,15 +153,6 @@
         interface: "{{ ansible_default_ipv4['interface'] }}"
         comment: "allow incoming connection on standard ssh port"
   roles:
-    ### -------------------------
-    # - role: ansible-updater
-    #   updater_config:
-    #     set_timezone: yes
-    #     sync_time: yes
-    #     set_language: yes
-    #     update_upgrade: yes
-    #     setup_zfs: yes
-    #   when: skip_default_setup is not defined
     ### -------------------------
     - role: ansible-ssh
       when: skip_default_setup is not defined
@@ -209,29 +206,33 @@
     - role: ansible-install-server
       install_server_service_name: "{{ service_name }}"
       install_server_config:
-        dev: yes
-        apt_base: yes
-        apt_dev: yes
-        apt_exfat: yes
-        apt_libs: yes # base|dev
-        apt_vpn: yes
-        apt_go: yes
-        # apt_rasp_pi_pkg: no
-        # apt_qemu_guest_agent: no
-        # dpkg_...: no
-        # snap_...: no
-        # snap_microk8s: no
-        snap_btop: yes
-        git: yes
-        zsh: yes
-        tmux: yes
-        python: yes # base|dev
-        # go: no
-        # go_kompose: no
-        ruby: yes
-        npm: yes
-        # mongodb: no
-        # java: no # base|dev
+        dev: true
+        env_tun_setup: true
+        # APT (1) -------------------------------
+        apt_base: true
+        apt_dev: true
+        apt_build: true
+        apt_libs: true
+        # APT (2) -------------------------------
+        apt_vpn: true
+        apt_go: true
+        # apt_rasp_pi_pkg: false
+        # apt_qemu_guest_agent: false
+        # DPKG ----------------------------------
+        # dpkg_...: false
+        # SNAP ----------------------------------
+        # snap_microk8s: false
+        snap_btop: true
+        # OTHER --------------------------------
+        git: true
+        zsh: true
+        tmux: true
+        python: true # base|dev
+        # go_kompose: false
+        ruby: true
+        # npm: false
+        # mongodb: false
+        # java: false # base|dev
     ### -------------------------
     - role: ansible-netplan
       netplan_service_name: "{{ service_name }}"
@@ -249,61 +250,110 @@
     - role: ansible-install-client
       install_client_service_name: "{{ service_name }}"
       install_client_config:
-        dev: yes
-        fonts: yes
-        gnome_gui_setup: yes
-        gnome_gui_setup_theme: yes
-        gnome_gui_setup_extensions: yes
-        gnome_gui_setup_keybinding: yes
-        apt_base: yes
-        apt_peek: yes
-        apt_wireshark: yes
-        apt_wireshark_dev: yes
-        apt_vpn: yes
-        # apt_gnome_boxes: no
-        # apt_latex: no
-        # apt_pandoc: no
-        # apt_virtualbox_guest: no
-        # apt_virt_viewer: no
-        # dpkg_virtualbox: no
-        # dpkg_mongodb: no
-        dpkg_veracrypt: yes
-        # dpkg_google_chrome: no
-        # dpkg_getferdi: no
-        # distribution_key_virtualbox: no
-        snap_chromium: yes
-        snap_thunderbird: yes
-        # snap_libreoffice: no
-        snap_onlyoffice_desktopeditors: yes
-        snap_signal_desktop: yes
-        snap_telegram_desktop: yes
-        snap_zoom_client: yes
-        snap_spotify: yes
-        snap_inkscape: yes
-        snap_drawio: yes
-        snap_gimp: yes
-        snap_vlc: yes
-        snap_obs_studio: yes
-        snap_flameshot: yes
-        # snap_1password: no
-        snap_okular: yes
-        snap_code: yes
-        # snap_android_studio: no
-        # snap_UBports: no
-        # snap_insomnia: no
-        # snap_postman: no
-        # snap_dbeaver_ce: no
-        snap_beekeeper_studio: yes
-        # snap_microk8s: no
-        # snap_rpi_imager: no
-        # snap_multipass: no
-        # snap_zaproxy: no
-        snap_cornyjokes: yes
-        # flatpak: no # base(empty)|dev(empty)
-        # vs_code_ext: no
-        # firefox_dev: no
-        java: yes
-        # steam: no
+        # GENERAL -------------------------------
+        dev: true
+        fonts: true
+        # GNOME ---------------------------------
+        gnome_gui_setup: true
+        # gnome_gui_setup_theme: false
+        # gnome_gui_setup_dependencies: false
+        gnome_gui_setup_extensions: true
+        gnome_gui_setup_keybinding: true
+        gnome_gui_setup_overlay: true
+        # APT -----------------------------------
+        apt_base: true
+        apt_base2: true
+        # apt_snap: false
+        apt_flatpak: true
+        # apt_peek: false
+        apt_wireshark: true
+        apt_wireshark_dev: true
+        apt_vpn: true
+        # apt_gnome_boxes: false
+        # apt_latex: false
+        # apt_pandoc: false
+        # apt_virt_viewer: false
+        # apt_lutris: false
+        # DPKG ----------------------------------
+        # dpkg_virtualbox: false
+        # dpkg_mongodb: false
+        # dpkg_veracrypt: false
+        # DIST KEY ------------------------------
+        # distribution_key_virtualbox: false
+        # SNAP ----------------------------------
+        snap_chromium: true
+        # snap_thunderbird: false
+        # snap_libreoffice: false
+        snap_onlyoffice_desktopeditors: true
+        # snap_signal_desktop: false
+        # snap_telegram_desktop: false
+        # snap_zoom_client: false
+        # snap_spotify: false
+        # snap_inkscape: false
+        # snap_drawio: false
+        # snap_gimp: false
+        # snap_darktable: false
+        # snap_vlc: false
+        # snap_obs_studio: false
+        # snap_flameshot: false
+        # snap_1password: false
+        # snap_okular: false
+        snap_code: true
+        # snap_android_studio: false
+        # snap_UBports: false
+        # snap_insomnia: false
+        # snap_postman: false
+        # snap_dbeaver_ce: false
+        snap_beekeeper_studio: true
+        # snap_microk8s: false
+        # snap_rpi_imager: false
+        # snap_multipass: false
+        # snap_zaproxy: false
+        # snap_cornyjokes: false
+        # FLATPAK -------------------------------
+        # flatpak_firefox: false
+        # flatpak_chromium: false
+        # flatpak_thunderbird: false
+        # flatpak_flameshot: false
+        # flatpak_onlyoffice: false
+        # flatpak_1password: false
+        # flatpak_keepassxc: false
+        # flatpak_signal: false
+        # flatpak_telegram: false
+        # flatpak_threemaqt: false
+        # flatpak_zoom: false
+        # flatpak_teams: false
+        # flatpak_discord: false
+        # flatpak_spotify: false
+        # flatpak_ferdi: false
+        # flatpak_vlc: false
+        # flatpak_inkscape: false
+        # flatpak_drawio: false
+        # flatpak_gimp: false
+        # flatpak_studio: false
+        # flatpak_blender: false
+        # flatpak_code: false
+        # flatpak_sublimetext: false
+        # flatpak_arduinoide: false
+        # flatpak_fritzing: false
+        # flatpak_insomnia: false
+        # flatpak_postman: false
+        # flatpak_dbeavercommunity: false
+        # flatpak_filezilla: false
+        # flatpak_jdownloader: false
+        # flatpak_wireshark: false
+        # flatpak_ghidra: false
+        # flatpak_zaproxy: false
+        # flatpak_steam: false
+        # flatpak_ausweisapp2: false
+        # flatpak_betaflightconfigurator: false
+        # OTHER --------------------------------
+        # vs_code_ext: false
+        java: true
+        # steam: false
+      # if you install java, by default as version is set 11, change below if you need
+      # version is as input for openjdk java version
+      install_client_java_version: 11
     ### -------------------------
 
 # ------------------------------------------------------------------------------
