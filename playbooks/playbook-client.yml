@@ -158,7 +158,7 @@
     ### -------------------------
     - role: ansible-ufw
       become: true
-      ufw_logging: "full"
+      ufw_logging: "low"
       ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
       when: skip_default_setup is not defined
     ### -------------------------
@@ -344,12 +344,12 @@
         # flatpak_ghidra: false
         # flatpak_zaproxy: false
         # flatpak_steam: false
+        # flatpak_lutris: false
         # flatpak_ausweisapp2: false
         # flatpak_betaflightconfigurator: false
         # OTHER --------------------------------
         # vs_code_ext: false
         # java: false
-        # steam: false
       # if you install java, by default as version is set 11, change below if you need
       # version is as input for openjdk java version
       # install_client_java_version: 11

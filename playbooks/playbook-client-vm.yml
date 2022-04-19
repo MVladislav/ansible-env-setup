@@ -159,7 +159,7 @@
     ### -------------------------
     - role: ansible-ufw
       become: true
-      ufw_logging: "full"
+      ufw_logging: "low"
       ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
       when: skip_default_setup is not defined
     ### -------------------------
@@ -311,11 +311,11 @@
         # snap_zaproxy: false
         # snap_cornyjokes: false
         # FLATPAK -------------------------------
-        # flatpak_firefox: false
-        # flatpak_chromium: false
+        # flatpak_firefox: true
+        # flatpak_chromium: true
         # flatpak_thunderbird: false
         # flatpak_flameshot: false
-        # flatpak_onlyoffice: false
+        # flatpak_onlyoffice: true
         # flatpak_1password: false
         # flatpak_keepassxc: false
         # flatpak_signal: false
@@ -332,25 +332,25 @@
         # flatpak_gimp: false
         # flatpak_studio: false
         # flatpak_blender: false
-        # flatpak_code: false
+        # flatpak_code: true
         # flatpak_sublimetext: false
         # flatpak_arduinoide: false
         # flatpak_fritzing: false
         # flatpak_insomnia: false
         # flatpak_postman: false
-        # flatpak_dbeavercommunity: false
+        # flatpak_dbeavercommunity: true
         # flatpak_filezilla: false
         # flatpak_jdownloader: false
         # flatpak_wireshark: false
         # flatpak_ghidra: false
         # flatpak_zaproxy: false
         # flatpak_steam: false
+        # flatpak_lutris: false
         # flatpak_ausweisapp2: false
         # flatpak_betaflightconfigurator: false
         # OTHER --------------------------------
         # vs_code_ext: false
         java: true
-        # steam: false
       # if you install java, by default as version is set 11, change below if you need
       # version is as input for openjdk java version
       install_client_java_version: 11
