@@ -76,9 +76,9 @@
         password: "{{ ansible_user_conf_password }}"
         update_password: "{{ ansible_user_conf_update_password | default ('always') }}"
         groups: "{{ ansible_user_conf_group | default('sudo, adm, cdrom') }}"
-        system: "{{ ansible_user_conf_system | default ('yes') | bool }}"
+        system: "{{ ansible_user_conf_system | default ('no') | bool }}"
         append: "{{ ansible_user_conf_append | default ('yes') | bool }}"
-        createhome: "{{ ansible_user_conf_createhome | default ('no') | bool }}"
+        createhome: "{{ ansible_user_conf_createhome | default ('yes') | bool }}"
         # home: "{{ ansible_user_conf_home | default ('/var/none') }}" # TODO:
         expires: -1
       when: ansible_user_conf_update is defined and ansible_user_conf_update | bool
