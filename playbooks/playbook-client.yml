@@ -37,6 +37,7 @@
         set_language: true
         update_upgrade: true
         setup_zfs: true
+        setup_unattended: true
       unattended_origins_patterns:
         - "origin=Ubuntu,archive=${distro_codename}-security"
         - "o=Ubuntu,a=${distro_codename}"
@@ -213,7 +214,7 @@
         # apt_build: false
         # apt_libs: false
         # APT (2) -------------------------------
-        apt_vpn: true
+        # apt_vpn: false
         # apt_go: false
         # apt_rasp_pi_pkg: false
         # apt_qemu_guest_agent: false
@@ -224,7 +225,7 @@
         snap_btop: true
         # OTHER --------------------------------
         git: true
-        zsh: true
+        # zsh: false
         # tmux: false
         # python: false # base|dev
         # go_kompose: false
@@ -267,7 +268,7 @@
         # apt_peek: false
         # apt_wireshark: false
         # apt_wireshark_dev: false
-        apt_vpn: true
+        # apt_vpn: false
         # apt_gnome_boxes: false
         # apt_latex: false
         # apt_pandoc: false
@@ -280,7 +281,7 @@
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
         # SNAP ----------------------------------
-        snap_chromium: true
+        # snap_chromium: false
         snap_thunderbird: true
         # snap_libreoffice: false
         snap_onlyoffice_desktopeditors: true
@@ -293,7 +294,7 @@
         snap_gimp: true
         snap_darktable: true
         snap_vlc: true
-        snap_obs_studio: true
+        # snap_obs_studio: false
         snap_flameshot: true
         snap_1password: true
         # snap_okular: false
@@ -313,6 +314,7 @@
         # flatpak_firefox: false
         # flatpak_chromium: false
         # flatpak_thunderbird: false
+        # flatpak_extension_manager: false
         # flatpak_flameshot: false
         # flatpak_onlyoffice: false
         # flatpak_1password: false

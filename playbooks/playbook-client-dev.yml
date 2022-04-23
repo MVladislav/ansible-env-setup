@@ -37,6 +37,7 @@
         set_language: true
         update_upgrade: true
         setup_zfs: true
+        setup_unattended: true
       unattended_origins_patterns:
         - "origin=Ubuntu,archive=${distro_codename}-security"
         - "o=Ubuntu,a=${distro_codename}"
@@ -263,7 +264,7 @@
         apt_base: true
         # apt_base2: false
         # apt_snap: false
-        apt_flatpak: true
+        # apt_flatpak: false
         apt_peek: true
         # apt_wireshark: false
         # apt_wireshark_dev: false
@@ -272,13 +273,13 @@
         # apt_latex: false
         # apt_pandoc: false
         # apt_virt_viewer: false
-        apt_lutris: true
+        # apt_lutris: false
         # DPKG ----------------------------------
         # dpkg_virtualbox: false
         # dpkg_mongodb: false
         dpkg_veracrypt: true
         # DIST KEY ------------------------------
-        distribution_key_virtualbox: true
+        # distribution_key_virtualbox: false
         # SNAP ----------------------------------
         snap_chromium: true
         snap_thunderbird: true
@@ -340,7 +341,7 @@
         # flatpak_dbeavercommunity: false
         # flatpak_filezilla: false
         # flatpak_jdownloader: false
-        flatpak_wireshark: true
+        # flatpak_wireshark: false
         # flatpak_ghidra: false
         # flatpak_zaproxy: false
         # flatpak_steam: false
