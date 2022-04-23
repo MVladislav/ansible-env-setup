@@ -34,6 +34,7 @@ all:
         - name: "{{ ansible_user }}"
           dev: true
           updateOrCreate: false
+          setup: false
         # rename to any user, to use without sudo
         - name: local_user
           shell: /bin/bash
