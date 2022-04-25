@@ -94,6 +94,7 @@ all:
       hardening_lynis_report_to: "{{ postfix_mail_username }}"
     # SERVER:: setup
     server:
+      # NOTE: if some defaults needs to be skipped, en-commit next line
       # skip_default_setup:
       # ansible defaults
       # _______________________
@@ -114,7 +115,7 @@ all:
         is_update: true
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
-        group: sudo,adm,cdrom,lpadmin,dip,plugdev,lxd,sambashare
+        group: sudo,adm,cdrom,dip,plugdev,lxd
         system: false
         append: true
         add_ssh_key: true
