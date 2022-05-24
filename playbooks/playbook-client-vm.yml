@@ -213,7 +213,7 @@
         apt_base: true
         apt_dev: true
         apt_build: true
-        apt_libs: true
+        # apt_libs: false
         # APT (2) -------------------------------
         apt_vpn: true
         apt_go: true
@@ -230,7 +230,7 @@
         tmux: true
         python: true # base|dev
         # go_kompose: false
-        ruby: true
+        # ruby: false
         # npm: false
         # mongodb: false
         # java: false # base|dev
@@ -263,12 +263,12 @@
         gnome_gui_setup_overlay: true
         # APT -----------------------------------
         apt_base: true
-        apt_base2: true
+        # apt_base2: false
         # apt_snap: false
-        apt_flatpak: true
+        # apt_flatpak: false
         # apt_peek: false
-        apt_wireshark: true
-        apt_wireshark_dev: true
+        # apt_wireshark: false
+        # apt_wireshark_dev: false
         apt_vpn: true
         # apt_gnome_boxes: false
         # apt_latex: false
@@ -312,11 +312,11 @@
         # snap_zaproxy: false
         # snap_cornyjokes: false
         # FLATPAK -------------------------------
-        # flatpak_firefox: true
-        # flatpak_chromium: true
+        # flatpak_firefox: false
+        # flatpak_chromium: false
         # flatpak_thunderbird: false
         # flatpak_flameshot: false
-        # flatpak_onlyoffice: true
+        # flatpak_onlyoffice: false
         # flatpak_1password: false
         # flatpak_keepassxc: false
         # flatpak_signal: false
@@ -333,13 +333,13 @@
         # flatpak_gimp: false
         # flatpak_studio: false
         # flatpak_blender: false
-        # flatpak_code: true
+        # flatpak_code: false
         # flatpak_sublimetext: false
         # flatpak_arduinoide: false
         # flatpak_fritzing: false
         # flatpak_insomnia: false
         # flatpak_postman: false
-        # flatpak_dbeavercommunity: true
+        # flatpak_dbeavercommunity: false
         # flatpak_filezilla: false
         # flatpak_jdownloader: false
         # flatpak_wireshark: false
