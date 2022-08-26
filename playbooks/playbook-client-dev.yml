@@ -70,6 +70,7 @@
       # AIDE cron settings
       ubuntu2004cis_config_aide: "{{ cis_setup_aide | default(true) | bool }}"
       ubuntu2004cis_rule_1_4_2: "{{ cis_setup_aide | default(true) | bool }}"
+      ubuntu2004cis_rule_4_1_11: false
       ubuntu2004cis_aide_cron:
         cron_user: root
         cron_file: aide-cron-scan
