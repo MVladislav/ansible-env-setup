@@ -85,6 +85,8 @@
       ubuntu2004cis_allow_autofs: true # allow to auto mount usb devices
       ubuntu2004cis_rule_1_1_24: false # do not Disable USB Storage
       #
+      ubuntu2004cis_rule_4_1_11: false # not work on ubuntu 22.04
+      #
       ubuntu2004cis_rule_1_1_1_7: false # not work on ubuntu 21.10
       ubuntu2004cis_rule_1_5_2: false # not work on ubuntu 21.03
       ubuntu2004cis_rule_1_6_1: false # not work on ubuntu 21.03
@@ -264,11 +266,11 @@
         # APT -----------------------------------
         apt_base: true
         # apt_base2: false
-        # apt_snap: false
-        # apt_flatpak: false
+        apt_snap: true
+        apt_flatpak: true
         # apt_peek: false
-        # apt_wireshark: false
-        # apt_wireshark_dev: false
+        apt_wireshark: true
+        apt_wireshark_dev: true
         apt_vpn: true
         # apt_gnome_boxes: false
         # apt_latex: false
@@ -282,7 +284,7 @@
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
         # SNAP ----------------------------------
-        snap_chromium: true
+        # snap_chromium: false
         # snap_thunderbird: false
         # snap_libreoffice: false
         snap_onlyoffice_desktopeditors: true
@@ -305,7 +307,7 @@
         # snap_insomnia: false
         # snap_postman: false
         # snap_dbeaver_ce: false
-        snap_beekeeper_studio: true
+        # snap_beekeeper_studio: false
         # snap_microk8s: false
         # snap_rpi_imager: false
         # snap_multipass: false
