@@ -1,40 +1,40 @@
 ---
 all:
   hosts:
-    # CLIENT:: setup
+    ## CLIENT:: setup
     client:
-      # NOTE: if some defaults needs to be skipped, en-commit next line
+      ## NOTE: if some defaults needs to be skipped, en-commit next line
       # skip_default_setup:
-      # ansible defaults
-      # _______________________
-      # NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
-      # NOTE: by "{{ ansible_user }}-{{ ansible_host }}"
+      ## ansible defaults
+      ## _______________________
+      ## NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
+      ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}"
       ansible_ssh_private_key_file: ~/.ssh/id_ed25519
       ansible_user: username
-      ansible_host: 192.168.250.0
+      ansible_host: 192.168.0.0
       ansible_port: 22
       service_name: "server_{{ ansible_user }}"
       install_server_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
       install_server_git_user: "{{ ansible_user }}"
       install_server_git_email: "{{ ansible_user }}"
-      # ansible client access setup
-      # _______________________
+      ## ansible client access setup
+      ## _______________________
       ansible_user_setup: true
       ansible_user_config:
         is_update: true
-        # sudo apt install whois && mkpasswd --method=sha-512
+        ## sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
         group: sudo,adm,cdrom,lpadmin,dip,plugdev,lxd,sambashare
         system: false
         append: true
         add_ssh_key: true
-      # client used for adding to services
-      # _______________________
+      ## client used for adding to services
+      ## _______________________
       clients:
         - name: "{{ ansible_user }}"
           dev: true
           updateOrCreate: false
-          setup: false
+          setup: false # if client should be setup with additional tools and gui (default true)
         # rename to any user, to use without sudo
         - name: local_user
           shell: /bin/bash
@@ -46,13 +46,13 @@ all:
           updateOrCreate: true
           locale: de_DE.UTF-8
           language: de_DE.UTF-8
-      # updater
-      # _______________________
+      ## updater
+      ## _______________________
       updater_time_timezone: Europe/Berlin
       updater_ntp_server: time.cloudflare.com
       updater_ntp_fallback_server: ntp.ubuntu.com
-      # netplan
-      # _______________________
+      ## netplan
+      ## _______________________
       netplan_setup: false
       netplan_remove_existing: false
       netplan_configuration:
@@ -70,11 +70,11 @@ all:
               routes:
                 - to: default
                   via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
-      # docker
-      # _______________________
+      ## docker
+      ## _______________________
       docker_user_shell: /bin/zsh
-      # ufw
-      # _______________________
+      ## ufw
+      ## _______________________
       ufw_setup: true
       ufw_rules_extended:
         - rule: allow
@@ -82,62 +82,62 @@ all:
           protocol: tcp
           interface: "{{ ansible_default_ipv4['interface'] }}"
           comment: "allow incoming connection on standard ssh port"
-      # Ubuntu2004 CIS
-      # _______________________
+      ## Ubuntu2004 CIS
+      ## _______________________
       cis_setup: true
-      cis_setup_aide: true
-      # POSTFIX SETUP
-      # _______________________
+      cis_setup_aide: false
+      ## POSTFIX SETUP
+      ## _______________________
       postfix_setup: false
       postfix_mail_username: example@local
       postfix_mail_password: "mysecret"
       postfix_smtp_host: smtp.example.local
-      # Hardening SCAN
-      # _______________________
+      ## Hardening SCAN
+      ## _______________________
       hardening_scan: true
       hardening_lynis_report_from: "{{ postfix_mail_username }}"
       hardening_lynis_report_to: "{{ postfix_mail_username }}"
-    # ..........................................................................
-    # SERVER:: setup
+    ## ..........................................................................
+    ## SERVER:: setup
     server:
-      # NOTE: if some defaults needs to be skipped, en-commit next line
+      ## NOTE: if some defaults needs to be skipped, en-commit next line
       # skip_default_setup:
-      # ansible defaults
-      # _______________________
-      # NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
-      # NOTE: by "{{ ansible_user }}-{{ ansible_host }}"
+      ## ansible defaults
+      ## _______________________
+      ## NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
+      ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}"
       ansible_ssh_private_key_file: ~/.ssh/id_ed25519
       ansible_user: username
-      ansible_host: 192.168.250.0
+      ansible_host: 192.168.0.0
       ansible_port: 22
       service_name: "server_{{ ansible_user }}"
       install_server_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
       install_server_git_user: "{{ ansible_user }}"
       install_server_git_email: "{{ ansible_user }}"
-      # ansible client access setup
-      # _______________________
+      ## ansible client access setup
+      ## _______________________
       ansible_user_setup: true
       ansible_user_config:
         is_update: true
-        # sudo apt install whois && mkpasswd --method=sha-512
+        ## sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
         group: sudo,adm,cdrom,dip,plugdev,lxd
         system: false
         append: true
         add_ssh_key: true
-      # client used for adding to services
-      # _______________________
+      ## client used for adding to services
+      ## _______________________
       clients:
         - name: "{{ ansible_user }}"
           dev: true
           updateOrCreate: false
-      # updater
-      # _______________________
+      ## updater
+      ## _______________________
       updater_time_timezone: Europe/Berlin
       updater_ntp_server: time.cloudflare.com
       updater_ntp_fallback_server: ntp.ubuntu.com
-      # netplan
-      # _______________________
+      ## netplan
+      ## _______________________
       netplan_setup: true
       netplan_remove_existing: false
       netplan_configuration:
@@ -155,11 +155,8 @@ all:
               routes:
                 - to: default
                   via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
-      # docker
-      # _______________________
-      docker_user_shell: /bin/zsh
-      # ufw
-      # _______________________
+      ## ufw
+      ## _______________________
       ufw_setup: true
       ufw_rules_extended:
         - rule: allow
@@ -167,84 +164,26 @@ all:
           protocol: tcp
           interface: "{{ ansible_default_ipv4['interface'] }}"
           comment: "allow incoming connection on standard ssh port"
-      # Ubuntu2004 CIS
-      # _______________________
+      ## Ubuntu2004 CIS
+      ## _______________________
       cis_setup: true
       cis_setup_aide: true
-      # POSTFIX SETUP
-      # _______________________
+      ## POSTFIX SETUP
+      ## _______________________
       postfix_setup: true
       postfix_mail_username: example@local
       postfix_mail_password: "mysecret"
       postfix_smtp_host: smtp.example.local
-      # Hardening SCAN
-      # _______________________
+      ## Hardening SCAN
+      ## _______________________
       hardening_scan: true
       hardening_lynis_report_from: "{{ postfix_mail_username }}"
       hardening_lynis_report_to: "{{ postfix_mail_username }}"
-    # ..........................................................................
-    # CLUSTER:: setup
-    cluster:
-      # NOTE: if some defaults needs to be skipped, en-commit next line
-      # skip_default_setup:
-      # ansible defaults
-      # _______________________
-      # NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
-      # NOTE: by "{{ ansible_user }}-{{ ansible_host }}"
-      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
-      ansible_user: username
-      ansible_host: 192.168.0.0
-      ansible_port: 22
-      service_name: "server_{{ ansible_user }}"
-      install_server_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
-      install_server_git_user: "{{ ansible_user }}"
-      install_server_git_email: "{{ ansible_user }}"
-      # ansible client access setup
-      # _______________________
-      ansible_user_setup: true
-      ansible_user_config:
-        is_update: true
-        # sudo apt install whois && mkpasswd --method=sha-512
-        password: "$6$Na5wHB6bJIk1uJpa$1lYeVAJb0fIRtamuAEar/N9nuxz.b7lUFMOn/2c.Y53cDa1sNScpQnJ7q6.uBZTufqwD7USP8zbCreJaC9DDi/"
-        group: sudo,adm,cdrom,dip,plugdev,lxd
-        system: false
-        append: true
-        add_ssh_key: true
-      # client used for adding to services
-      # _______________________
-      clients:
-        - name: "{{ ansible_user }}"
-          dev: true
-          updateOrCreate: false
-      # updater
-      # _______________________
-      updater_time_timezone: Europe/Berlin
-      updater_ntp_server: time.cloudflare.com
-      updater_ntp_fallback_server: ntp.ubuntu.com
-      # netplan
-      # _______________________
-      netplan_setup: true
-      netplan_remove_existing: true
-      netplan_configuration:
-        network:
-          ethernets:
-            eth0:
-              dhcp4: true
-              dhcp6: false
-              addresses:
-                - "{{ ansible_host }}/24"
-              nameservers:
-                addresses:
-                  - 1.1.1.1
-                  - 1.0.0.1
-              routes:
-                - to: default
-                  via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
-      # docker
-      # _______________________
+      ## docker
+      ## _______________________
       docker_user_shell: /bin/zsh
-      # kubernetes
-      # _______________________
+      ## kubernetes
+      ## _______________________
       kubernetes_setup_server: true
       # kubernetes_setup_server_slave: false
       kubernetes_fetch_k3s_yaml: true
@@ -252,58 +191,35 @@ all:
       kubernetes_server_dns_name: ...
       kubernetes_server_ip: ...
       # kubernetes_server_slave_ip: ...
-      # ufw
-      # _______________________
-      ufw_setup: true
-      ufw_rules_extended:
-        - rule: allow
-          to_port: 22
-          protocol: tcp
-          interface: "{{ ansible_default_ipv4['interface'] }}"
-          comment: "allow incoming connection on standard ssh port"
-      # Ubuntu2004 CIS
-      # _______________________
-      cis_setup: true
-      cis_setup_aide: false
-      # POSTFIX SETUP
-      # _______________________
-      postfix_setup: true
-      postfix_mail_username: example@local
-      postfix_mail_password: "mysecret"
-      postfix_smtp_host: smtp.example.local
-      # Hardening SCAN
-      # _______________________
-      hardening_scan: true
-      hardening_lynis_report_from: "{{ postfix_mail_username }}"
-      hardening_lynis_report_to: "{{ postfix_mail_username }}"
-  # ----------------------------------------------------------------------------
+    ## ..........................................................................
+  ## ----------------------------------------------------------------------------
   vars:
     ansible_python_interpreter: /usr/bin/python3
   children:
-    # client playbook for install client
+    ## client playbook for install client
     clients:
       hosts:
         client:
-    # server playbook for install server
+    ## server playbook for install server
     servers:
       hosts:
         server:
-    # pre install playbook
+    ## pre install playbook
     pre:
       hosts:
         client:
         server:
-    # sec and hardening playbook
+    ## sec and hardening playbook
     sec:
       hosts:
         client:
         server:
-    # docker playbook
+    ## docker playbook
     docker:
       hosts:
         client:
         server:
-    # kubernetes playbook
+    ## kubernetes playbook
     kubernetes:
       hosts:
         server:
