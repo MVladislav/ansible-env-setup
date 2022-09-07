@@ -42,3 +42,6 @@ url = https://github.com/Oefenweb/ansible-postfix.git
 [submodule "roles/ansible-kubernetes"]
 path = roles/ansible-kubernetes
 url = https://github.com/MVladislav/ansible-kubernetes.git
+[submodule "roles/ubuntu2004_cis"]
+	path = roles/ubuntu2004_cis
+	url = https://github.com/MVladislav/ubuntu2004_cis.git
