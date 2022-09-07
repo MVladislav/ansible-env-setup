@@ -25,9 +25,6 @@ branch = develop
 [submodule "roles/ansible-ufw"]
 path = roles/ansible-ufw
 url = https://github.com/Oefenweb/ansible-ufw.git
-[submodule "roles/ubuntu2004_cis"]
-path = roles/ubuntu2004_cis
-url = https://github.com/florianutz/ubuntu2004_cis.git
 [submodule "roles/ansible-install-server"]
 path = roles/ansible-install-server
 url = https://github.com/MVladislav/ansible-install-server.git
