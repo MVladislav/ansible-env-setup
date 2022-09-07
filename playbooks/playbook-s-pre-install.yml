@@ -1,0 +1,103 @@
+---
+# playbook client
+
+# ------------------------------------------------------------------------------
+- name: include pre-task playbook
+  import_playbook: ./tasks/pre-tasks.yml
+  remote_user: "{{ ansible_user }}"
+  vars:
+    ansible_user_conf_on_hosts:
+      - pre
+    ansible_user_conf_name: "{{ ansible_user }}"
+    ansible_user_conf_update: "{{ ansible_user_config.is_update | bool }}"
+    ansible_user_conf_shell: "{{ ansible_user_config.shell | default('/bin/bash') }}"
+    ansible_user_conf_password: "{{ ansible_user_config.password }}"
+    ansible_user_conf_group: "{{ ansible_user_config.group | default('adm,cdrom,sudo') }}"
+    ansible_user_conf_system: "{{ ansible_user_config.system | default('no') | bool }}"
+    ansible_user_conf_append: "{{ ansible_user_config.append | default('yes') | bool }}"
+    ansible_user_conf_createhome: "{{ ansible_user_config.createhome | default('yes') | bool }}"
+    ansible_user_conf_home: "{{ ansible_user_config.home | default('/home/' + ansible_user) }}"
+    ansible_user_conf_add_ssh_key: "{{ ansible_user_config.add_ssh_key | default('yes') | bool }}"
+    ansible_user_conf_clients: "{{ clients }}"
+  when: skip_default_setup is not defined and (ansible_user_setup is defined and ansible_user_setup | bool)
+  # ----------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: pre installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - pre
+  roles:
+    ### -------------------------
+    - role: ansible-updater
+      updater_config:
+        set_timezone: true
+        set_time_sync: true
+        sync_time: true
+        set_language: true
+        update_upgrade: true
+        setup_zfs: true
+        setup_unattended: true
+      unattended_origins_patterns:
+        - "origin=Ubuntu,archive=${distro_codename}-security"
+        - "o=Ubuntu,a=${distro_codename}"
+        - "o=Ubuntu,a=${distro_codename}-updates"
+        - "o=Ubuntu,a=${distro_codename}-proposed-updates"
+      when: skip_default_setup is not defined
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: pre installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+  vars:
+    ufw_rules_default:
+      - rule: allow
+        to_port: 22
+        protocol: tcp
+        interface: "{{ ansible_default_ipv4['interface'] }}"
+        comment: "allow incoming connection on standard ssh port"
+  roles:
+    ### -------------------------
+    - role: ansible-ssh
+      when: skip_default_setup is not defined
+    ### -------------------------
+    - role: ansible-ufw
+      become: true
+      ufw_logging: "low"
+      ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
+      when: skip_default_setup is not defined
+    ### -------------------------
+    - role: ansible-postfix
+      become: true
+      postfix_hostname: "{{ postfix_mail_username.split('@')[1] }}"
+      # postfix_mailname: "{{ postfix_mail_username.split('@')[1] }}"
+      postfix_aliases:
+        - user: root
+          alias: "{{ postfix_mail_username }}"
+        - user: "{{ ansible_user }}"
+          alias: "{{ postfix_mail_username }}"
+      # postfix_header_checks:
+      #   - pattern: "/From:.*/"
+      #     action: REPLACE
+      #     text: "From: {{ postfix_mail_username }}"
+      postfix_mydestination:
+        - localhost.$myhostname
+        - localhost
+        - localhost.localdomain
+      postfix_inet_interfaces: loopback-only
+      postfix_inet_protocols: ipv4
+      postfix_relayhost: "{{ postfix_smtp_host }}"
+      postfix_relaytls: true
+      postfix_sasl_user: "{{ postfix_mail_username }}"
+      postfix_sasl_password: "{{ postfix_mail_password }}"
+      postfix_raw_options:
+        - |
+          sender_canonical_classes = envelope_sender
+          mailbox_size_limit = 0
+          message_size_limit = 0
+          compatibility_level = 2
+      when: skip_default_setup is not defined and (postfix_setup is defined and postfix_setup | bool)
+    ### -------------------------

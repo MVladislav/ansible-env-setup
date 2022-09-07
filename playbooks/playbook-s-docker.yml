@@ -1,0 +1,15 @@
+---
+# playbook docker
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: docker installer
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - docker
+  roles:
+    ### -------------------------
+    - role: ansible-docker
+      docker_user_shell: /bin/zsh
+      docker_users_to_add_group: "{{ clients }}"
+    ### -------------------------

@@ -280,17 +280,30 @@ all:
   vars:
     ansible_python_interpreter: /usr/bin/python3
   children:
+    # client playbook for install client
     clients:
       hosts:
         client:
+    # server playbook for install server
     servers:
+      hosts:
+        server:
+    # pre install playbook
+    pre:
       hosts:
         client:
         server:
+    # sec and hardening playbook
+    sec:
+      hosts:
+        client:
+        server:
+    # docker playbook
     docker:
       hosts:
         client:
         server:
+    # kubernetes playbook
     kubernetes:
       hosts:
         server:

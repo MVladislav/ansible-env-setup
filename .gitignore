@@ -18,6 +18,7 @@ playbooks/*
 playbooks/vars/*
 !playbooks/vars/default-example.yml
 
+!playbooks/playbook-s-*.yml
 !playbooks/playbook-client-dev.yml
 !playbooks/playbook-client-vm.yml
 !playbooks/playbook-client.yml
