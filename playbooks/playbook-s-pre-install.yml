@@ -2,7 +2,7 @@
 # playbook client
 
 # ------------------------------------------------------------------------------
-- name: include pre-task playbook
+- name: Include pre-task playbook
   import_playbook: ./tasks/pre-tasks.yml
   remote_user: "{{ ansible_user }}"
   vars:
@@ -24,7 +24,7 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: pre installer
+- name: Pre installer (1)
   remote_user: "{{ ansible_user }}"
   hosts:
     - pre
@@ -45,13 +45,17 @@
         - "o=Ubuntu,a=${distro_codename}-updates"
         - "o=Ubuntu,a=${distro_codename}-proposed-updates"
       when: skip_default_setup is not defined
+    - role: ansible-security
+      security_setup_services:
+        auditd: true
+      when: skip_default_setup is not defined
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: pre installer
+- name: Pre installer (2)
   remote_user: "{{ ansible_user }}"
   hosts:
-    - clients
+    - pre
   vars:
     ufw_rules_default:
       - rule: allow
