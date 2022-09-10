@@ -48,8 +48,8 @@ install Ansible on host to run the playbook
 ```sh
 $sudo apt install python3 python3-pip sshpass
 : 'optional: openssh-sftp-server'
-$sudo python3 -m pip install Ansible
-$sudo python3 -m pip install molecule[docker] ansible-lint
+$python3 -m pip install Ansible
+$python3 -m pip install molecule[docker] ansible-lint
 ```
 
 ## setup
