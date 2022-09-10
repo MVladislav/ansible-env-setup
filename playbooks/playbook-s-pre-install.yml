@@ -45,10 +45,7 @@
         - "o=Ubuntu,a=${distro_codename}-updates"
         - "o=Ubuntu,a=${distro_codename}-proposed-updates"
       when: skip_default_setup is not defined
-    - role: ansible-security
-      security_setup_services:
-        auditd: true
-      when: skip_default_setup is not defined
+    ### -------------------------
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
