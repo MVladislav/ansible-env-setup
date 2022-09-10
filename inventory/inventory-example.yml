@@ -1,6 +1,7 @@
 ---
 all:
   hosts:
+    ## .........................................................................
     ## CLIENT:: setup
     client:
       ## NOTE: if some defaults needs to be skipped, en-commit next line
@@ -97,7 +98,7 @@ all:
       hardening_scan: true
       hardening_lynis_report_from: "{{ postfix_mail_username }}"
       hardening_lynis_report_to: "{{ postfix_mail_username }}"
-    ## ..........................................................................
+    ## .........................................................................
     ## SERVER:: setup
     server:
       ## NOTE: if some defaults needs to be skipped, en-commit next line
@@ -191,35 +192,35 @@ all:
       kubernetes_server_dns_name: ...
       kubernetes_server_ip: ...
       # kubernetes_server_slave_ip: ...
-    ## ..........................................................................
-  ## ----------------------------------------------------------------------------
+    ## .........................................................................
+  ## ---------------------------------------------------------------------------
   vars:
     ansible_python_interpreter: /usr/bin/python3
   children:
-    ## client playbook for install client
+    ## client playbook for install client (playbook-client-*.yml) + (playbook-s-cis.yml)
     clients:
       hosts:
         client:
-    ## server playbook for install server
+    ## server playbook for install server (playbook-server-*.yml) + (playbook-s-cis.yml)
     servers:
       hosts:
         server:
-    ## pre install playbook
+    ## pre install playbook (playbook-s-pre-install.yml)
     pre:
       hosts:
         client:
         server:
-    ## sec and hardening playbook
+    ## sec and hardening playbook (playbook-s-hardening.yml)
     sec:
       hosts:
         client:
         server:
-    ## docker playbook
+    ## docker playbook (playbook-s-docker.yml)
     docker:
       hosts:
         client:
         server:
-    ## kubernetes playbook
+    ## kubernetes playbook (playbook-s-kubernetes.yml)
     kubernetes:
       hosts:
         server:
