@@ -6,7 +6,9 @@
 
 # End of https://www.toptal.com/developers/gitignore/api/ansible
 
-inventory/inventory.yml
+!inventory/
+inventory/*
+!inventory/inventory-example.yml
 
 !playbooks/
 playbooks/*
