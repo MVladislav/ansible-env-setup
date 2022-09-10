@@ -3,17 +3,17 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: cis installer
+- name: CIS installer
   ansible.builtin.import_playbook: playbook-s-cis.yml
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: pre installer
+- name: Pre installer
   ansible.builtin.import_playbook: playbook-s-pre-install.yml
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: server installer
+- name: Server installer
   remote_user: "{{ ansible_user }}"
   hosts:
     - servers
@@ -57,15 +57,15 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: docker installer
+- name: Docker installer
   ansible.builtin.import_playbook: playbook-s-docker.yml
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: kubernetes installer
+- name: Kubernetes installer
   ansible.builtin.import_playbook: playbook-s-kubernetes.yml
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: hardening scan
+- name: Hardening scan
   ansible.builtin.import_playbook: playbook-s-hardening.yml

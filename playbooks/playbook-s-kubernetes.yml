@@ -3,7 +3,7 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: kubernetes installer
+- name: Kubernetes installer
   remote_user: "{{ ansible_user }}"
   hosts:
     - kubernetes

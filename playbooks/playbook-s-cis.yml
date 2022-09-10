@@ -3,7 +3,7 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: cis installer (client)
+- name: CIS installer (client)
   remote_user: "{{ ansible_user }}"
   hosts:
     - clients
@@ -53,7 +53,7 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: cis installer (server)
+- name: Cis installer (server)
   remote_user: "{{ ansible_user }}"
   hosts:
     - servers
@@ -97,14 +97,14 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: cis installer (client/server)
+- name: CIS installer - additional configs (client/server)
   remote_user: "{{ ansible_user }}"
   hosts:
     - clients
     - servers
   become: true
   tasks:
-    - name: "set/update system variables for aide"
+    - name: Set/update system variables for aide
       ansible.builtin.lineinfile:
         dest: "/etc/environment"
         state: present
@@ -124,7 +124,7 @@
         - key: FILTERINSTALLATIONS
           value: "yes"
       when: (cis_setup is defined and cis_setup | bool) and (cis_setup_aide is not defined or cis_setup_aide | bool)
-    - name: "set/update aide variables for aide"
+    - name: Set/update aide variables for aide
       ansible.builtin.lineinfile:
         dest: "/etc/default/aide"
         state: present
