@@ -26,12 +26,12 @@
         env_tun_setup: true
         # APT (1) -------------------------------
         apt_base: true
-        # apt_dev: false
-        # apt_build: false
+        apt_dev: true
+        apt_build: true
         # apt_libs: false
         # APT (2) -------------------------------
-        # apt_vpn: false
-        # apt_go: false
+        apt_vpn: true
+        apt_go: true
         # apt_rasp_pi_pkg: false
         # apt_qemu_guest_agent: false
         # DPKG ----------------------------------
@@ -41,9 +41,9 @@
         snap_btop: true
         # OTHER --------------------------------
         git: true
-        # zsh: false
-        # tmux: false
-        # python: false # base|dev
+        zsh: true
+        tmux: true
+        python: true # base|dev
         # go_kompose: false
         # ruby: false
         # npm: false
@@ -79,12 +79,12 @@
         # APT -----------------------------------
         apt_base: true
         # apt_base2: false
-        # apt_snap: false
-        # apt_flatpak: false
+        apt_snap: true
+        apt_flatpak: true
         # apt_peek: false
-        # apt_wireshark: false
-        # apt_wireshark_dev: false
-        # apt_vpn: false
+        apt_wireshark: true
+        apt_wireshark_dev: true
+        apt_vpn: true
         # apt_gnome_boxes: false
         # apt_latex: false
         # apt_pandoc: false
@@ -93,26 +93,26 @@
         # DPKG ----------------------------------
         # dpkg_virtualbox: false
         # dpkg_mongodb: false
-        dpkg_veracrypt: true
+        # dpkg_veracrypt: false
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
         # SNAP ----------------------------------
         # snap_chromium: false
-        snap_thunderbird: true
+        # snap_thunderbird: false
         # snap_libreoffice: false
         snap_onlyoffice_desktopeditors: true
-        snap_signal_desktop: true
-        snap_telegram_desktop: true
-        snap_zoom_client: true
-        snap_spotify: true
-        snap_inkscape: true
-        snap_drawio: true
-        snap_gimp: true
-        snap_darktable: true
-        snap_vlc: true
+        # snap_signal_desktop: false
+        # snap_telegram_desktop: false
+        # snap_zoom_client: false
+        # snap_spotify: false
+        # snap_inkscape: false
+        # snap_drawio: false
+        # snap_gimp: false
+        # snap_darktable: false
+        # snap_vlc: false
         # snap_obs_studio: false
-        snap_flameshot: true
-        snap_1password: true
+        # snap_flameshot: false
+        # snap_1password: false
         # snap_okular: false
         snap_code: true
         # snap_android_studio: false
@@ -130,7 +130,6 @@
         # flatpak_firefox: false
         # flatpak_chromium: false
         # flatpak_thunderbird: false
-        # flatpak_extension_manager: false
         # flatpak_flameshot: false
         # flatpak_onlyoffice: false
         # flatpak_1password: false
@@ -167,10 +166,10 @@
         # flatpak_betaflightconfigurator: false
         # OTHER --------------------------------
         # vs_code_ext: false
-        # java: false
+        java: true
       # if you install java, by default as version is set 11, change below if you need
       # version is as input for openjdk java version
-      # install_client_java_version: 11
+      install_client_java_version: 11
     ### -------------------------
 
 # ------------------------------------------------------------------------------

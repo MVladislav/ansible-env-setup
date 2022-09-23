@@ -23,28 +23,32 @@
       install_server_service_name: "{{ service_name }}"
       install_server_config:
         dev: true
+        env_tun_setup: true
+        # APT (1) -------------------------------
         apt_base: true
-        apt_dev: true
-        apt_exfat: true
-        apt_libs: true # base|dev
-        apt_vpn: true
-        apt_go: true
-        # apt_rasp_pi_pkg: no
-        # apt_qemu_guest_agent: no
-        # dpkg_...: no
-        # snap_...: no
-        # snap_microk8s: no
+        # apt_dev: false
+        # apt_build: false
+        # apt_libs: false
+        # APT (2) -------------------------------
+        # apt_vpn: false
+        # apt_go: false
+        # apt_rasp_pi_pkg: false
+        # apt_qemu_guest_agent: false
+        # DPKG ----------------------------------
+        # dpkg_...: false
+        # SNAP ----------------------------------
+        # snap_microk8s: false
         snap_btop: true
-        git: true
+        # OTHER --------------------------------
+        # git: false
         zsh: true
-        tmux: true
-        python: true # base|dev
-        # go: no
-        # go_kompose: no
-        ruby: true
-        npm: true
-        # mongodb: no
-        java: true # base|dev
+        # tmux: false
+        # python: false # base|dev
+        # go_kompose: false
+        # ruby: false
+        # npm: false
+        # mongodb: false
+        # java: false # base|dev
     ### -------------------------
     - role: ansible-netplan
       netplan_service_name: "{{ service_name }}"

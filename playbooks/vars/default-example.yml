@@ -7,4 +7,3 @@ keystodeploy:
   # id_ed25519
   "username-192.168.250.0":
     - sshkey: ssh-ed25519 AAAAC3NzaC1dlDI1NTE5AAAAIMHM8QA8hffkmDxqyEKNRiMusqBHaGtYqyqT+wQYVFETO username
-      name: "username-192.168.250.0"

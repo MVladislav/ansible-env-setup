@@ -1,0 +1,147 @@
+---
+# playbook CIS
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: CIS installer (client)
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+  become: true
+  roles:
+    ### -------------------------
+    - role: ubuntu2004_cis
+      # needed for client
+      ubuntu2004cis_xwindows_required: true # do not remove xorg for client
+      ubuntu2004cis_rule_2_2_2: false # do not remove xorg for client
+      ubuntu2004cis_allow_autofs: true # allow to auto mount usb devices
+      ubuntu2004cis_rule_1_1_24: false # do not Disable USB Storage
+      #
+      ubuntu2004cis_rule_5_3_2: false # password after change not working, can not login
+      ubuntu2004cis_pwquality:
+        - key: "minlen"
+          value: "8"
+        - key: "dcredit"
+          value: "-1"
+        - key: "ucredit"
+          value: "-1"
+        - key: "ocredit"
+          value: "-1"
+        - key: "lcredit"
+          value: "-1"
+      # AIDE cron settings
+      ubuntu2004cis_config_aide: "{{ cis_setup_aide | default(true) | bool }}"
+      ubuntu2004cis_rule_1_4_2: "{{ cis_setup_aide | default(true) | bool }}"
+      ubuntu2004cis_aide_cron:
+        cron_user: root
+        cron_file: aide-cron-scan
+        aide_job: "/usr/bin/aide --config /etc/aide/aide.conf --check"
+        aide_minute: 0
+        aide_hour: 5
+        aide_day: "*"
+        aide_month: "*"
+        aide_weekday: "*"
+      #
+      ubuntu2004cis_firewall: ufw # ufw | iptables | firewalld
+      ubuntu2004cis_time_synchronization: chrony # chrony | ntp
+      ubuntu2004cis_time_synchronization_servers:
+        - uri: "192.168.1.1"
+          config: "minpoll 8"
+      ubuntu2004cis_is_router: false
+      ubuntu2004cis_ipv6_required: false
+      when: cis_setup is defined and cis_setup | bool
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: Cis installer (server)
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - servers
+  become: true
+  roles:
+    ### -------------------------
+    - role: ubuntu2004_cis
+      ubuntu2004cis_rule_5_3_2: false # password after change not working, can not login
+      ubuntu2004cis_pwquality:
+        - key: "minlen"
+          value: "8"
+        - key: "dcredit"
+          value: "-1"
+        - key: "ucredit"
+          value: "-1"
+        - key: "ocredit"
+          value: "-1"
+        - key: "lcredit"
+          value: "-1"
+      # AIDE cron settings
+      ubuntu2004cis_config_aide: "{{ cis_setup_aide | default(true) | bool }}"
+      ubuntu2004cis_rule_1_4_2: "{{ cis_setup_aide | default(true) | bool }}"
+      ubuntu2004cis_aide_cron:
+        cron_user: root
+        cron_file: aide-cron-scan
+        aide_job: "/usr/bin/aide --config /etc/aide/aide.conf --check"
+        aide_minute: 0
+        aide_hour: 5
+        aide_day: "*"
+        aide_month: "*"
+        aide_weekday: "*"
+      #
+      ubuntu2004cis_firewall: ufw # ufw | iptables | firewalld
+      ubuntu2004cis_time_synchronization: chrony # chrony | ntp
+      ubuntu2004cis_time_synchronization_servers:
+        - uri: "192.168.1.1"
+          config: "minpoll 8"
+      ubuntu2004cis_is_router: false
+      ubuntu2004cis_ipv6_required: false
+      when: cis_setup is defined and cis_setup | bool
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: CIS installer - additional configs (client/server)
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+    - servers
+  become: true
+  tasks:
+    - name: Set/update system variables for aide
+      ansible.builtin.lineinfile:
+        dest: "/etc/environment"
+        state: present
+        regexp: "^{{ item.key }}="
+        line: "{{ item.key }}={{ item.value }}"
+      with_items:
+        - key: CRON_DAILY_RUN
+          value: "yes"
+        - key: MAILTO
+          value: "{{ postfix_mail_username | default('root') }}"
+        - key: COPYNEWDB
+          value: "yes"
+        - key: TRUNCATEDETAILS
+          value: "yes"
+        - key: FILTERUPDATES
+          value: "yes"
+        - key: FILTERINSTALLATIONS
+          value: "yes"
+      when: (cis_setup is defined and cis_setup | bool) and (cis_setup_aide is not defined or cis_setup_aide | bool)
+    - name: Set/update aide variables for aide
+      ansible.builtin.lineinfile:
+        dest: "/etc/default/aide"
+        state: present
+        regexp: "^{{ item.key }}="
+        line: "{{ item.key }}={{ item.value }}"
+      with_items:
+        - key: CRON_DAILY_RUN
+          value: "yes"
+        - key: MAILTO
+          value: "{{ postfix_mail_username | default('root') }}"
+        - key: COPYNEWDB
+          value: "yes"
+        - key: TRUNCATEDETAILS
+          value: "yes"
+        - key: FILTERUPDATES
+          value: "yes"
+        - key: FILTERINSTALLATIONS
+          value: "yes"
+      when: (cis_setup is defined and cis_setup | bool) and (cis_setup_aide is not defined or cis_setup_aide | bool)
+    ### -------------------------
