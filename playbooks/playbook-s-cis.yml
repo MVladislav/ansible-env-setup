@@ -46,7 +46,9 @@
       ubuntu2004cis_time_synchronization: chrony # chrony | ntp
       ubuntu2004cis_time_synchronization_servers:
         - uri: "192.168.1.1"
-          config: "minpoll 8"
+          config: "iburst maxsources 4"
+        - uri: "time.cloudflare.com"
+          config: "iburst maxsources 1"
       ubuntu2004cis_is_router: false
       ubuntu2004cis_ipv6_required: false
       when: cis_setup is defined and cis_setup | bool
@@ -90,7 +92,9 @@
       ubuntu2004cis_time_synchronization: chrony # chrony | ntp
       ubuntu2004cis_time_synchronization_servers:
         - uri: "192.168.1.1"
-          config: "minpoll 8"
+          config: "iburst maxsources 4"
+        - uri: "ntp.ubuntu.com"
+          config: "iburst maxsources 1"
       ubuntu2004cis_is_router: false
       ubuntu2004cis_ipv6_required: false
       when: cis_setup is defined and cis_setup | bool
