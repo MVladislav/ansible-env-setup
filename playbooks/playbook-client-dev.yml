@@ -116,6 +116,7 @@
         # snap_okular: false
         # snap_yubioath_desktop: false
         snap_code: true
+        snap_remmina: true
         # snap_android_studio: false
         # snap_UBports: false
         # snap_insomnia: false
@@ -158,6 +159,7 @@
         # flatpak_blender: false
         flatpak_peek: true
         # flatpak_code: false
+        # flatpak_remmina: false
         # flatpak_sublimetext: false
         # flatpak_arduinoide: false
         # flatpak_fritzing: false
