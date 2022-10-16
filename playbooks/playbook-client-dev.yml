@@ -74,46 +74,47 @@
         # gnome_gui_setup_theme: false
         # gnome_gui_setup_dependencies: false
         gnome_gui_setup_extensions: true
-        gnome_gui_setup_keybinding: true
+        # gnome_gui_setup_keybinding: false
         gnome_gui_setup_overlay: true
+        # cleanup_remove_snap: false
+        # cleanup_remove_flatpak: false
         # APT -----------------------------------
         apt_base: true
         # apt_base2: false
-        # apt_snap: false
-        # apt_flatpak: false
-        apt_peek: true
-        # apt_wireshark: false
-        # apt_wireshark_dev: false
+        apt_snap: true
+        apt_flatpak: true
         apt_vpn: true
         # apt_gnome_boxes: false
-        # apt_latex: false
-        # apt_pandoc: false
-        # apt_virt_viewer: false
-        # apt_lutris: false
+        apt_latex: true
+        apt_pandoc: true
+        apt_virt_viewer: true
         # DPKG ----------------------------------
         # dpkg_virtualbox: false
-        # dpkg_mongodb: false
         dpkg_veracrypt: true
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
         # SNAP ----------------------------------
+        snap_firefox: true
         snap_chromium: true
         snap_thunderbird: true
-        # snap_libreoffice: false
-        snap_onlyoffice_desktopeditors: true
         snap_signal_desktop: true
         snap_telegram_desktop: true
-        snap_zoom_client: true
+        # snap_zoom_client: false
         snap_spotify: true
+        # snap_libreoffice: false
+        snap_onlyoffice_desktopeditors: true
         snap_inkscape: true
         snap_drawio: true
         snap_gimp: true
         snap_darktable: true
+        # snap_pixelfx: false
+        # snap_lunacy: false
         snap_vlc: true
         snap_obs_studio: true
-        snap_flameshot: true
+        # snap_flameshot: false
         snap_1password: true
         # snap_okular: false
+        # snap_yubioath_desktop: false
         snap_code: true
         # snap_android_studio: false
         # snap_UBports: false
@@ -121,15 +122,21 @@
         # snap_postman: false
         # snap_dbeaver_ce: false
         # snap_beekeeper_studio: false
+        # snap_mqtt_explorer: false
+        # snap_zaproxy: false
+        snap_nmap: true
+        # snap_john_the_ripper: false
         # snap_microk8s: false
         # snap_rpi_imager: false
         # snap_multipass: false
-        # snap_zaproxy: false
+        # snap_maas: false
         # snap_cornyjokes: false
+        # snap_steam: false
         # FLATPAK -------------------------------
         # flatpak_firefox: false
         # flatpak_chromium: false
         # flatpak_thunderbird: false
+        # flatpak_extension_manager: false
         # flatpak_flameshot: false
         # flatpak_onlyoffice: false
         # flatpak_1password: false
@@ -146,8 +153,10 @@
         # flatpak_inkscape: false
         # flatpak_drawio: false
         # flatpak_gimp: false
+        # flatpak_krita: false
         # flatpak_studio: false
         # flatpak_blender: false
+        flatpak_peek: true
         # flatpak_code: false
         # flatpak_sublimetext: false
         # flatpak_arduinoide: false
@@ -155,6 +164,7 @@
         # flatpak_insomnia: false
         # flatpak_postman: false
         # flatpak_dbeavercommunity: false
+        # flatpak_mongodb_compass: false
         # flatpak_filezilla: false
         # flatpak_jdownloader: false
         # flatpak_wireshark: false
