@@ -33,7 +33,7 @@
         apt_vpn: true
         apt_go: true
         # apt_rasp_pi_pkg: false
-        # apt_qemu_guest_agent: false
+        apt_qemu_guest_agent: true
         # DPKG ----------------------------------
         # dpkg_...: false
         # SNAP ----------------------------------
@@ -97,7 +97,7 @@
         snap_firefox: true
         snap_chromium: true
         snap_thunderbird: true
-        snap_signal_desktop: true
+        # snap_signal_desktop: false
         snap_telegram_desktop: true
         # snap_zoom_client: false
         snap_spotify: true
@@ -142,7 +142,7 @@
         # flatpak_onlyoffice: false
         # flatpak_1password: false
         # flatpak_keepassxc: false
-        # flatpak_signal: false
+        flatpak_signal: true
         # flatpak_telegram: false
         # flatpak_threemaqt: false
         # flatpak_zoom: false
