@@ -15,6 +15,9 @@
       lynis_git_repo: "https://github.com/CISOfy/lynis"
       lynis_report_from: "{{ hardening_lynis_report_from | default('root') }}"
       lynis_report_to: "{{ hardening_lynis_report_to | default('root') }}"
+      lynis_cron_hour: 21
+      lynis_cron_minute: 42
+      lynis_cron_dow: 7
       when:
         - hardening_scan is defined
         - hardening_scan | bool
