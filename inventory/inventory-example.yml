@@ -98,6 +98,11 @@ all:
       hardening_scan: true
       hardening_lynis_report_from: "{{ postfix_mail_username }}"
       hardening_lynis_report_to: "{{ postfix_mail_username }}"
+      ## Hardening SECURITY
+      ## _______________________
+      security_setup_services_auditd: true
+      security_setup_services_fail2ban: true
+      security_fail2ban_proxmox: false
     ## .........................................................................
     ## SERVER:: setup
     server:
@@ -180,6 +185,11 @@ all:
       hardening_scan: true
       hardening_lynis_report_from: "{{ postfix_mail_username }}"
       hardening_lynis_report_to: "{{ postfix_mail_username }}"
+      ## Hardening SECURITY
+      ## _______________________
+      security_setup_services_auditd: true
+      security_setup_services_fail2ban: true
+      security_fail2ban_proxmox: false
       ## docker
       ## _______________________
       docker_user_shell: /bin/zsh
