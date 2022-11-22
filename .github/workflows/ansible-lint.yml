@@ -14,5 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install required collections
+        run: ansible-galaxy collection install ansible.posix
+
       - name: Run ansible-lint
         uses: ansible-community/ansible-lint-action@main
