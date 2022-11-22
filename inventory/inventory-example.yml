@@ -14,8 +14,8 @@ all:
       ansible_user: username
       ansible_host: 192.168.0.0
       ansible_port: 22
+      ansible_host_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
       service_name: "server_{{ ansible_user }}"
-      install_server_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
       install_server_git_user: "{{ ansible_user }}"
       install_server_git_email: "{{ ansible_user }}"
       ## ansible client access setup
@@ -111,8 +111,8 @@ all:
       ansible_user: username
       ansible_host: 192.168.0.0
       ansible_port: 22
+      ansible_host_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
       service_name: "server_{{ ansible_user }}"
-      install_server_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
       install_server_git_user: "{{ ansible_user }}"
       install_server_git_email: "{{ ansible_user }}"
       ## ansible client access setup

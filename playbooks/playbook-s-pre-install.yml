@@ -3,8 +3,7 @@
 
 # ------------------------------------------------------------------------------
 - name: Include pre-task playbook
-  import_playbook: ./tasks/pre-tasks.yml
-  remote_user: "{{ ansible_user }}"
+  import_playbook: ./pre-tasks.yml
   vars:
     ansible_user_conf_on_hosts:
       - pre
@@ -19,7 +18,11 @@
     ansible_user_conf_home: "{{ ansible_user_config.home | default('/home/' + ansible_user) }}"
     ansible_user_conf_add_ssh_key: "{{ ansible_user_config.add_ssh_key | default('yes') | bool }}"
     ansible_user_conf_clients: "{{ clients }}"
-  when: skip_default_setup is not defined and (ansible_user_setup is defined and ansible_user_setup | bool)
+    ansible_host_conf_hostname: "{{ ansible_host_hostname | default(ansible_hostname) }}"
+  when:
+    - skip_default_setup is not defined
+    - ansible_user_setup is defined
+    - ansible_user_setup | bool
   # ----------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
@@ -100,5 +103,8 @@
           mailbox_size_limit = 0
           message_size_limit = 0
           compatibility_level = 2
-      when: skip_default_setup is not defined and (postfix_setup is defined and postfix_setup | bool)
+      when:
+        - skip_default_setup is not defined
+        - postfix_setup is defined
+        - postfix_setup | bool
     ### -------------------------
