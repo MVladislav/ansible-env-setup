@@ -13,8 +13,7 @@ inventory/*
 !playbooks/
 playbooks/*
 
-!playbooks/tasks/
-!playbooks/tasks/*
+!playbooks/pre-tasks.yml
 
 !playbooks/vars/
 playbooks/vars/*

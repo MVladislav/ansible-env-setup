@@ -1,0 +1,208 @@
+---
+# pre-task for all playbooks, to install ansible on nodes and add ssh-key, etc.
+
+# ------------------------------------------------------------------------------
+- name: "PRE-INSTALL | print debug"
+  remote_user: "{{ ansible_user_conf_name }}"
+  check_mode: true
+  gather_facts: false
+  hosts: "{{ ansible_user_conf_on_hosts }}"
+  vars:
+    ansible_user_conf_on_hosts: []
+    ansible_user_conf_update: null
+    ansible_user_conf_name: "{{ ansible_user }}"
+    ansible_user_conf_name_map: "{{ ansible_user }}-{{ ansible_host }}"
+    ansible_user_conf_shell: /bin/bash
+    ansible_user_conf_password: null
+    ansible_user_conf_update_password: always
+    ansible_user_conf_group: sudo,adm,cdrom
+    ansible_user_conf_system: null
+    ansible_user_conf_append: null
+    ansible_user_conf_createhome: null
+    ansible_user_conf_home: "/home/{{ ansible_user }}"
+    ansible_user_conf_add_ssh_key: null
+    ansible_user_conf_clients: []
+    ansible_host_conf_hostname: null
+  tasks:
+    - name: "PRE-INSTALL | print debug all vars"
+      check_mode: true
+      ansible.builtin.debug:
+        msg:
+          - "on_hosts        (on which host to install)                : {{ ansible_user_conf_on_hosts }}"
+          - "update          (if user should updated)                  : {{ ansible_user_conf_update | bool }}"
+          - "name            (name of user for ansible)                : {{ ansible_user_conf_name }}"
+          - "name-map        (map for 'var/default.yml')               : {{ ansible_user_conf_name_map }}"
+          - "password        (ansible-user password)                   : {{ ansible_user_conf_password }}"
+          - "update_password (ansible-user password update method?)    : {{ ansible_user_conf_update_password }}"
+          - "group           (ansible-user group)                      : {{ ansible_user_conf_group }}"
+          - "system          (ansible-user is system?)                 : {{ ansible_user_conf_system | bool }}"
+          - "append          (append the groups?)                      : {{ ansible_user_conf_append | bool }}"
+          - "createhome      (ansible-user create home folder?)        : {{ ansible_user_conf_createhome | bool }}"
+          - "home            (current not used)                        : {{ ansible_user_conf_home }}"
+          - "add_ssh_key     (should the ssh key added to user)        : {{ ansible_user_conf_add_ssh_key | bool }}"
+          - "clients         (clients list to be updated, multi setup) : {{ ansible_user_conf_clients }}"
+          - "hostname        (hostname to be changed to)               : {{ ansible_host_conf_hostname }}"
+    - name: "PRE-INSTALL | pause for user"
+      check_mode: true
+      ansible.builtin.pause:
+        prompt: "Validate if above printed values are correct"
+
+# ------------------------------------------------------------------------------
+- name: "PRE-INSTALL | remote-user: update user and deploy ssh-key"
+  gather_facts: false
+  remote_user: "{{ ansible_user_conf_name }}"
+  hosts: "{{ ansible_user_conf_on_hosts }}"
+  vars:
+    ansible_user_conf_on_hosts: []
+    ansible_user_conf_update: null
+    ansible_user_conf_name: "{{ ansible_user }}"
+    ansible_user_conf_name_map: "{{ ansible_user }}-{{ ansible_host }}"
+    ansible_user_conf_shell: /bin/bash
+    ansible_user_conf_password: null
+    ansible_user_conf_update_password: always
+    ansible_user_conf_group: sudo,adm,cdrom
+    ansible_user_conf_system: null
+    ansible_user_conf_append: null
+    ansible_user_conf_createhome: null
+    ansible_user_conf_home: "/home/{{ ansible_user }}"
+    ansible_user_conf_add_ssh_key: null
+  tasks:
+    # - name: check if user {{ ansible_user_conf_name }} exist in sudors
+    #  become: true
+    #  shell: grep -c "^{{ ansible_user_conf_name }}" /etc/sudoers || true
+    #  changed_when: test_grep is defined and test_grep.stdout == "0"
+    #  register: test_grep
+    - name: "PRE-INSTALL | update user: {{ ansible_user_conf_name }}"
+      become: true
+      ansible.builtin.user:
+        name: "{{ ansible_user_conf_name | default(ansible_user) }}"
+        state: present
+        # shell: "{{ ansible_user_conf_shell }}" # TODO:
+        # sudo apt install whois && mkpasswd --method=sha-512
+        password: "{{ ansible_user_conf_password }}"
+        update_password: "{{ ansible_user_conf_update_password | default('always') }}"
+        groups: "{{ ansible_user_conf_group | default('sudo, adm, cdrom') }}"
+        system: "{{ ansible_user_conf_system | default('no') | bool }}"
+        append: "{{ ansible_user_conf_append | default('yes') | bool }}"
+        createhome: "{{ ansible_user_conf_createhome | default('yes') | bool }}"
+        # home: "{{ ansible_user_conf_home | default('/var/none') }}" # TODO:
+        expires: -1
+      when:
+        - ansible_user_conf_update is defined
+        - ansible_user_conf_update | bool
+    # - name: "PRE-INSTALL | add user {{ ansible_user_conf_name }} into sudors without password promt"
+    #   become: true
+    #   lineinfile:
+    #     path: /etc/sudoers
+    #     state: present
+    #     regexp: "^{{ ansible_user_conf_name }}"
+    #     line: "{{ ansible_user_conf_name }}\tALL=(ALL)\tNOPASSWD:\tALL"
+    #     validate: "/usr/sbin/visudo -cf %s"
+    #   when:
+    #     - ansible_user_conf_update is defined
+    #     - ansible_user_conf_update | bool
+    - name: "PRE-INSTALL | read ssh key variables: {{ ansible_user_conf_name }}"
+      ansible.builtin.include_vars: "{{ item }}"
+      with_first_found:
+        - files:
+            - "{{ inventory_hostname }}.yml"
+            - "default.yml"
+          paths: "../vars/"
+      when:
+        - ansible_user_conf_add_ssh_key is defined
+        - ansible_user_conf_add_ssh_key | bool
+    - name: "PRE-INSTALL | deploy SSH-Keys to remote host: {{ ansible_user_conf_name }}"
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user_conf_name }}"
+        key: "{{ keystodeploy[ansible_user_conf_name_map] | map(attribute='sshkey') | join('\n') }}"
+        state: present
+        exclusive: true # will only allow specified key, in the authorized_keys file from the remote host
+      when:
+        - ansible_user_conf_add_ssh_key is defined
+        - ansible_user_conf_add_ssh_key | bool
+
+# ------------------------------------------------------------------------------
+- name: "PRE-INSTALL | change hostname"
+  gather_facts: false
+  remote_user: "{{ ansible_user_conf_name }}"
+  hosts: "{{ ansible_user_conf_on_hosts }}"
+  vars:
+    ansible_user_conf_on_hosts: []
+    ansible_host_conf_hostname: null
+  tasks:
+    - name: "PRE-INSTALL | set hostname:: update /etc/hosts"
+      become: true
+      ansible.builtin.replace:
+        path: /etc/hosts
+        regexp: "{{ ansible_hostname }}"
+        replace: "{{ ansible_host_conf_hostname }}"
+        owner: root
+        group: root
+        mode: "0644"
+      when: ansible_host_conf_hostname is defined
+      tags:
+        - install_server
+        - hostname
+    - name: "PRE-INSTALL | set hostname:: use hostnamectl"
+      become: true
+      ansible.builtin.command: "hostnamectl set-hostname {{ ansible_host_conf_hostname }}"
+      when: ansible_host_conf_hostname is defined
+      tags:
+        - install_server
+        - hostname
+
+# ------------------------------------------------------------------------------
+- name: "PRE-INSTALL | install python3 and dependencies"
+  become: true
+  gather_facts: false
+  remote_user: "{{ ansible_user_conf_name }}"
+  hosts: "{{ ansible_user_conf_on_hosts }}"
+  vars:
+    ansible_user_conf_on_hosts: []
+    ansible_user_conf_name: "{{ ansible_user }}"
+  pre_tasks:
+    - name: "PRE-INSTALL | check for python3"
+      ansible.builtin.raw: test -e /usr/bin/python3
+      changed_when: false
+      failed_when: false
+      ignore_errors: true
+      register: check_python
+    - name: "PRE-INSTALL | install python3 and dependencies"
+      ansible.builtin.raw: apt update && apt install -y python3 python3-psutil python3-pexpect
+      when: check_python is failed
+
+# ------------------------------------------------------------------------------
+- name: "PRE-INSTALL | update/create user accounts"
+  gather_facts: false
+  remote_user: "{{ ansible_user_conf_name }}"
+  hosts: "{{ ansible_user_conf_on_hosts }}"
+  vars:
+    ansible_user_conf_on_hosts: []
+    ansible_user_conf_clients: []
+    ansible_user_conf_name: "{{ ansible_user }}"
+  tasks:
+    - name: "PRE-INSTALL | update/create user accounts"
+      become: true
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        state: present
+        shell: "{{ item.shell | default('/bin/bash') }}"
+        groups: "{{ item.group | default('adm, cdrom, sudo') }}"
+        createhome: "{{ item.createhome | default('yes') | bool }}"
+        # sudo apt install whois && mkpasswd --method=sha-512
+        password: "{{ item.password }}"
+        update_password: on_create
+      loop: "{{ ansible_user_conf_clients | flatten(levels=1) }}"
+      register: user_creation
+      when:
+        - item.updateOrCreate is defined
+        - item.updateOrCreate | bool
+    - name: "PRE-INSTALL | force users to change password on login"
+      become: true
+      ansible.builtin.command: "chage -d 0 {{ item.name }}"
+      loop: "{{ ansible_user_conf_clients | flatten(levels=1) }}"
+      when:
+        - item.updateOrCreate is defined
+        - item.updateOrCreate | bool
+        - user_creation is defined
+        - user_creation.changed | bool
