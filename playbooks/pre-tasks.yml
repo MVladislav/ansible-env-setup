@@ -107,7 +107,7 @@
         - files:
             - "{{ inventory_hostname }}.yml"
             - "default.yml"
-          paths: "../vars/"
+          paths: "./vars/"
       when:
         - ansible_user_conf_add_ssh_key is defined
         - ansible_user_conf_add_ssh_key | bool
