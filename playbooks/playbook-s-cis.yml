@@ -3,7 +3,7 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: CIS installer (client)
+- name: CIS | install on clients
   remote_user: "{{ ansible_user }}"
   hosts:
     - clients
@@ -12,10 +12,10 @@
     ### -------------------------
     - role: ubuntu2004_cis
       # needed for client
-      ubuntu2004cis_xwindows_required: true # do not remove xorg for client
-      ubuntu2004cis_rule_2_2_2: false # do not remove xorg for client
       ubuntu2004cis_allow_autofs: true # allow to auto mount usb devices
       ubuntu2004cis_rule_1_1_24: false # do not Disable USB Storage
+      ubuntu2004cis_xwindows_required: true # do not remove xorg for client
+      ubuntu2004cis_rule_2_2_2: false # do not remove xorg for client
       #
       ubuntu2004cis_rule_5_3_2: false # password after change not working, can not login
       ubuntu2004cis_pwquality:
@@ -30,8 +30,9 @@
         - key: "lcredit"
           value: "-1"
       # AIDE cron settings
-      ubuntu2004cis_config_aide: "{{ cis_setup_aide | default(true) | bool }}"
-      ubuntu2004cis_rule_1_4_2: "{{ cis_setup_aide | default(true) | bool }}"
+      ubuntu2004cis_rule_1_4_1: "{{ cis_setup_aide | default(false) | bool }}"
+      ubuntu2004cis_rule_1_4_2: "{{ cis_setup_aide | default(false) | bool }}"
+      ubuntu2004cis_config_aide: "{{ cis_setup_aide | default(false) | bool }}"
       ubuntu2004cis_aide_cron:
         cron_user: root
         cron_file: aide-cron-scan
@@ -51,11 +52,13 @@
           config: "iburst maxsources 1"
       ubuntu2004cis_is_router: false
       ubuntu2004cis_ipv6_required: false
-      when: cis_setup is defined and cis_setup | bool
+      when:
+        - cis_setup is defined
+        - cis_setup | bool
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: Cis installer (server)
+- name: CIS | install on servers
   remote_user: "{{ ansible_user }}"
   hosts:
     - servers
@@ -76,8 +79,9 @@
         - key: "lcredit"
           value: "-1"
       # AIDE cron settings
-      ubuntu2004cis_config_aide: "{{ cis_setup_aide | default(true) | bool }}"
-      ubuntu2004cis_rule_1_4_2: "{{ cis_setup_aide | default(true) | bool }}"
+      ubuntu2004cis_rule_1_4_1: "{{ cis_setup_aide | default(false) | bool }}"
+      ubuntu2004cis_rule_1_4_2: "{{ cis_setup_aide | default(false) | bool }}"
+      ubuntu2004cis_config_aide: "{{ cis_setup_aide | default(false) | bool }}"
       ubuntu2004cis_aide_cron:
         cron_user: root
         cron_file: aide-cron-scan
@@ -97,18 +101,20 @@
           config: "iburst maxsources 1"
       ubuntu2004cis_is_router: false
       ubuntu2004cis_ipv6_required: false
-      when: cis_setup is defined and cis_setup | bool
+      when:
+        - cis_setup is defined
+        - cis_setup | bool
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: CIS installer - additional configs (client/server)
+- name: CIS | additional configs for client/server
   remote_user: "{{ ansible_user }}"
   hosts:
     - clients
     - servers
   become: true
   tasks:
-    - name: Set/update system variables for aide
+    - name: CIS | set/update system variables for aide
       ansible.builtin.lineinfile:
         dest: "/etc/environment"
         state: present
@@ -127,8 +133,12 @@
           value: "yes"
         - key: FILTERINSTALLATIONS
           value: "yes"
-      when: (cis_setup is defined and cis_setup | bool) and (cis_setup_aide is not defined or cis_setup_aide | bool)
-    - name: Set/update aide variables for aide
+      when:
+        - cis_setup is defined
+        - cis_setup | bool
+        - cis_setup_aide is defined
+        - cis_setup_aide | bool
+    - name: CIS | set/update aide variables for aide
       ansible.builtin.lineinfile:
         dest: "/etc/default/aide"
         state: present
@@ -147,5 +157,9 @@
           value: "yes"
         - key: FILTERINSTALLATIONS
           value: "yes"
-      when: (cis_setup is defined and cis_setup | bool) and (cis_setup_aide is not defined or cis_setup_aide | bool)
+      when:
+        - cis_setup is defined
+        - cis_setup | bool
+        - cis_setup_aide is defined
+        - cis_setup_aide | bool
     ### -------------------------
