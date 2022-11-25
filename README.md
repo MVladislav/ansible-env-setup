@@ -8,31 +8,25 @@
 
 - [Ansible Env Setup](#ansible-env-setup)
   - [clone](#clone)
-  - [install](#install)
+  - [install dependencies on host](#install-dependencies-on-host)
   - [setup](#setup)
     - [device](#device)
     - [ssh-key](#ssh-key)
   - [run](#run)
     - [setup a client](#setup-a-client)
     - [setup a server](#setup-a-server)
-  - [Other](#other)
 
 ---
 
-![client](__docs/client_ubuntu_2104.png)
-
-**client installer runs around `1h`**
-
 ## clone
 
-clone this repo recursive, because the roles are</br>
-included as submoduls
+clone this repo recursive, roles are included as submoduls
 
 ```sh
 $git clone --recursive https://github.com/MVladislav/ansible-env-setup.git
 ```
 
-to load or update submodules run:
+to load or update submodules afterwards run:
 
 ```sh
 : 'load'
@@ -41,7 +35,7 @@ $git submodule update --init --recursive
 $git submodule update --recursive --remote
 ```
 
-## install
+## install dependencies on host
 
 install Ansible on host to run the playbook
 
@@ -56,34 +50,47 @@ $python3 -m pip install molecule[docker] ansible-lint
 
 ### device
 
-copy `inventory/inventory-example.yml` to `inventory/inventory.yml`</br>
-`$cp inventory/inventory-example.yml inventory/inventory.yml`
+copy `inventory/inventory-example.yml` to `inventory/inventory.yml`:
+
+```sh
+$cp inventory/inventory-example.yml inventory/inventory.yml
+```
 
 add the device information into: `inventory/inventory.yml`
 
-from default the base setup is defined in each file:
+main playbooks (includes multiple sub-playbooks):
 
 - `playbooks/playbook-client.yml`
+- `playbooks/playbook-client-vm.yml`
+- `playbooks/playbook-client-dev.yml`
 - `playbooks/playbook-server.yml`
+- `playbooks/playbook-server-minimal.yml`
+- `playbooks/playbook-server-cluster.yml`
 
-if needed you can update this, like you need to install services.
+if needed you can update this, \
+like you need to install services.
 
 ### ssh-key
 
-copy `playbooks/vars/default-example.yml` to `playbooks/vars/default.yml`</br>
-`$cp playbooks/vars/default-example.yml playbooks/vars/default.yml`
+copy `playbooks/vars/default-example.yml` to `playbooks/vars/default.yml`:
 
-every setup will add a **ssh-key** to the **nodes**, for that</br>
-you need to add a **ssh-pub-key** into `playbooks/vars/default.yml`</br>
-where the **key**, in the file, will be selected by: `"{{ ansible_user }}-{{ ansible_host }}"`.
+```sh
+$cp playbooks/vars/default-example.yml playbooks/vars/default.yml
+```
 
-this will be done in: `playbooks/tasks/pre-tasks.yml`
+every setup will add a **ssh-pub-key** to the **nodes**,\
+for that you need to add a **ssh-pub-key** into `playbooks/vars/default.yml`\
+where the **key**, in the file, will be selected by: \
+`"{{ ansible_user }}-{{ ansible_host }}"`
+
+this process is done in: `playbooks/pre-tasks.yml`
 
 ## run
 
 ### setup a client
 
-> HINT: change `playbooks/playbook-client.yml` in example command, in what ever you want to run
+> HINT: playbooks are pre-defined to install multiple different service. \
+> Change them as you need
 
 on first run:
 
@@ -101,7 +108,8 @@ $ansible-playbook playbooks/playbook-client.yml --ask-become-pass
 
 ### setup a server
 
-> HINT: change `playbooks/playbook-server.yml` in example command, in what ever you want to run
+> HINT: playbooks are pre-defined to install multiple different service. \
+> Change them as you need
 
 on first run:
 
@@ -115,20 +123,4 @@ on other runs:
 
 ```sh
 $ansible-playbook playbooks/playbook-server.yml --ask-become-pass
-```
-
----
-
-## Other
-
-change username at once with current user:
-
-> change
->
-> - <newname>
-> - <oldname>
-
-```sh
-$sudo su
-$nohup bash -c "groupadd <newname> ; pkill -u <oldname> ; usermod -d /home/<newname> -m -g <newname> -l <newname> <oldname>" </dev/null &>/dev/null &
 ```

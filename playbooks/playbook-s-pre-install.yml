@@ -2,9 +2,8 @@
 # playbook client
 
 # ------------------------------------------------------------------------------
-- name: Include pre-task playbook
-  import_playbook: ./tasks/pre-tasks.yml
-  remote_user: "{{ ansible_user }}"
+- name: PRE | include pre-task playbook
+  import_playbook: ./pre-tasks.yml
   vars:
     ansible_user_conf_on_hosts:
       - pre
@@ -19,12 +18,16 @@
     ansible_user_conf_home: "{{ ansible_user_config.home | default('/home/' + ansible_user) }}"
     ansible_user_conf_add_ssh_key: "{{ ansible_user_config.add_ssh_key | default('yes') | bool }}"
     ansible_user_conf_clients: "{{ clients }}"
-  when: skip_default_setup is not defined and (ansible_user_setup is defined and ansible_user_setup | bool)
+    ansible_host_conf_hostname: "{{ ansible_host_hostname | default(ansible_hostname) }}"
+  when:
+    - skip_default_setup is not defined
+    - ansible_user_setup is defined
+    - ansible_user_setup | bool
   # ----------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: Pre installer (1)
+- name: PRE | pre installer (1)
   remote_user: "{{ ansible_user }}"
   hosts:
     - pre
@@ -49,7 +52,7 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: Pre installer (2)
+- name: PRE | installer (2)
   remote_user: "{{ ansible_user }}"
   hosts:
     - pre
@@ -73,32 +76,72 @@
     ### -------------------------
     - role: ansible-postfix
       become: true
-      postfix_hostname: "{{ postfix_mail_username.split('@')[1] }}"
-      # postfix_mailname: "{{ postfix_mail_username.split('@')[1] }}"
+      postfix_hostname: "{{ mailing_mail_username.split('@')[1] }}"
+      # postfix_mailname: "{{ mailing_mail_username.split('@')[1] }}"
       postfix_aliases:
         - user: root
-          alias: "{{ postfix_mail_username }}"
+          alias: "{{ mailing_mail_username }}"
         - user: "{{ ansible_user }}"
-          alias: "{{ postfix_mail_username }}"
+          alias: "{{ mailing_mail_username }}"
       # postfix_header_checks:
       #   - pattern: "/From:.*/"
       #     action: REPLACE
-      #     text: "From: {{ postfix_mail_username }}"
+      #     text: "From: {{ mailing_mail_username }}"
       postfix_mydestination:
         - localhost.$myhostname
         - localhost
         - localhost.localdomain
       postfix_inet_interfaces: loopback-only
       postfix_inet_protocols: ipv4
-      postfix_relayhost: "{{ postfix_smtp_host }}"
-      postfix_relaytls: true
-      postfix_sasl_user: "{{ postfix_mail_username }}"
-      postfix_sasl_password: "{{ postfix_mail_password }}"
+      postfix_relayhost: "{{ mailing_smtp_host }}"
+      postfix_relaytls: "{{ mailing_remote_ssl }}"
+      postfix_sasl_user: "{{ mailing_mail_username }}"
+      postfix_sasl_password: "{{ mailing_mail_password }}"
       postfix_raw_options:
         - |
           sender_canonical_classes = envelope_sender
           mailbox_size_limit = 0
           message_size_limit = 0
           compatibility_level = 2
-      when: skip_default_setup is not defined and (postfix_setup is defined and postfix_setup | bool)
+      when:
+        - skip_default_setup is not defined
+        - postfix_setup is defined
+        - postfix_setup | bool
     ### -------------------------
+  tasks:
+    # ------------------------------------------------------------------------------
+    - name: "PRE | conf nullmailer"
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/nullmailer/remotes
+        content: |
+          {{ mailing_smtp_host }} smtp --port={{ mailing_smtp_port }}{% if mailing_mail_username %} --auth-login --user={{ mailing_mail_username }} --pass={{ mailing_mail_password }}{% endif %}{% if mailing_remote_ssl %} --ssl{% endif %}{% if mailing_remote_starttls %} --starttls{% endif %}
+        mode: "600"
+      when:
+        - skip_default_setup is not defined
+        - nullmailer_setup is defined
+        - nullmailer_setup | bool
+    # ------------------------------------------------------------------------------
+    - name: "PRE | conf nullmailer"
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/nullmailer/adminaddr
+        content: |
+          {{ mailing_mail_username }}
+        mode: "640"
+      when:
+        - skip_default_setup is not defined
+        - nullmailer_setup is defined
+        - nullmailer_setup | bool
+    # ------------------------------------------------------------------------------
+    - name: "PRE | conf nullmailer"
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/nullmailer/allmailfrom
+        content: |
+          {{ mailing_mail_username }}
+        mode: "640"
+      when:
+        - skip_default_setup is not defined
+        - nullmailer_setup is defined
+        - nullmailer_setup | bool
