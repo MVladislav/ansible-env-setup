@@ -4,12 +4,12 @@ all:
     ## .........................................................................
     ## CLIENT:: setup
     client:
-      ## NOTE: if some defaults needs to be skipped, en-commit next line
+      ## NOTE: to skip pre install playbook, define "skip_default_setup"
       # skip_default_setup:
-      ## ansible defaults
+      ## ANSIBLE DEFAULTS
       ## _______________________
       ## NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
-      ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}"
+      ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}":
       ansible_ssh_private_key_file: ~/.ssh/id_ed25519
       ansible_user: username
       ansible_host: 192.168.0.0
@@ -17,8 +17,12 @@ all:
       ansible_host_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
       service_name: "server_{{ ansible_user }}"
       install_server_git_user: "{{ ansible_user }}"
+      # NOTE: change this to your email instead of user
       install_server_git_email: "{{ ansible_user }}"
-      ## ansible client access setup
+      # NOTE: change to you needed dns and ntp server, or change in playbooks
+      ansible_host_default_dns: 1.1.1.1
+      ansible_host_default_ntp: time.cloudflare.com
+      ## ANSIBLE CLIENT ACCESS SETUP
       ## _______________________
       ansible_user_setup: true
       ansible_user_config:
@@ -29,7 +33,7 @@ all:
         system: false
         append: true
         add_ssh_key: true
-      ## client used for adding to services
+      ## CLIENT USED FOR ADDING TO SERVICES
       ## _______________________
       clients:
         - name: "{{ ansible_user }}"
@@ -47,12 +51,12 @@ all:
           updateOrCreate: true
           locale: de_DE.UTF-8
           language: de_DE.UTF-8
-      ## updater
+      ## UPDATER
       ## _______________________
       updater_time_timezone: Europe/Berlin
-      updater_ntp_server: time.cloudflare.com
+      updater_ntp_server: "{{ ansible_host_default_ntp }}"
       updater_ntp_fallback_server: ntp.ubuntu.com
-      ## netplan
+      ## NETPLAN
       ## _______________________
       netplan_setup: false
       netplan_remove_existing: false
@@ -66,15 +70,12 @@ all:
                 - "{{ ansible_host }}/24"
               nameservers:
                 addresses:
-                  - 1.1.1.1
+                  - "{{ ansible_host_default_dns }}"
                   - 1.0.0.1
               routes:
                 - to: default
                   via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
-      ## docker
-      ## _______________________
-      docker_user_shell: /bin/zsh
-      ## ufw
+      ## UFW
       ## _______________________
       ufw_setup: true
       ufw_rules_extended:
@@ -83,35 +84,43 @@ all:
           protocol: tcp
           interface: "{{ ansible_default_ipv4['interface'] }}"
           comment: "allow incoming connection on standard ssh port"
-      ## Ubuntu2004 CIS
+      ## UBUNTU2004 CIS
       ## _______________________
       cis_setup: true
       cis_setup_aide: false
-      ## POSTFIX SETUP
+      ## MAILING SETUP
+      ## _______________________
+      mailing_mail_username: root
+      mailing_mail_password: ""
+      mailing_smtp_host: home.local
+      ## NULLMAILER SETUP
+      ## _______________________
+      nullmailer_setup: false
+      ## POSTFIX SETUP (most case not needed, by CIS nullmailer will set per default)
       ## _______________________
       postfix_setup: false
-      postfix_mail_username: example@local
-      postfix_mail_password: "mysecret"
-      postfix_smtp_host: smtp.example.local
-      ## Hardening SCAN
+      ## HARDENING SCAN
       ## _______________________
       hardening_scan: true
-      hardening_lynis_report_from: "{{ postfix_mail_username }}"
-      hardening_lynis_report_to: "{{ postfix_mail_username }}"
-      ## Hardening SECURITY
+      hardening_lynis_report_from: "{{ mailing_mail_username }}"
+      hardening_lynis_report_to: "{{ mailing_mail_username }}"
+      ## HARDENING SECURITY
       ## _______________________
       security_setup_services_auditd: true
       security_setup_services_fail2ban: true
       security_fail2ban_proxmox: false
+      ## DOCKER
+      ## _______________________
+      docker_user_shell: /bin/zsh
     ## .........................................................................
     ## SERVER:: setup
     server:
-      ## NOTE: if some defaults needs to be skipped, en-commit next line
+      ## NOTE: to skip pre install playbook, define "skip_default_setup"
       # skip_default_setup:
-      ## ansible defaults
+      ## ANSIBLE DEFAULTS
       ## _______________________
       ## NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
-      ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}"
+      ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}":
       ansible_ssh_private_key_file: ~/.ssh/id_ed25519
       ansible_user: username
       ansible_host: 192.168.0.0
@@ -119,8 +128,12 @@ all:
       ansible_host_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
       service_name: "server_{{ ansible_user }}"
       install_server_git_user: "{{ ansible_user }}"
+      # NOTE: change this to your email instead of user
       install_server_git_email: "{{ ansible_user }}"
-      ## ansible client access setup
+      # NOTE: change to you needed dns and ntp server, or change in playbooks
+      ansible_host_default_dns: 1.1.1.1
+      ansible_host_default_ntp: time.cloudflare.com
+      ## ANSIBLE CLIENT ACCESS SETUP
       ## _______________________
       ansible_user_setup: true
       ansible_user_config:
@@ -131,18 +144,19 @@ all:
         system: false
         append: true
         add_ssh_key: true
-      ## client used for adding to services
+      ## CLIENT USED FOR ADDING TO SERVICES
       ## _______________________
       clients:
         - name: "{{ ansible_user }}"
           dev: true
           updateOrCreate: false
-      ## updater
+          setup: true
+      ## UPDATER
       ## _______________________
       updater_time_timezone: Europe/Berlin
-      updater_ntp_server: time.cloudflare.com
+      updater_ntp_server: "{{ ansible_host_default_ntp }}"
       updater_ntp_fallback_server: ntp.ubuntu.com
-      ## netplan
+      ## NETPLAN
       ## _______________________
       netplan_setup: true
       netplan_remove_existing: false
@@ -156,12 +170,12 @@ all:
                 - "{{ ansible_host }}/24"
               nameservers:
                 addresses:
-                  - 1.1.1.1
+                  - "{{ ansible_host_default_dns }}"
                   - 1.0.0.1
               routes:
                 - to: default
                   via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
-      ## ufw
+      ## UFW
       ## _______________________
       ufw_setup: true
       ufw_rules_extended:
@@ -170,30 +184,38 @@ all:
           protocol: tcp
           interface: "{{ ansible_default_ipv4['interface'] }}"
           comment: "allow incoming connection on standard ssh port"
-      ## Ubuntu2004 CIS
+      ## UBUNTU2004 CIS
       ## _______________________
       cis_setup: true
-      cis_setup_aide: true
-      ## POSTFIX SETUP
+      cis_setup_aide: false
+      ## MAILING SETUP
       ## _______________________
-      postfix_setup: true
-      postfix_mail_username: example@local
-      postfix_mail_password: "mysecret"
-      postfix_smtp_host: smtp.example.local
-      ## Hardening SCAN
+      mailing_mail_username: root # also used as mail from/to
+      mailing_mail_password: ""
+      mailing_smtp_host: home.local
+      mailing_smtp_port: 465
+      mailing_remote_ssl: true
+      mailing_remote_starttls: false
+      ## NULLMAILER SETUP
+      ## _______________________
+      nullmailer_setup: false
+      ## POSTFIX SETUP (most case not needed, by CIS nullmailer will set per default)
+      ## _______________________
+      postfix_setup: false
+      ## HARDENING SCAN
       ## _______________________
       hardening_scan: true
-      hardening_lynis_report_from: "{{ postfix_mail_username }}"
-      hardening_lynis_report_to: "{{ postfix_mail_username }}"
-      ## Hardening SECURITY
+      hardening_lynis_report_from: "{{ mailing_mail_username }}"
+      hardening_lynis_report_to: "{{ mailing_mail_username }}"
+      ## HARDENING SECURITY
       ## _______________________
       security_setup_services_auditd: true
       security_setup_services_fail2ban: true
       security_fail2ban_proxmox: false
-      ## docker
+      ## DOCKER (host need to be added below in children: docker)
       ## _______________________
       docker_user_shell: /bin/zsh
-      ## kubernetes
+      ## KUBERNETES (host need to be added below in children: kubernetes)
       ## _______________________
       kubernetes_setup_server: true
       # kubernetes_setup_server_slave: false

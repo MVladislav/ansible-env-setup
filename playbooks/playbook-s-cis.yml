@@ -46,7 +46,7 @@
       ubuntu2004cis_firewall: ufw # ufw | iptables | firewalld
       ubuntu2004cis_time_synchronization: chrony # chrony | ntp
       ubuntu2004cis_time_synchronization_servers:
-        - uri: "192.168.1.1"
+        - uri: "{{ ansible_host_default_ntp }}"
           config: "iburst maxsources 4"
         - uri: "time.cloudflare.com"
           config: "iburst maxsources 1"
@@ -95,7 +95,7 @@
       ubuntu2004cis_firewall: ufw # ufw | iptables | firewalld
       ubuntu2004cis_time_synchronization: chrony # chrony | ntp
       ubuntu2004cis_time_synchronization_servers:
-        - uri: "192.168.1.1"
+        - uri: "{{ ansible_host_default_ntp }}"
           config: "iburst maxsources 4"
         - uri: "ntp.ubuntu.com"
           config: "iburst maxsources 1"
@@ -118,13 +118,13 @@
       ansible.builtin.lineinfile:
         dest: "/etc/environment"
         state: present
-        regexp: "^{{ item.key }}="
+        regexp: "^(#)?{{ item.key }}=(\\s|$)"
         line: "{{ item.key }}={{ item.value }}"
       with_items:
         - key: CRON_DAILY_RUN
           value: "yes"
         - key: MAILTO
-          value: "{{ postfix_mail_username | default('root') }}"
+          value: "{{ mailing_mail_username | default('root') }}"
         - key: COPYNEWDB
           value: "yes"
         - key: TRUNCATEDETAILS
@@ -142,13 +142,13 @@
       ansible.builtin.lineinfile:
         dest: "/etc/default/aide"
         state: present
-        regexp: "^{{ item.key }}="
+        regexp: "^(#)?{{ item.key }}=(\\s|$)"
         line: "{{ item.key }}={{ item.value }}"
       with_items:
         - key: CRON_DAILY_RUN
           value: "yes"
         - key: MAILTO
-          value: "{{ postfix_mail_username | default('root') }}"
+          value: "{{ mailing_mail_username | default('root') }}"
         - key: COPYNEWDB
           value: "yes"
         - key: TRUNCATEDETAILS

@@ -130,7 +130,7 @@
     ansible_user_conf_on_hosts: []
     ansible_host_conf_hostname: null
   tasks:
-    - name: "PRE-INSTALL | set hostname:: update /etc/hosts"
+    - name: "PRE-INSTALL | set/update hostname | update /etc/hosts"
       become: true
       ansible.builtin.replace:
         path: /etc/hosts
@@ -141,14 +141,12 @@
         mode: "0644"
       when: ansible_host_conf_hostname is defined
       tags:
-        - install_server
         - hostname
-    - name: "PRE-INSTALL | set hostname:: use hostnamectl"
+    - name: "PRE-INSTALL | set/update hostname | use hostnamectl"
       become: true
       ansible.builtin.command: "hostnamectl set-hostname {{ ansible_host_conf_hostname }}"
       when: ansible_host_conf_hostname is defined
       tags:
-        - install_server
         - hostname
 
 # ------------------------------------------------------------------------------
