@@ -114,8 +114,11 @@
       become: true
       ansible.builtin.copy:
         dest: /etc/nullmailer/remotes
-        content: |
-          {{ mailing_smtp_host }} smtp --port={{ mailing_smtp_port }}{% if mailing_mail_username %} --auth-login --user={{ mailing_mail_username }} --pass={{ mailing_mail_password }}{% endif %}{% if mailing_remote_ssl %} --ssl{% endif %}{% if mailing_remote_starttls %} --starttls{% endif %}
+        content: >-
+          {{ mailing_smtp_host }} smtp --port={{ mailing_smtp_port }}
+          {% if mailing_mail_username %} --auth-login --user={{ mailing_mail_username }} --pass={{ mailing_mail_password }}{% endif %}
+          {% if mailing_remote_ssl %} --ssl{% endif %}
+          {% if mailing_remote_starttls %} --starttls{% endif %}
         mode: "600"
       when:
         - skip_default_setup is not defined
