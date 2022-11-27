@@ -24,6 +24,7 @@
       install_server_config:
         dev: true
         env_tun_setup: true
+        # snmp: false
         # APT (1) -------------------------------
         apt_base: true
         # apt_dev: false
@@ -32,12 +33,14 @@
         # APT (2) -------------------------------
         # apt_vpn: false
         # apt_go: false
+        # apt_php: false
         # apt_rasp_pi_pkg: false
         # apt_qemu_guest_agent: false
         # DPKG ----------------------------------
         # dpkg_...: false
         # SNAP ----------------------------------
         # snap_microk8s: false
+        # snap_multipass: false
         snap_btop: true
         # OTHER --------------------------------
         git: true
@@ -70,20 +73,19 @@
         dev: true
         fonts: true
         # GNOME ---------------------------------
-        gnome_gui_setup: true
+        gnome_gui_setup: true # general of gnome setup should be triggered, below specific what (dependencies will than general installed)
         # gnome_gui_setup_theme: false
         # gnome_gui_setup_dependencies: false
         gnome_gui_setup_extensions: true
         gnome_gui_setup_keybinding: true
         gnome_gui_setup_overlay: true
+        # cleanup_remove_snap: false
+        # cleanup_remove_flatpak: false
         # APT -----------------------------------
         apt_base: true
-        # apt_base2: false
+        # apt_base_sound_pulseaudio: false
         # apt_snap: false
         # apt_flatpak: false
-        # apt_peek: false
-        # apt_wireshark: false
-        # apt_wireshark_dev: false
         # apt_vpn: false
         # apt_gnome_boxes: false
         # apt_latex: false
@@ -92,41 +94,52 @@
         # apt_lutris: false
         # DPKG ----------------------------------
         # dpkg_virtualbox: false
-        # dpkg_mongodb: false
         dpkg_veracrypt: true
+        # dpkg_parsec: false
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
         # SNAP ----------------------------------
+        snap_firefox: true
         # snap_chromium: false
         snap_thunderbird: true
-        # snap_libreoffice: false
-        snap_onlyoffice_desktopeditors: true
         snap_signal_desktop: true
         snap_telegram_desktop: true
         snap_zoom_client: true
         snap_spotify: true
+        # snap_libreoffice: false
+        snap_onlyoffice_desktopeditors: true
         snap_inkscape: true
         snap_drawio: true
         snap_gimp: true
         snap_darktable: true
+        # snap_pixelfx: false
+        # snap_lunacy: false
         snap_vlc: true
         # snap_obs_studio: false
         snap_flameshot: true
         snap_1password: true
         # snap_okular: false
+        # snap_yubioath_desktop: false
         snap_code: true
+        snap_remmina: true
         # snap_android_studio: false
         # snap_UBports: false
         # snap_insomnia: false
         # snap_postman: false
         # snap_dbeaver_ce: false
         # snap_beekeeper_studio: false
+        # snap_mqtt_explorer: false
+        # snap_zaproxy: false
+        # snap_nmap: false
+        # snap_john_the_ripper: false
         # snap_microk8s: false
         # snap_rpi_imager: false
         # snap_multipass: false
-        # snap_zaproxy: false
+        # snap_maas: false
         # snap_cornyjokes: false
+        # snap_steam: false
         # FLATPAK -------------------------------
+        # flatpak_flatseal: false
         # flatpak_firefox: false
         # flatpak_chromium: false
         # flatpak_thunderbird: false
@@ -135,6 +148,7 @@
         # flatpak_onlyoffice: false
         # flatpak_1password: false
         # flatpak_keepassxc: false
+        # flatpak_easy_effects: false
         # flatpak_signal: false
         # flatpak_telegram: false
         # flatpak_threemaqt: false
@@ -147,15 +161,22 @@
         # flatpak_inkscape: false
         # flatpak_drawio: false
         # flatpak_gimp: false
+        # flatpak_krita: false
         # flatpak_studio: false
         # flatpak_blender: false
+        # flatpak_peek: false
+        # flatpak_video_trimmer: false
+        # flatpak_tube_converter: false
+        # flatpak_girens: false
         # flatpak_code: false
+        # flatpak_remmina: false
         # flatpak_sublimetext: false
         # flatpak_arduinoide: false
         # flatpak_fritzing: false
         # flatpak_insomnia: false
         # flatpak_postman: false
         # flatpak_dbeavercommunity: false
+        # flatpak_mongodb_compass: false
         # flatpak_filezilla: false
         # flatpak_jdownloader: false
         # flatpak_wireshark: false

@@ -24,6 +24,7 @@
       install_server_config:
         dev: true
         env_tun_setup: true
+        # snmp: false
         # APT (1) -------------------------------
         apt_base: true
         # apt_dev: false
@@ -32,12 +33,14 @@
         # APT (2) -------------------------------
         # apt_vpn: false
         # apt_go: false
+        # apt_php: false
         # apt_rasp_pi_pkg: false
         # apt_qemu_guest_agent: false
         # DPKG ----------------------------------
         # dpkg_...: false
         # SNAP ----------------------------------
         # snap_microk8s: false
+        # snap_multipass: false
         snap_btop: true
         # OTHER --------------------------------
         # git: false

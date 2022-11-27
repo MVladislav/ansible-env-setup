@@ -24,6 +24,7 @@
       install_server_config:
         dev: true
         env_tun_setup: true
+        # snmp: false
         # APT (1) -------------------------------
         apt_base: true
         apt_dev: true
@@ -32,12 +33,14 @@
         # APT (2) -------------------------------
         apt_vpn: true
         apt_go: true
+        # apt_php: false
         # apt_rasp_pi_pkg: false
         apt_qemu_guest_agent: true
         # DPKG ----------------------------------
         # dpkg_...: false
         # SNAP ----------------------------------
         # snap_microk8s: false
+        # snap_multipass: false
         snap_btop: true
         # OTHER --------------------------------
         git: true
@@ -70,7 +73,7 @@
         dev: true
         fonts: true
         # GNOME ---------------------------------
-        gnome_gui_setup: true
+        gnome_gui_setup: true # general of gnome setup should be triggered, below specific what (dependencies will than general installed)
         # gnome_gui_setup_theme: false
         # gnome_gui_setup_dependencies: false
         gnome_gui_setup_extensions: true
@@ -80,7 +83,7 @@
         # cleanup_remove_flatpak: false
         # APT -----------------------------------
         apt_base: true
-        # apt_base2: false
+        # apt_base_sound_pulseaudio: false
         apt_snap: true
         apt_flatpak: true
         apt_vpn: true
@@ -91,6 +94,7 @@
         # DPKG ----------------------------------
         # dpkg_virtualbox: false
         dpkg_veracrypt: true
+        # dpkg_parsec: false
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
         # SNAP ----------------------------------
@@ -134,6 +138,7 @@
         # snap_cornyjokes: false
         # snap_steam: false
         # FLATPAK -------------------------------
+        # flatpak_flatseal: false
         # flatpak_firefox: false
         # flatpak_chromium: false
         # flatpak_thunderbird: false
@@ -142,6 +147,7 @@
         # flatpak_onlyoffice: false
         # flatpak_1password: false
         # flatpak_keepassxc: false
+        flatpak_easy_effects: false
         flatpak_signal: true
         # flatpak_telegram: false
         # flatpak_threemaqt: false
@@ -158,6 +164,9 @@
         # flatpak_studio: false
         # flatpak_blender: false
         flatpak_peek: true
+        # flatpak_video_trimmer: false
+        # flatpak_tube_converter: false
+        # flatpak_girens: false
         # flatpak_code: false
         # flatpak_remmina: false
         # flatpak_sublimetext: false
