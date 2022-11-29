@@ -112,6 +112,7 @@ all:
       ## DOCKER
       ## _______________________
       docker_user_shell: /bin/zsh
+      docker_cis_rule_2_1: true # install docker as non root
     ## .........................................................................
     ## SERVER:: setup
     server:
@@ -184,6 +185,18 @@ all:
           protocol: tcp
           interface: "{{ ansible_default_ipv4['interface'] }}"
           comment: "allow incoming connection on standard ssh port"
+      ## SNMP
+      ## _______________________
+      security_snmp_install: false
+      security_snmp_user: snmp
+      security_snmp_password: <PASSWORD>
+      security_snmp_encryption: <ENC>
+      security_snmp_location: home
+      security_snmp_contact: root
+      security_snmp_address_ipv4: ""
+      security_snmp_address_ipv6: "::1"
+      security_snmp_port_ipv4: 161
+      security_snmp_port_ipv6:
       ## UBUNTU2004 CIS
       ## _______________________
       cis_setup: true
@@ -215,6 +228,7 @@ all:
       ## DOCKER (host need to be added below in children: docker)
       ## _______________________
       docker_user_shell: /bin/zsh
+      docker_cis_rule_2_1: true # install docker as non root
       ## KUBERNETES (host need to be added below in children: kubernetes)
       ## _______________________
       kubernetes_setup_server: true
