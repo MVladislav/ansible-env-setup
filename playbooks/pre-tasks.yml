@@ -31,7 +31,7 @@
           - "on_hosts        (on which host to install)                : {{ ansible_user_conf_on_hosts }}"
           - "update          (if user should updated)                  : {{ ansible_user_conf_update | bool }}"
           - "name            (name of user for ansible)                : {{ ansible_user_conf_name }}"
-          - "name-map        (map for 'var/default.yml')               : {{ ansible_user_conf_name_map }}"
+          - "name-map        (map for var/default.yml)                 : {{ ansible_user_conf_name_map }}"
           - "password        (ansible-user password)                   : {{ ansible_user_conf_password }}"
           - "update_password (ansible-user password update method?)    : {{ ansible_user_conf_update_password }}"
           - "group           (ansible-user group)                      : {{ ansible_user_conf_group }}"

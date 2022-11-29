@@ -13,6 +13,11 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
+- name: Hardening scan
+  ansible.builtin.import_playbook: playbook-s-hardening.yml
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 - name: Server installer
   remote_user: "{{ ansible_user }}"
   hosts:
@@ -24,9 +29,9 @@
       install_server_config:
         dev: true
         env_tun_setup: true
-        # snmp: false
         # APT (1) -------------------------------
         apt_base: true
+        # apt_archive: false
         apt_dev: true
         apt_exfat: true
         apt_libs: true
@@ -67,8 +72,3 @@
 # ------------------------------------------------------------------------------
 - name: Kubernetes installer
   ansible.builtin.import_playbook: playbook-s-kubernetes.yml
-
-# ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: Hardening scan
-  ansible.builtin.import_playbook: playbook-s-hardening.yml
