@@ -22,8 +22,18 @@
         - hardening_scan is defined
         - hardening_scan | bool
     ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: Setup hardening scan
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - sec
+  roles:
+    ### -------------------------
     - role: ansible-security
       security_setup_services:
-        - auditd: "{{ security_setup_services_auditd | default(true) }}"
-        - fail2ban: "{{ security_setup_services_fail2ban | default(true) }}"
+        auditd: "{{ security_setup_services_auditd | default(true) }}"
+        fail2ban: "{{ security_setup_services_fail2ban | default(true) }}"
+        snmp: "{{ security_setup_services_snmp | default(false) }}"
     ### -------------------------
