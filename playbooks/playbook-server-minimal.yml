@@ -32,7 +32,7 @@
         # APT (1) -------------------------------
         apt_base: true
         # apt_archive: false
-        # apt_dev: false
+        apt_dev: true
         # apt_build: false
         # apt_libs: false
         # APT (2) -------------------------------

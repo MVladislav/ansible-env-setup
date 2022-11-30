@@ -18,6 +18,7 @@
       ubuntu2004cis_rule_2_2_2: false # do not remove xorg for client
       #
       ubuntu2004cis_rule_5_3_2: false # password after change not working, can not login
+      # ubuntu2004cis_rule_5_6: true # restrict access to the su command
       ubuntu2004cis_pwquality:
         - key: "minlen"
           value: "8"
@@ -44,14 +45,16 @@
         aide_weekday: "*"
       #
       ubuntu2004cis_firewall: ufw # ufw | iptables | firewalld
+      ubuntu2004cis_setup_firewall: true
+      ubuntu2004cis_is_router: false
+      ubuntu2004cis_ipv6_required: "{{ cis_ipv6_required | default(false) | bool }}"
+      #
       ubuntu2004cis_time_synchronization: chrony # chrony | ntp
       ubuntu2004cis_time_synchronization_servers:
         - uri: "{{ ansible_host_default_ntp }}"
           config: "iburst maxsources 4"
         - uri: "time.cloudflare.com"
           config: "iburst maxsources 1"
-      ubuntu2004cis_is_router: false
-      ubuntu2004cis_ipv6_required: false
       when:
         - cis_setup is defined
         - cis_setup | bool
@@ -67,6 +70,7 @@
     ### -------------------------
     - role: ubuntu2004_cis
       ubuntu2004cis_rule_5_3_2: false # password after change not working, can not login
+      ubuntu2004cis_rule_5_6: true # restrict access to the su command
       ubuntu2004cis_pwquality:
         - key: "minlen"
           value: "8"
@@ -93,14 +97,16 @@
         aide_weekday: "*"
       #
       ubuntu2004cis_firewall: ufw # ufw | iptables | firewalld
+      ubuntu2004cis_setup_firewall: true
+      ubuntu2004cis_is_router: false
+      ubuntu2004cis_ipv6_required: "{{ cis_ipv6_required | default(false) | bool }}"
+      #
       ubuntu2004cis_time_synchronization: chrony # chrony | ntp
       ubuntu2004cis_time_synchronization_servers:
         - uri: "{{ ansible_host_default_ntp }}"
           config: "iburst maxsources 4"
         - uri: "ntp.ubuntu.com"
           config: "iburst maxsources 1"
-      ubuntu2004cis_is_router: false
-      ubuntu2004cis_ipv6_required: false
       when:
         - cis_setup is defined
         - cis_setup | bool
