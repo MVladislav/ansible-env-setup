@@ -37,13 +37,22 @@ $git submodule update --recursive --remote
 
 ## install dependencies on host
 
-install Ansible on host to run the playbook
+install ansible on host to run the playbook:
 
 ```sh
 $sudo apt install python3 python3-pip sshpass
 : 'optional: openssh-sftp-server'
-$python3 -m pip install Ansible
-$python3 -m pip install molecule[docker] ansible-lint
+$python3 -m pip install ansible molecule[docker] ansible-lint
+
+# for use of "ansible-galaxy collection install"
+$python3 -m pip install -Iv "resolvelib<0.8.1
+```
+
+update ansible on host:
+
+```sh
+$python3 -m pip install --upgrade ansible molecule[docker] ansible-lint
+$ansible-galaxy collection install --upgrade -r requirements.yml
 ```
 
 ## setup
