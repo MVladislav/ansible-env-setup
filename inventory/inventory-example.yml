@@ -88,6 +88,7 @@ all:
       ## _______________________
       cis_setup: true
       cis_setup_aide: false
+      cis_ipv6_required: false
       ## MAILING SETUP
       ## _______________________
       mailing_mail_username: root
@@ -206,6 +207,7 @@ all:
       ## _______________________
       cis_setup: true
       cis_setup_aide: false
+      cis_ipv6_required: false
       ## MAILING SETUP
       ## _______________________
       mailing_mail_username: root # also used as mail from/to
