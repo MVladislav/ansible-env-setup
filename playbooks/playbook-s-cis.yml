@@ -55,6 +55,10 @@
           config: "iburst maxsources 4"
         - uri: "time.cloudflare.com"
           config: "iburst maxsources 1"
+      ubuntu2004cis_at_allow_users:
+        - root
+      ubuntu2004cis_cron_allow_users:
+        - root
       when:
         - cis_setup is defined
         - cis_setup | bool
@@ -107,6 +111,10 @@
           config: "iburst maxsources 4"
         - uri: "ntp.ubuntu.com"
           config: "iburst maxsources 1"
+      ubuntu2004cis_at_allow_users:
+        - root
+      ubuntu2004cis_cron_allow_users:
+        - root
       when:
         - cis_setup is defined
         - cis_setup | bool
