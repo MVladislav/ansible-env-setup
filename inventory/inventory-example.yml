@@ -188,7 +188,7 @@ all:
           comment: "allow incoming connection on standard ssh port"
         # - rule: allow
         #   to_port: 161
-        #   protocol: tcp
+        #   protocol: udp
         #   interface: "{{ ansible_default_ipv4['interface'] }}"
         #   comment: "allow incoming connection on standard snmp port"
       ## SNMP
