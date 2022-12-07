@@ -152,7 +152,7 @@
         # flatpak_onlyoffice: false
         # flatpak_1password: false
         # flatpak_keepassxc: false
-        flatpak_easy_effects: false
+        flatpak_easy_effects: true
         flatpak_signal: true
         # flatpak_telegram: false
         # flatpak_threemaqt: false
