@@ -32,7 +32,7 @@
         # APT (1) -------------------------------
         apt_base: true
         # apt_archive: false
-        apt_dev: true
+        # apt_dev: false
         # apt_build: false
         # apt_libs: false
         # APT (2) -------------------------------
@@ -40,7 +40,7 @@
         # apt_go: false
         # apt_php: false
         # apt_rasp_pi_pkg: false
-        # apt_qemu_guest_agent: false
+        # apt_qemu_guest_agent: true
         # DPKG ----------------------------------
         # dpkg_...: false
         # SNAP ----------------------------------
