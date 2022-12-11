@@ -51,7 +51,7 @@
         git: true
         zsh: true
         # tmux: false
-        python: true # base|dev
+        # python: false # base|dev
         # go_kompose: false
         # ruby: false
         # npm: false
