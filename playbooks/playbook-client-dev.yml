@@ -100,6 +100,7 @@
         # dpkg_virtualbox: false
         dpkg_veracrypt: true
         # dpkg_parsec: false
+        dpkg_brim: true
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
         # SNAP ----------------------------------
