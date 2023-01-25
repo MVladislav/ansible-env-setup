@@ -40,7 +40,7 @@
         apt_go: true
         # apt_php: false
         # apt_rasp_pi_pkg: false
-        # apt_qemu_guest_agent: false
+        apt_qemu_guest_agent: true
         # DPKG ----------------------------------
         # dpkg_...: false
         # SNAP ----------------------------------
@@ -82,7 +82,7 @@
         # gnome_gui_setup_theme: false
         # gnome_gui_setup_dependencies: false
         gnome_gui_setup_extensions: true
-        gnome_gui_setup_keybinding: true
+        # gnome_gui_setup_keybinding: false
         gnome_gui_setup_overlay: true
         # cleanup_remove_snap: false
         # cleanup_remove_flatpak: false
