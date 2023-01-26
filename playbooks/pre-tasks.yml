@@ -123,7 +123,7 @@
 
 # ------------------------------------------------------------------------------
 - name: "PRE-INSTALL | change hostname"
-  gather_facts: false
+  gather_facts: true
   remote_user: "{{ ansible_user_conf_name }}"
   hosts: "{{ ansible_user_conf_on_hosts }}"
   vars:

@@ -51,7 +51,15 @@
         git: true
         zsh: true
         tmux: true
+        # PYTHON --------------------------------
         python: true # base|dev
+        pip_s_tui: true
+        # pip_virtualenv: false
+        # pip_autopep8: false
+        # pip_black: false
+        pip_pre_commit: true
+        # pip_openconnect_sso: false
+        # OTHER --------------------------------
         # go_kompose: false
         # ruby: false
         # npm: false
@@ -101,6 +109,7 @@
         # dpkg_veracrypt: false
         # dpkg_parsec: false
         # dpkg_brim: false
+        dpkg_portmaster: true
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
         # SNAP ----------------------------------
