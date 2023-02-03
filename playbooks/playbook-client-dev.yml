@@ -101,6 +101,7 @@
         dpkg_veracrypt: true
         # dpkg_parsec: false
         dpkg_brim: true
+        # dpkg_portmaster: false
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
         # SNAP ----------------------------------
@@ -194,6 +195,7 @@
         # OTHER --------------------------------
         # vs_code_ext: false
         java: true
+        # java_ant: false
       # if you install java, by default as version is set 11, change below if you need
       # version is as input for openjdk java version
       install_client_java_version: 11
