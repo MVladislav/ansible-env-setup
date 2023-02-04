@@ -52,7 +52,10 @@
         zsh: true
         tmux: true
         # PYTHON --------------------------------
-        python: true # base|dev
+        python: true
+        python_pip: true
+        python_venv: true
+        python_dev: true
         pip_s_tui: true
         # pip_virtualenv: false
         # pip_autopep8: false
@@ -80,7 +83,6 @@
   roles:
     ### -------------------------
     - role: ansible-install-client
-      install_client_service_name: "{{ service_name }}"
       install_client_config:
         # GENERAL -------------------------------
         dev: true

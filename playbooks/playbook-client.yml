@@ -25,7 +25,6 @@
   roles:
     ### -------------------------
     - role: ansible-install-server
-      install_server_service_name: "{{ service_name }}"
       install_server_config:
         dev: true
         env_tun_setup: true
@@ -51,7 +50,10 @@
         git: true
         # zsh: false
         # tmux: false
-        # python: false # base|dev
+        # python: false
+        # python_pip: false
+        # python_venv: false
+        # python_dev: false
         # go_kompose: false
         # ruby: false
         # npm: false

@@ -51,7 +51,10 @@
         git: true
         zsh: true
         tmux: true
-        python: true # base|dev
+        python: true
+        python_pip: true
+        python_venv: true
+        python_dev: true
         # go_kompose: false
         # ruby: false
         # npm: false
@@ -72,7 +75,6 @@
   roles:
     ### -------------------------
     - role: ansible-install-client
-      install_client_service_name: "{{ service_name }}"
       install_client_config:
         # GENERAL -------------------------------
         dev: true

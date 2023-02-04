@@ -51,7 +51,10 @@
         # git: false
         zsh: true
         # tmux: false
-        # python: false # base|dev
+        # python: false
+        # python_pip: false
+        # python_venv: false
+        # python_dev: false
         # go_kompose: false
         # ruby: false
         # npm: false
