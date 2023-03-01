@@ -110,6 +110,18 @@
     ### -------------------------
   tasks:
     # ------------------------------------------------------------------------------
+    - name: "PRE | install nullmailer"
+      become: true
+      ansible.builtin.apt:
+        pkg: nullmailer
+        state: present
+        force_apt_get: true # apt-get instead of aptitude
+        update_cache: true
+      when:
+        - skip_default_setup is not defined
+        - nullmailer_setup is defined
+        - nullmailer_setup | bool
+    # ------------------------------------------------------------------------------
     - name: "PRE | conf nullmailer"
       become: true
       ansible.builtin.copy:

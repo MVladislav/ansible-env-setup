@@ -40,7 +40,7 @@
         # apt_go: false
         # apt_php: false
         # apt_rasp_pi_pkg: false
-        # apt_qemu_guest_agent: true
+        apt_qemu_guest_agent: true
         # DPKG ----------------------------------
         # dpkg_...: false
         # SNAP ----------------------------------
