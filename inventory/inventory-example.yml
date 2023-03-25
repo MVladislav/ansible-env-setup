@@ -94,6 +94,9 @@ all:
       mailing_mail_username: root
       mailing_mail_password: ""
       mailing_smtp_host: home.local
+      mailing_smtp_port: 465
+      mailing_remote_ssl: true
+      mailing_remote_starttls: false
       ## NULLMAILER SETUP
       ## _______________________
       nullmailer_setup: false
