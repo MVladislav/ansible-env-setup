@@ -29,37 +29,50 @@
       install_server_config:
         dev: true
         env_tun_setup: true
-        # snmp: false
         # APT (1) -------------------------------
         apt_base: true
+        apt_archive: true
         apt_dev: true
         apt_build: true
         # apt_libs: false
         # APT (2) -------------------------------
-        apt_vpn: true
+        # apt_snap: false
+        # apt_vpn: false
         apt_go: true
         # apt_php: false
         # apt_rasp_pi_pkg: false
-        # apt_qemu_guest_agent: false
+        apt_qemu_guest_agent: true
         # DPKG ----------------------------------
         # dpkg_...: false
         # SNAP ----------------------------------
+        # snap_juju: false
+        # snap_maas: false
         # snap_microk8s: false
+        # snap_kubectl: false
         # snap_multipass: false
         snap_btop: true
         # OTHER --------------------------------
         git: true
         zsh: true
         tmux: true
+        # PYTHON --------------------------------
         python: true
         python_pip: true
         python_venv: true
         python_dev: true
+        pip_s_tui: true
+        # pip_virtualenv: false
+        pip_autopep8: true
+        pip_black: true
+        pip_pre_commit: true
+        # pip_openconnect_sso: false
+        # OTHER --------------------------------
         # go_kompose: false
         # ruby: false
         # npm: false
         # mongodb: false
-        # java: false # base|dev
+        # java: false
+        # java_ant: false
     ### -------------------------
     - role: ansible-netplan
       netplan_service_name: "{{ service_name }}"
@@ -87,15 +100,17 @@
         gnome_gui_setup_extensions_git_caffeine: true
         # gnome_gui_setup_extensions_git_sound: false
         gnome_gui_setup_extensions_git_blur_shell: true
-        gnome_gui_setup_extensions_git_burn_window: true
+        # gnome_gui_setup_extensions_git_burn_window: false
         gnome_gui_setup_extensions_git_dash_to_panel: true
         # gnome_gui_setup_extensions_git_ui_tune: false
         # gnome_gui_setup_keybinding: false
         gnome_gui_setup_overlay: true
+        gnome_terminal_setup_overlay: true
         # cleanup_remove_snap: false
         # cleanup_remove_flatpak: false
         # APT -----------------------------------
         apt_base: true
+        # NOTE: not need in new ubuntu, switched to pipewire
         # apt_base_sound_pulseaudio: false
         apt_snap: true
         apt_flatpak: true
@@ -108,7 +123,7 @@
         # dpkg_virtualbox: false
         dpkg_veracrypt: true
         # dpkg_parsec: false
-        dpkg_brim: true
+        # dpkg_brim: false
         # dpkg_portmaster: false
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
@@ -116,19 +131,20 @@
         snap_firefox: true
         snap_chromium: true
         snap_thunderbird: true
-        # snap_signal_desktop: false
+        snap_signal_desktop: true
         snap_telegram_desktop: true
         # snap_zoom_client: false
         snap_spotify: true
         # snap_libreoffice: false
         snap_onlyoffice_desktopeditors: true
+        # snap_fbreader: false
         snap_inkscape: true
         snap_drawio: true
         snap_gimp: true
         snap_darktable: true
         # snap_pixelfx: false
         # snap_lunacy: false
-        snap_vlc: true
+        # snap_vlc: false
         snap_obs_studio: true
         # snap_flameshot: false
         snap_1password: true
@@ -153,17 +169,19 @@
         # snap_cornyjokes: false
         # snap_steam: false
         # FLATPAK -------------------------------
-        # flatpak_flatseal: false
+        flatpak_flatseal: true
         # flatpak_firefox: false
         # flatpak_chromium: false
         # flatpak_thunderbird: false
+        flatpak_newsflash: true
         # flatpak_extension_manager: false
         # flatpak_flameshot: false
         # flatpak_onlyoffice: false
         # flatpak_1password: false
         # flatpak_keepassxc: false
+        # flatpak_cryptomator: false
         flatpak_easy_effects: true
-        flatpak_signal: true
+        # flatpak_signal: false
         # flatpak_telegram: false
         # flatpak_threemaqt: false
         # flatpak_zoom: false
@@ -172,13 +190,16 @@
         # flatpak_spotify: false
         # flatpak_ferdi: false
         # flatpak_vlc: false
+        # flatpak_amberol: false
+        flatpak_haruna: true
         # flatpak_inkscape: false
         # flatpak_drawio: false
         # flatpak_gimp: false
+        # flatpak_conjure: false
         # flatpak_krita: false
         # flatpak_studio: false
         # flatpak_blender: false
-        flatpak_peek: true
+        # flatpak_peek: false
         # flatpak_video_trimmer: false
         # flatpak_tube_converter: false
         # flatpak_girens: false
@@ -202,11 +223,11 @@
         # flatpak_betaflightconfigurator: false
         # OTHER --------------------------------
         # vs_code_ext: false
-        java: true
+        # java: false
         # java_ant: false
       # if you install java, by default as version is set 11, change below if you need
       # version is as input for openjdk java version
-      install_client_java_version: 11
+      # install_client_java_version: 11
     ### -------------------------
 
 # ------------------------------------------------------------------------------

@@ -28,13 +28,14 @@
       install_server_config:
         dev: true
         env_tun_setup: true
-        # snmp: false
         # APT (1) -------------------------------
         apt_base: true
+        apt_archive: true
         # apt_dev: false
         # apt_build: false
         # apt_libs: false
         # APT (2) -------------------------------
+        # apt_snap: false
         # apt_vpn: false
         # apt_go: false
         # apt_php: false
@@ -43,22 +44,34 @@
         # DPKG ----------------------------------
         # dpkg_...: false
         # SNAP ----------------------------------
+        # snap_juju: false
+        # snap_maas: false
         # snap_microk8s: false
+        # snap_kubectl: false
         # snap_multipass: false
         snap_btop: true
         # OTHER --------------------------------
         git: true
         # zsh: false
         # tmux: false
+        # PYTHON --------------------------------
         # python: false
         # python_pip: false
         # python_venv: false
         # python_dev: false
+        # pip_s_tui: false
+        # pip_virtualenv: false
+        # pip_autopep8: false
+        # pip_black: false
+        # pip_pre_commit: false
+        # pip_openconnect_sso: false
+        # OTHER --------------------------------
         # go_kompose: false
         # ruby: false
         # npm: false
         # mongodb: false
-        # java: false # base|dev
+        # java: false
+        # java_ant: false
     ### -------------------------
     - role: ansible-netplan
       netplan_service_name: "{{ service_name }}"
@@ -87,35 +100,36 @@
         gnome_gui_setup_extensions_git_caffeine: true
         # gnome_gui_setup_extensions_git_sound: false
         gnome_gui_setup_extensions_git_blur_shell: true
-        gnome_gui_setup_extensions_git_burn_window: true
+        # gnome_gui_setup_extensions_git_burn_window: false
         gnome_gui_setup_extensions_git_dash_to_panel: true
         # gnome_gui_setup_extensions_git_ui_tune: false
-        gnome_gui_setup_keybinding: true
+        # gnome_gui_setup_keybinding: false
         gnome_gui_setup_overlay: true
+        gnome_terminal_setup_overlay: true
         # cleanup_remove_snap: false
         # cleanup_remove_flatpak: false
         # APT -----------------------------------
         apt_base: true
+        # NOTE: not need in new ubuntu, switched to pipewire
         # apt_base_sound_pulseaudio: false
-        # apt_snap: false
-        # apt_flatpak: false
-        # apt_vpn: false
+        apt_snap: true
+        apt_flatpak: true
+        apt_vpn: true
         # apt_gnome_boxes: false
         # apt_latex: false
         # apt_pandoc: false
         # apt_virt_viewer: false
-        # apt_lutris: false
         # DPKG ----------------------------------
         # dpkg_virtualbox: false
         dpkg_veracrypt: true
         # dpkg_parsec: false
         # dpkg_brim: false
-        # dpkg_portmaster: false
+        dpkg_portmaster: true
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
         # SNAP ----------------------------------
         snap_firefox: true
-        # snap_chromium: false
+        snap_chromium: true
         snap_thunderbird: true
         snap_signal_desktop: true
         snap_telegram_desktop: true
@@ -123,20 +137,21 @@
         snap_spotify: true
         # snap_libreoffice: false
         snap_onlyoffice_desktopeditors: true
+        # snap_fbreader: false
         snap_inkscape: true
         snap_drawio: true
         snap_gimp: true
-        snap_darktable: true
+        # snap_darktable: false
         # snap_pixelfx: false
         # snap_lunacy: false
-        snap_vlc: true
+        # snap_vlc: false
         # snap_obs_studio: false
-        snap_flameshot: true
+        # snap_flameshot: false
         snap_1password: true
         # snap_okular: false
         # snap_yubioath_desktop: false
-        snap_code: true
-        snap_remmina: true
+        # snap_code: false
+        # snap_remmina: false
         # snap_android_studio: false
         # snap_UBports: false
         # snap_insomnia: false
@@ -154,15 +169,17 @@
         # snap_cornyjokes: false
         # snap_steam: false
         # FLATPAK -------------------------------
-        # flatpak_flatseal: false
+        flatpak_flatseal: true
         # flatpak_firefox: false
         # flatpak_chromium: false
         # flatpak_thunderbird: false
+        # flatpak_newsflash: false
         # flatpak_extension_manager: false
         # flatpak_flameshot: false
         # flatpak_onlyoffice: false
         # flatpak_1password: false
         # flatpak_keepassxc: false
+        flatpak_cryptomator: true
         # flatpak_easy_effects: false
         # flatpak_signal: false
         # flatpak_telegram: false
@@ -173,9 +190,12 @@
         # flatpak_spotify: false
         # flatpak_ferdi: false
         # flatpak_vlc: false
+        # flatpak_amberol: false
+        flatpak_haruna: true
         # flatpak_inkscape: false
         # flatpak_drawio: false
         # flatpak_gimp: false
+        # flatpak_conjure: false
         # flatpak_krita: false
         # flatpak_studio: false
         # flatpak_blender: false
