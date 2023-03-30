@@ -38,7 +38,6 @@
         # APT (2) -------------------------------
         # apt_snap: false
         # apt_vpn: false
-        apt_go: true
         # apt_php: false
         # apt_rasp_pi_pkg: false
         apt_qemu_guest_agent: true
@@ -48,9 +47,12 @@
         # snap_juju: false
         # snap_maas: false
         # snap_microk8s: false
-        # snap_kubectl: false
-        # snap_multipass: false
+        snap_kubectl: true
+        snap_helm: true
+        snap_multipass: true
         snap_btop: true
+        snap_glow: true
+        snap_go: true
         # OTHER --------------------------------
         git: true
         zsh: true
@@ -116,12 +118,12 @@
         apt_flatpak: true
         apt_vpn: true
         # apt_gnome_boxes: false
-        apt_latex: true
+        # apt_latex: true
         apt_pandoc: true
         apt_virt_viewer: true
         # DPKG ----------------------------------
         # dpkg_virtualbox: false
-        dpkg_veracrypt: true
+        # dpkg_veracrypt: true
         # dpkg_parsec: false
         # dpkg_brim: false
         # dpkg_portmaster: false
@@ -133,6 +135,7 @@
         snap_thunderbird: true
         snap_signal_desktop: true
         snap_telegram_desktop: true
+        snap_discord: true
         # snap_zoom_client: false
         snap_spotify: true
         # snap_libreoffice: false
@@ -162,10 +165,7 @@
         # snap_zaproxy: false
         snap_nmap: true
         # snap_john_the_ripper: false
-        # snap_microk8s: false
         # snap_rpi_imager: false
-        snap_multipass: true
-        # snap_maas: false
         # snap_cornyjokes: false
         # snap_steam: false
         # FLATPAK -------------------------------
