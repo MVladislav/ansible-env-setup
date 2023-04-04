@@ -142,7 +142,7 @@
       ansible.builtin.copy:
         dest: /etc/nullmailer/adminaddr
         content: |
-          {{ mailing_mail_username }}
+          {{ mailing_mail_email if mailing_mail_email is defined else mailing_mail_username }}
         mode: "640"
       when:
         - skip_default_setup is not defined
@@ -154,7 +154,7 @@
       ansible.builtin.copy:
         dest: /etc/nullmailer/allmailfrom
         content: |
-          {{ mailing_mail_username }}
+          {{ mailing_mail_email if mailing_mail_email is defined else mailing_mail_username }}
         mode: "640"
       when:
         - skip_default_setup is not defined

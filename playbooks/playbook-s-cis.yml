@@ -11,6 +11,11 @@
   roles:
     ### -------------------------
     - role: ubuntu2004_cis
+      # disable '/etc/default/grub' changes, since not same place in ubuntu 23.04
+      ubuntu2004cis_rule_1_7_1_2: false
+      ubuntu2004cis_rule_3_1_1: false
+      ubuntu2004cis_rule_4_1_1_3: false
+      ubuntu2004cis_rule_4_1_1_4: false
       # needed for client
       ubuntu2004cis_allow_autofs: true # allow to auto mount usb devices
       ubuntu2004cis_rule_1_1_24: false # do not Disable USB Storage
