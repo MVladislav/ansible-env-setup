@@ -66,8 +66,10 @@
         # pip_virtualenv: false
         pip_autopep8: true
         pip_black: true
+        pip_mypy: true
         pip_pre_commit: true
         # pip_openconnect_sso: false
+        # pip_ansible: false
         # OTHER --------------------------------
         # go_kompose: false
         # ruby: false
