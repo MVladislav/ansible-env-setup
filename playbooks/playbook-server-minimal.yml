@@ -36,6 +36,7 @@
         # apt_build: false
         # apt_libs: false
         # APT (2) -------------------------------
+        # apt_snap: false
         # apt_vpn: false
         # apt_go: false
         # apt_php: false
@@ -44,22 +45,39 @@
         # DPKG ----------------------------------
         # dpkg_...: false
         # SNAP ----------------------------------
+        # snap_juju: false
+        # snap_maas: false
         # snap_microk8s: false
+        # snap_kubectl: false
+        # snap_helm: false
         # snap_multipass: false
         snap_btop: true
+        # snap_glow: false
+        # snap_go: false
         # OTHER --------------------------------
         git: true
         zsh: true
         # tmux: false
-        # python: false
+        # PYTHON --------------------------------
+        python: true
         # python_pip: false
         # python_venv: false
         # python_dev: false
+        # pip_s_tui: false
+        # pip_virtualenv: false
+        # pip_autopep8: false
+        # pip_black: false
+        # pip_mypy: false
+        # pip_pre_commit: false
+        # pip_openconnect_sso: false
+        # pip_ansible: false
+        # OTHER --------------------------------
         # go_kompose: false
         # ruby: false
         # npm: false
         # mongodb: false
-        # java: false # base|dev
+        # java: false
+        # java_ant: false
     ### -------------------------
     - role: ansible-netplan
       netplan_service_name: "{{ service_name }}"
