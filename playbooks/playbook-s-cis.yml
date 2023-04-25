@@ -9,8 +9,31 @@
     - clients
   become: true
   roles:
+    - role: ansible-cis-ubuntu-2204
+      cis_ubuntu2204_section1: true
+      cis_ubuntu2204_section2: true
+      cis_ubuntu2204_section3: false
+      cis_ubuntu2204_section4: false
+      cis_ubuntu2204_section5: false
+      cis_ubuntu2204_section6: false
+      # -------------------------
+      cis_ubuntu2204_rule_1_6_1_3: false
+      cis_ubuntu2204_rule_1_6_1_4: false
+      # -------------------------
+      cis_ubuntu2204_allow_gdm_gui: true
+      cis_ubuntu2204_allow_autofs: true
+      cis_ubuntu2204_time_synchronization_ntp_server: '{{ ansible_host_default_ntp | default("time.cloudflare.com")}}'
+      cis_ubuntu2204_time_synchronization_ntp_fallback_server: ntp.ubuntu.com
+      cis_ubuntu2204_install_aide: "{{ cis_setup_aide | default(false) | bool }}"
+      cis_ubuntu2204_config_aide: "{{ cis_setup_aide | default(false) | bool }}"
     ### -------------------------
     - role: ubuntu2004_cis
+      ubuntu2004cis_section1: false
+      ubuntu2004cis_section2: false
+      ubuntu2004cis_section3: true
+      ubuntu2004cis_section4: true
+      ubuntu2004cis_section5: true
+      ubuntu2004cis_section6: true
       # disable '/etc/default/grub' changes, since not same place in ubuntu 23.04
       ubuntu2004cis_rule_1_7_1_2: false
       ubuntu2004cis_rule_3_1_1: false
