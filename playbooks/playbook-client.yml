@@ -59,6 +59,7 @@
         # PYTHON --------------------------------
         # python: false
         # python_pip: false
+        # python_pip_update: false
         # python_venv: false
         # python_dev: false
         # pip_s_tui: false
@@ -114,12 +115,17 @@
         # cleanup_remove_flatpak: false
         # APT -----------------------------------
         apt_base: true
+        apt_base_ubuntu: true
+        apt_base_archive: true
+        apt_base_codec: true
+        apt_base_gnome: true
         # NOTE: not need in new ubuntu, switched to pipewire
         # apt_base_sound_pulseaudio: false
         apt_snap: true
         apt_flatpak: true
-        apt_vpn: true
+        # apt_vpn: false
         # apt_gnome_boxes: false
+        # apt_texmaker: false
         # apt_latex: false
         # apt_pandoc: false
         # apt_virt_viewer: false
@@ -131,6 +137,8 @@
         dpkg_portmaster: true
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
+        # app_image_logseq: false
+        # app_image_upscayl: false
         # SNAP ----------------------------------
         snap_firefox: true
         snap_chromium: true

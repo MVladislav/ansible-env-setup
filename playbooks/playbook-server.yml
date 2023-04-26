@@ -53,6 +53,7 @@
         tmux: true
         python: true
         python_pip: true
+        # python_pip_update: false
         python_venv: true
         python_dev: true
         # go_kompose: false
