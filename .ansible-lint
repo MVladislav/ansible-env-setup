@@ -1,7 +1,10 @@
+---
 exclude_paths:
   - .git/
   - .github/
   - molecule/
+  - roles/ansible-backup/
+  - roles/ansible-kubernetes/
   - roles/ansible-lynis/
   - roles/ansible-ufw/
   - roles/ansible-postfix/

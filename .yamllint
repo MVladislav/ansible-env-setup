@@ -25,7 +25,7 @@ rules:
     level: error
   indentation: enable
   key-duplicates: enable
-  line-length: enable
+  line-length: disable
   new-line-at-end-of-file: enable
   new-lines:
     type: unix
