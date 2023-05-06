@@ -21,6 +21,8 @@
       cis_ubuntu2204_set_boot_pass: false # bootloader password
       cis_ubuntu2204_rule_1_4_3: false # authentication required for single user mode
       # -------------------------
+      cis_ubuntu2204_rule_5_4_2: false # lockout for failed password attempts # NOTE: will fail to use password
+      # -------------------------
       cis_ubuntu2204_rule_1_6_1_3: true # AppArmor complain mode
       cis_ubuntu2204_rule_1_6_1_4: false # AppArmor enforce mode
       # -------------------------
@@ -89,6 +91,8 @@
       cis_ubuntu2204_rule_1_4_1: false # bootloader password
       cis_ubuntu2204_set_boot_pass: false # bootloader password
       cis_ubuntu2204_rule_1_4_3: false # authentication required for single user mode
+      # -------------------------
+      cis_ubuntu2204_rule_5_4_2: false # lockout for failed password attempts # NOTE: will fail to use password
       # -------------------------
       cis_ubuntu2204_rule_1_6_1_3: true # AppArmor complain mode
       cis_ubuntu2204_rule_1_6_1_4: false # AppArmor enforce mode
