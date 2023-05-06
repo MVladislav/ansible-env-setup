@@ -25,7 +25,8 @@
   roles:
     ### -------------------------
     - role: ansible-install-server
-      install_server_service_name: "{{ service_name }}"
+      clients: "{{ pl_a_clients }}"
+      install_server_service_name: "{{ pl_a_service_name }}"
       install_server_config:
         dev: true
         env_tun_setup: true
@@ -79,10 +80,6 @@
         # mongodb: false
         # java: false
         # java_ant: false
-    ### -------------------------
-    - role: ansible-netplan
-      netplan_service_name: "{{ service_name }}"
-      when: netplan_setup is defined and netplan_setup | bool
     ### -------------------------
 
 # ------------------------------------------------------------------------------

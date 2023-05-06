@@ -13,14 +13,14 @@
     - role: ansible-lynis
       lynis_deploy_method: git
       lynis_git_repo: "https://github.com/CISOfy/lynis"
-      lynis_report_from: "{{ hardening_lynis_report_from | default('root') }}"
-      lynis_report_to: "{{ hardening_lynis_report_to | default('root') }}"
+      lynis_report_from: "{{ pl_a_hardening_lynis_report_from | default('root') }}"
+      lynis_report_to: "{{ pl_a_hardening_lynis_report_to | default('root') }}"
       lynis_cron_hour: 21
       lynis_cron_minute: 42
       lynis_cron_dow: 7
       when:
-        - hardening_scan is defined
-        - hardening_scan | bool
+        - pl_a_hardening_scan_setup is defined
+        - pl_a_hardening_scan_setup | bool
     ### -------------------------
 
 # ------------------------------------------------------------------------------
@@ -33,7 +33,7 @@
     ### -------------------------
     - role: ansible-security
       security_setup_services:
-        auditd: "{{ security_setup_services_auditd | default(true) }}"
-        fail2ban: "{{ security_setup_services_fail2ban | default(true) }}"
-        snmp: "{{ security_setup_services_snmp | default(false) }}"
+        auditd: "{{ pl_a_auditd_setup | default(true) }}"
+        fail2ban: "{{ pl_a_fail2ban_setup | default(true) }}"
+        snmp: "{{ pl_a_snmp_setup | default(false) }}"
     ### -------------------------

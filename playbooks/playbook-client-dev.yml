@@ -25,7 +25,8 @@
   roles:
     ### -------------------------
     - role: ansible-install-server
-      install_server_service_name: "{{ service_name }}"
+      clients: "{{ pl_a_clients }}"
+      install_server_service_name: "{{ pl_a_service_name }}"
       install_server_config:
         dev: true
         env_tun_setup: true
@@ -79,10 +80,6 @@
         # java: false
         # java_ant: false
     ### -------------------------
-    - role: ansible-netplan
-      netplan_service_name: "{{ service_name }}"
-      when: netplan_setup is defined and netplan_setup | bool
-    ### -------------------------
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
@@ -93,6 +90,7 @@
   roles:
     ### -------------------------
     - role: ansible-install-client
+      clients: "{{ pl_a_clients }}"
       install_client_config:
         # GENERAL -------------------------------
         dev: true
@@ -139,7 +137,7 @@
         # distribution_key_virtualbox: false
         # APPIMAGE ------------------------------
         app_image_logseq: true
-        # app_image_upscayl: false
+        app_image_upscayl: true
         # SNAP ----------------------------------
         snap_firefox: true
         snap_chromium: true

@@ -2,38 +2,37 @@
 # playbook client
 
 # ------------------------------------------------------------------------------
-- name: PRE | include pre-task playbook
+- name: PRE | pre installer (0) | include pre-task playbook
   import_playbook: ./pre-tasks.yml
   vars:
     ansible_user_conf_on_hosts:
       - pre
     ansible_user_conf_name: "{{ ansible_user }}"
-    ansible_user_conf_update: "{{ ansible_user_config.is_update | bool }}"
-    ansible_user_conf_shell: "{{ ansible_user_config.shell | default('/bin/bash') }}"
-    ansible_user_conf_password: "{{ ansible_user_config.password }}"
-    ansible_user_conf_group: "{{ ansible_user_config.group | default('adm,cdrom,sudo') }}"
-    ansible_user_conf_system: "{{ ansible_user_config.system | default('no') | bool }}"
-    ansible_user_conf_append: "{{ ansible_user_config.append | default('yes') | bool }}"
-    ansible_user_conf_createhome: "{{ ansible_user_config.createhome | default('yes') | bool }}"
-    ansible_user_conf_home: "{{ ansible_user_config.home | default('/home/' + ansible_user) }}"
-    ansible_user_conf_add_ssh_key: "{{ ansible_user_config.add_ssh_key | default('yes') | bool }}"
-    ansible_user_conf_clients: "{{ clients }}"
+    ansible_user_conf_update: "{{ pl_a_user_config.is_update | bool }}"
+    ansible_user_conf_shell: "{{ pl_a_user_config.shell | default('/bin/bash') }}"
+    ansible_user_conf_password: "{{ pl_a_user_config.password }}"
+    ansible_user_conf_group: "{{ pl_a_user_config.group | default('adm,cdrom,sudo') }}"
+    ansible_user_conf_system: "{{ pl_a_user_config.system | default('no') | bool }}"
+    ansible_user_conf_append: "{{ pl_a_user_config.append | default('yes') | bool }}"
+    ansible_user_conf_createhome: "{{ pl_a_user_config.createhome | default('yes') | bool }}"
+    ansible_user_conf_home: "{{ pl_a_user_config.home | default('/home/' + ansible_user) }}"
+    ansible_user_conf_add_ssh_key: "{{ pl_a_user_config.add_ssh_key | default('yes') | bool }}"
+    ansible_user_conf_clients: "{{ pl_a_clients }}"
     ansible_host_conf_hostname: "{{ ansible_host_hostname | default(ansible_hostname) }}"
   when:
-    - skip_default_setup is not defined
-    - ansible_user_setup is defined
-    - ansible_user_setup | bool
-  # ----------------------------------------------------------------------------
+    - pl_a_user_setup is defined
+    - pl_a_user_setup | bool
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: PRE | pre installer (1)
+- name: PRE | pre installer (1) | updater
   remote_user: "{{ ansible_user }}"
   hosts:
     - pre
   roles:
     ### -------------------------
     - role: ansible-updater
+      clients: "{{ pl_a_clients }}"
       updater_config:
         set_timezone: true
         set_time_sync: true
@@ -42,22 +41,23 @@
         update_upgrade: true
         setup_zfs: true
         setup_unattended: true
-      unattended_origins_patterns:
+      updater_unattended_origins_patterns:
+        # - "origin=Ubuntu,archive=${distro_codename}-security,label=Ubuntu"
+        # - "origin=Ubuntu,archive=${distro_codename},label=Ubuntu"
         - "origin=Ubuntu,archive=${distro_codename}-security"
-        - "o=Ubuntu,a=${distro_codename}"
-        - "o=Ubuntu,a=${distro_codename}-updates"
-        - "o=Ubuntu,a=${distro_codename}-proposed-updates"
-      when: skip_default_setup is not defined
+        # - "origin=Ubuntu,archive=${distro_codename}"
+        - "origin=Ubuntu,archive=${distro_codename}-updates"
+        - "origin=Ubuntu,archive=${distro_codename}-proposed-updates"
     ### -------------------------
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: PRE | installer (2)
+- name: PRE | installer (2) | ssh/ufw/netplan
   remote_user: "{{ ansible_user }}"
   hosts:
     - pre
   vars:
-    ufw_rules_default:
+    pl_a_ufw_rules_default:
       - rule: allow
         to_port: 22
         protocol: tcp
@@ -66,13 +66,31 @@
   roles:
     ### -------------------------
     - role: ansible-ssh
-      when: skip_default_setup is not defined
+      clients: "{{ pl_a_clients }}"
+      when:
+        - pl_a_ssh_setup_enable | bool
     ### -------------------------
     - role: ansible-ufw
       become: true
-      ufw_logging: "medium"
-      ufw_rules: "{{ ufw_rules_default + ufw_rules_extended }}"
-      when: skip_default_setup is not defined
+      ufw_logging: "{{ pl_a_ufw_logging_level | default('medium') }}"
+      ufw_rules: "{{ pl_a_ufw_rules_default + pl_a_ufw_rules_extended }}"
+      when:
+        - pl_a_ufw_setup_enable | bool
+    ### -------------------------
+    - role: ansible-netplan
+      netplan_service_name: "{{ pl_a_service_name }}"
+      when:
+        - pl_a_netplan_setup is defined
+        - pl_a_netplan_setup | bool
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: PRE | installer (2) | mail
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - pre
+  roles:
     ### -------------------------
     - role: ansible-postfix
       become: true
@@ -104,9 +122,8 @@
           message_size_limit = 0
           compatibility_level = 2
       when:
-        - skip_default_setup is not defined
-        - postfix_setup is defined
-        - postfix_setup | bool
+        - pl_a_postfix_setup is defined
+        - pl_a_postfix_setup | bool
     ### -------------------------
   tasks:
     # ------------------------------------------------------------------------------
@@ -118,9 +135,8 @@
         force_apt_get: true # apt-get instead of aptitude
         update_cache: true
       when:
-        - skip_default_setup is not defined
-        - nullmailer_setup is defined
-        - nullmailer_setup | bool
+        - pl_a_nullmailer_setup is defined
+        - pl_a_nullmailer_setup | bool
     # ------------------------------------------------------------------------------
     - name: "PRE | conf nullmailer"
       become: true
@@ -128,14 +144,34 @@
         dest: /etc/nullmailer/remotes
         content: >-
           {{ mailing_smtp_host }} smtp --port={{ mailing_smtp_port }}
-          {% if mailing_mail_username %} --auth-login --user={{ mailing_mail_username }} --pass={{ mailing_mail_password }}{% endif %}
-          {% if mailing_remote_ssl %} --ssl{% endif %}
-          {% if mailing_remote_starttls %} --starttls{% endif %}
+          {% if mailing_mail_username %}--auth-login --user={{ mailing_mail_username }} --pass={{ mailing_mail_password }}{% endif %}
+          {% if mailing_remote_ssl %}--ssl{% endif %}
+          {% if mailing_remote_starttls %}--starttls{% endif %}
         mode: "600"
       when:
-        - skip_default_setup is not defined
-        - nullmailer_setup is defined
-        - nullmailer_setup | bool
+        - pl_a_nullmailer_setup is defined
+        - pl_a_nullmailer_setup | bool
+    # ------------------------------------------------------------------------------
+    - name: "PRE | conf nullmailer"
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/mailname
+        content: |
+          {{ mailing_mail_email.split('@')[1] if mailing_mail_email is defined else mailing_mail_username }}
+        mode: "640"
+      when:
+        - pl_a_nullmailer_setup is defined
+        - pl_a_nullmailer_setup | bool
+    - name: "PRE | conf nullmailer"
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/defaultdomain
+        content: |
+          {{ mailing_mail_email.split('@')[1] if mailing_mail_email is defined else mailing_mail_username }}
+        mode: "640"
+      when:
+        - pl_a_nullmailer_setup is defined
+        - pl_a_nullmailer_setup | bool
     # ------------------------------------------------------------------------------
     - name: "PRE | conf nullmailer"
       become: true
@@ -145,9 +181,8 @@
           {{ mailing_mail_email if mailing_mail_email is defined else mailing_mail_username }}
         mode: "640"
       when:
-        - skip_default_setup is not defined
-        - nullmailer_setup is defined
-        - nullmailer_setup | bool
+        - pl_a_nullmailer_setup is defined
+        - pl_a_nullmailer_setup | bool
     # ------------------------------------------------------------------------------
     - name: "PRE | conf nullmailer"
       become: true
@@ -157,6 +192,5 @@
           {{ mailing_mail_email if mailing_mail_email is defined else mailing_mail_username }}
         mode: "640"
       when:
-        - skip_default_setup is not defined
-        - nullmailer_setup is defined
-        - nullmailer_setup | bool
+        - pl_a_nullmailer_setup is defined
+        - pl_a_nullmailer_setup | bool

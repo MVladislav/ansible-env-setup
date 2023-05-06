@@ -21,19 +21,19 @@
       cis_ubuntu2204_set_boot_pass: false # bootloader password
       cis_ubuntu2204_rule_1_4_3: false # authentication required for single user mode
       # -------------------------
-      cis_ubuntu2204_rule_1_6_1_3: false # AppArmor enforce mode
+      cis_ubuntu2204_rule_1_6_1_3: true # AppArmor complain mode
       cis_ubuntu2204_rule_1_6_1_4: false # AppArmor enforce mode
       # -------------------------
       cis_ubuntu2204_allow_gdm_gui: true
       cis_ubuntu2204_allow_autofs: true
       cis_ubuntu2204_rule_1_1_10: false # Disable USB Storage
       cis_ubuntu2204_time_synchronization_service: chrony # chrony | systemd-timesyncd | ntp
-      cis_ubuntu2204_time_synchronization_ntp_server: '{{ ansible_host_default_ntp | default("time.cloudflare.com")}}'
+      cis_ubuntu2204_time_synchronization_ntp_server: '{{ pl_a_host_default_ntp | default("time.cloudflare.com")}}'
       cis_ubuntu2204_time_synchronization_ntp_fallback_server: ntp.ubuntu.com
       cis_ubuntu2204_allow_cups: true
       # -------------------------
-      cis_ubuntu2204_install_aide: "{{ cis_setup_aide | default(false) | bool }}"
-      cis_ubuntu2204_config_aide: "{{ cis_setup_aide | default(false) | bool }}"
+      cis_ubuntu2204_install_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
+      cis_ubuntu2204_config_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
       cis_ubuntu2204_aide_cron:
         cron_user: root
         cron_file: aide
@@ -44,11 +44,11 @@
         aide_month: "*"
         aide_weekday: "*"
       # -------------------------
-      cis_ubuntu2204_required_ipv6: "{{ cis_ipv6_required | default(false) | bool }}"
+      cis_ubuntu2204_required_ipv6: "{{ pl_a_cis_ipv6_required | default(false) | bool }}"
       cis_ubuntu2204_firewall: ufw
       cis_ubuntu2204_firewall_ufw_outgoing_policy: allow
       # -------------------------
-      cis_ubuntu2204_ssh_allow_groups: None
+      cis_ubuntu2204_ssh_allow_groups: null
       cis_ubuntu2204_cron_allow_users:
         - root
       cis_ubuntu2204_at_allow_users:
@@ -66,8 +66,8 @@
           value: "-1"
       # -------------------------
       when:
-        - cis_setup is defined
-        - cis_setup | bool
+        - pl_a_cis_setup is defined
+        - pl_a_cis_setup | bool
     ### -------------------------
 
 # ------------------------------------------------------------------------------
@@ -90,19 +90,19 @@
       cis_ubuntu2204_set_boot_pass: false # bootloader password
       cis_ubuntu2204_rule_1_4_3: false # authentication required for single user mode
       # -------------------------
-      cis_ubuntu2204_rule_1_6_1_3: false # AppArmor enforce mode
+      cis_ubuntu2204_rule_1_6_1_3: true # AppArmor complain mode
       cis_ubuntu2204_rule_1_6_1_4: false # AppArmor enforce mode
       # -------------------------
       cis_ubuntu2204_allow_gdm_gui: false
       cis_ubuntu2204_allow_autofs: false
       cis_ubuntu2204_rule_1_1_10: true # Disable USB Storage
       cis_ubuntu2204_time_synchronization_service: chrony # chrony | systemd-timesyncd | ntp
-      cis_ubuntu2204_time_synchronization_ntp_server: '{{ ansible_host_default_ntp | default("time.cloudflare.com")}}'
+      cis_ubuntu2204_time_synchronization_ntp_server: '{{ pl_a_host_default_ntp | default("time.cloudflare.com")}}'
       cis_ubuntu2204_time_synchronization_ntp_fallback_server: ntp.ubuntu.com
       cis_ubuntu2204_allow_cups: false
       # -------------------------
-      cis_ubuntu2204_install_aide: "{{ cis_setup_aide | default(false) | bool }}"
-      cis_ubuntu2204_config_aide: "{{ cis_setup_aide | default(false) | bool }}"
+      cis_ubuntu2204_install_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
+      cis_ubuntu2204_config_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
       cis_ubuntu2204_aide_cron:
         cron_user: root
         cron_file: aide
@@ -113,7 +113,7 @@
         aide_month: "*"
         aide_weekday: "*"
       # -------------------------
-      cis_ubuntu2204_required_ipv6: "{{ cis_ipv6_required | default(false) | bool }}"
+      cis_ubuntu2204_required_ipv6: "{{ pl_a_cis_ipv6_required | default(false) | bool }}"
       cis_ubuntu2204_firewall: ufw
       cis_ubuntu2204_firewall_ufw_outgoing_policy: allow
       # -------------------------
@@ -135,8 +135,8 @@
           value: "-1"
       # -------------------------
       when:
-        - cis_setup is defined
-        - cis_setup | bool
+        - pl_a_cis_setup is defined
+        - pl_a_cis_setup | bool
     ### -------------------------
 
 # ------------------------------------------------------------------------------
@@ -168,10 +168,10 @@
         - key: FILTERINSTALLATIONS
           value: "yes"
       when:
-        - cis_setup is defined
-        - cis_setup | bool
-        - cis_setup_aide is defined
-        - cis_setup_aide | bool
+        - pl_a_cis_setup is defined
+        - pl_a_cis_setup | bool
+        - pl_a_cis_setup_aide is defined
+        - pl_a_cis_setup_aide | bool
     - name: CIS | set/update aide variables for aide
       ansible.builtin.lineinfile:
         dest: "/etc/default/aide"
@@ -192,8 +192,8 @@
         - key: FILTERINSTALLATIONS
           value: "yes"
       when:
-        - cis_setup is defined
-        - cis_setup | bool
-        - cis_setup_aide is defined
-        - cis_setup_aide | bool
+        - pl_a_cis_setup is defined
+        - pl_a_cis_setup | bool
+        - pl_a_cis_setup_aide is defined
+        - pl_a_cis_setup_aide | bool
     ### -------------------------
