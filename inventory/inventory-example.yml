@@ -80,23 +80,18 @@ all:
       ## _______________________
       pl_a_ssh_setup_enable: false
       ## UFW
-      ## NOTE: ufw is not needed to run for harden, it is done by CIS
+      ## NOTE: ufw is not needed to run, it is done by CIS
       ##       use only if you need to setup something specific
       ## _______________________
       pl_a_ufw_setup_enable: false
-      # ansible_ufw_setup: true
       pl_a_ufw_logging_level: "medium"
-      pl_a_ufw_rules_extended:
-        - rule: allow
-          to_port: 22
-          protocol: tcp
-          interface: "{{ ansible_default_ipv4['interface'] }}"
-          comment: "allow incoming connection on standard ssh port"
-        # - rule: allow
-        #   to_port: 161
-        #   protocol: udp
-        #   interface: "{{ ansible_default_ipv4['interface'] }}"
-        #   comment: "allow incoming connection on standard snmp port"
+      # NOTE: ssh not needed, default var and setup by cis
+      # pl_a_ufw_rules_extended:
+      #   - rule: allow
+      #     to_port: 161
+      #     protocol: udp
+      #     interface: "{{ ansible_default_ipv4['interface'] }}"
+      #     comment: "allow incoming connection on standard snmp port"
       ## SNMP
       ## _______________________
       pl_a_snmp_setup: false
@@ -209,23 +204,18 @@ all:
       ## _______________________
       pl_a_ssh_setup_enable: false
       ## UFW
-      ## NOTE: ufw is not needed to run for harden, it is done by CIS
+      ## NOTE: ufw is not needed to run, it is done by CIS
       ##       use only if you need to setup something specific
       ## _______________________
       pl_a_ufw_setup_enable: false
-      # ansible_ufw_setup: true
       pl_a_ufw_logging_level: "medium"
-      pl_a_ufw_rules_extended:
-        - rule: allow
-          to_port: 22
-          protocol: tcp
-          interface: "{{ ansible_default_ipv4['interface'] }}"
-          comment: "allow incoming connection on standard ssh port"
-        # - rule: allow
-        #   to_port: 161
-        #   protocol: udp
-        #   interface: "{{ ansible_default_ipv4['interface'] }}"
-        #   comment: "allow incoming connection on standard snmp port"
+      # NOTE: ssh not needed, default var and setup by cis
+      # pl_a_ufw_rules_extended:
+      #   - rule: allow
+      #     to_port: 161
+      #     protocol: udp
+      #     interface: "{{ ansible_default_ipv4['interface'] }}"
+      #     comment: "allow incoming connection on standard snmp port"
       ## SNMP
       ## _______________________
       pl_a_snmp_setup: false

@@ -52,7 +52,7 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: PRE | installer (2) | ssh/ufw/netplan
+- name: PRE | installer (2) | ssh/netplan/ufw
   remote_user: "{{ ansible_user }}"
   hosts:
     - pre
@@ -70,19 +70,42 @@
       when:
         - pl_a_ssh_setup_enable | bool
     ### -------------------------
-    - role: ansible-ufw
-      become: true
-      ufw_logging: "{{ pl_a_ufw_logging_level | default('medium') }}"
-      ufw_rules: "{{ pl_a_ufw_rules_default + pl_a_ufw_rules_extended }}"
-      when:
-        - pl_a_ufw_setup_enable | bool
-    ### -------------------------
     - role: ansible-netplan
       netplan_service_name: "{{ pl_a_service_name }}"
       when:
         - pl_a_netplan_setup is defined
         - pl_a_netplan_setup | bool
     ### -------------------------
+  tasks:
+    # --------------------------------------------------------------------------
+    - name: "PRE | setup ufw | logging"
+      become: true
+      community.general.ufw:
+        logging: "{{ pl_a_ufw_logging_level }}"
+      when:
+        - pl_a_ufw_setup_enable is defined
+        - pl_a_ufw_setup_enable | bool
+        - pl_a_ufw_logging_level is defined
+    # --------------------------------------------------------------------------
+    - name: "PRE | setup ufw | rules"
+      become: true
+      community.general.ufw:
+        rule: "{{ item.rule }}"
+        interface: "{{ item.interface | default('') }}"
+        direction: "{{ item.direction | default('in') }}"
+        from_ip: "{{ item.from_ip | default('any') }}"
+        to_ip: "{{ item.to_ip | default('any') }}"
+        from_port: "{{ item.from_port | default('') }}"
+        to_port: "{{ item.to_port | default('') }}"
+        protocol: "{{ item.protocol | default('any') }}"
+        route: "{{ item.route | default(omit) }}"
+        log: "{{ item.log | default(false) }}"
+        comment: "{{ item.comment | default(omit) }}"
+      with_items: "{{ pl_a_ufw_rules_default + pl_a_ufw_rules_extended }}"
+      when:
+        - pl_a_ufw_setup_enable is defined
+        - pl_a_ufw_setup_enable | bool
+        - pl_a_ufw_rules_extended is defined
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
@@ -126,7 +149,7 @@
         - pl_a_postfix_setup | bool
     ### -------------------------
   tasks:
-    # ------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     - name: "PRE | install nullmailer"
       become: true
       ansible.builtin.apt:
@@ -137,7 +160,7 @@
       when:
         - pl_a_nullmailer_setup is defined
         - pl_a_nullmailer_setup | bool
-    # ------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     - name: "PRE | conf nullmailer"
       become: true
       ansible.builtin.copy:
@@ -151,7 +174,7 @@
       when:
         - pl_a_nullmailer_setup is defined
         - pl_a_nullmailer_setup | bool
-    # ------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     - name: "PRE | conf nullmailer"
       become: true
       ansible.builtin.copy:
@@ -172,7 +195,7 @@
       when:
         - pl_a_nullmailer_setup is defined
         - pl_a_nullmailer_setup | bool
-    # ------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     - name: "PRE | conf nullmailer"
       become: true
       ansible.builtin.copy:
@@ -183,7 +206,7 @@
       when:
         - pl_a_nullmailer_setup is defined
         - pl_a_nullmailer_setup | bool
-    # ------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------
     - name: "PRE | conf nullmailer"
       become: true
       ansible.builtin.copy:

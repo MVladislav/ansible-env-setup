@@ -22,9 +22,6 @@ branch = main
 path = roles/ansible-updater
 url = https://github.com/MVladislav/ansible-updater.git
 branch = main
-[submodule "roles/ansible-ufw"]
-path = roles/ansible-ufw
-url = https://github.com/Oefenweb/ansible-ufw.git
 [submodule "roles/ansible-install-server"]
 path = roles/ansible-install-server
 url = https://github.com/MVladislav/ansible-install-server.git
