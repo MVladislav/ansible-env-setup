@@ -37,7 +37,7 @@
         apt_build: true
         # apt_libs: false
         # APT (2) -------------------------------
-        # apt_snap: false
+        apt_snap: true
         # apt_vpn: false
         # apt_php: false
         # apt_rasp_pi_pkg: false
@@ -71,7 +71,7 @@
         pip_mypy: true
         pip_pre_commit: true
         # pip_openconnect_sso: false
-        # pip_ansible: false
+        pip_ansible: true
         # OTHER --------------------------------
         # go_kompose: false
         # ruby: false
@@ -100,6 +100,7 @@
         # gnome_gui_setup_theme: false
         # gnome_gui_setup_dependencies: false
         gnome_gui_setup_extensions: true
+        # gnome_gui_setup_extensions_apt_ubuntu_tiling: false
         gnome_gui_setup_extensions_git_caffeine: true
         # gnome_gui_setup_extensions_git_sound: false
         gnome_gui_setup_extensions_git_blur_shell: true
@@ -127,9 +128,11 @@
         # apt_latex: true
         apt_pandoc: true
         apt_virt_viewer: true
+        # apt_logitech_unifying_solaar: false
         # DPKG ----------------------------------
         # dpkg_virtualbox: false
-        # dpkg_veracrypt: true
+        dpkg_veracrypt: true
+        # dpkg_veracrypt_cli: true
         # dpkg_parsec: false
         # dpkg_brim: false
         # dpkg_portmaster: false
@@ -137,7 +140,6 @@
         # distribution_key_virtualbox: false
         # APPIMAGE ------------------------------
         app_image_logseq: true
-        app_image_upscayl: true
         # SNAP ----------------------------------
         snap_firefox: true
         snap_chromium: true
@@ -154,7 +156,9 @@
         snap_drawio: true
         snap_gimp: true
         snap_darktable: true
-        # snap_pixelfx: false
+        snap_pixelfx: true
+        snap_upscayl: true
+        # snap_krita: false
         # snap_lunacy: false
         # snap_vlc: false
         snap_obs_studio: true
@@ -172,7 +176,7 @@
         # snap_beekeeper_studio: false
         # snap_mqtt_explorer: false
         # snap_zaproxy: false
-        snap_nmap: true
+        # snap_nmap: false
         # snap_john_the_ripper: false
         # snap_rpi_imager: false
         # snap_cornyjokes: false
@@ -182,7 +186,7 @@
         # flatpak_firefox: false
         # flatpak_chromium: false
         # flatpak_thunderbird: false
-        flatpak_newsflash: true
+        # flatpak_newsflash: false
         # flatpak_extension_manager: false
         # flatpak_flameshot: false
         # flatpak_onlyoffice: false
