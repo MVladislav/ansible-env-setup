@@ -100,10 +100,10 @@ all:
       security_snmp_encryption: <ENC>
       security_snmp_location: home
       security_snmp_contact: root
-      security_snmp_address_ipv4: ""
-      security_snmp_address_ipv6: "::1"
+      security_snmp_address_ipv4: null
+      security_snmp_address_ipv6: null
       security_snmp_port_ipv4: 161
-      security_snmp_port_ipv6:
+      security_snmp_port_ipv6: null
       ## UBUNTU2004 CIS
       ## _______________________
       pl_a_cis_setup: true
@@ -224,10 +224,10 @@ all:
       security_snmp_encryption: <ENC>
       security_snmp_location: home
       security_snmp_contact: root
-      security_snmp_address_ipv4: ""
-      security_snmp_address_ipv6: "::1"
+      security_snmp_address_ipv4: null
+      security_snmp_address_ipv6: null
       security_snmp_port_ipv4: 161
-      security_snmp_port_ipv6:
+      security_snmp_port_ipv6: null
       ## UBUNTU2004 CIS
       ## _______________________
       pl_a_cis_setup: true
