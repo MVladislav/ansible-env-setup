@@ -200,6 +200,7 @@
         # flatpak_vlc: false
         # flatpak_amberol: false
         flatpak_haruna: true
+        # flatpak_warp: false
         # flatpak_inkscape: false
         # flatpak_drawio: false
         # flatpak_gimp: false

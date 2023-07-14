@@ -42,10 +42,10 @@
           - "add_ssh_key     (should the ssh key added to user)        : {{ ansible_user_conf_add_ssh_key | bool }}"
           - "clients         (clients list to be updated, multi setup) : {{ ansible_user_conf_clients }}"
           - "hostname        (hostname to be changed to)               : {{ ansible_host_conf_hostname }}"
-    - name: "PRE-INSTALL | pause for user"
-      check_mode: true
-      ansible.builtin.pause:
-        prompt: "Validate if above printed values are correct"
+    # - name: "PRE-INSTALL | pause for user"
+    #   check_mode: true
+    #   ansible.builtin.pause:
+    #     prompt: "Validate if above printed values are correct"
 
 # ------------------------------------------------------------------------------
 - name: "PRE-INSTALL | remote-user: update user and deploy ssh-key"

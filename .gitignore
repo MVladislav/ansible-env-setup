@@ -19,8 +19,13 @@ playbooks/*
 playbooks/vars/*
 !playbooks/vars/default-example.yml
 
+!plugins/
+plugins/*
+# !plugins/mitogen-0.2.9/
+
 !playbooks/playbook-s-*.yml
 !playbooks/playbook-client-dev.yml
+!playbooks/playbook-client-pentest.yml
 !playbooks/playbook-client-vm.yml
 !playbooks/playbook-client.yml
 !playbooks/playbook-server-cluster.yml

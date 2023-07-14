@@ -27,7 +27,7 @@ all:
         is_update: true
         ## sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
-        group: sudo,adm,cdrom,lpadmin,dip,plugdev,lxd,sambashare,audio
+        group: sudo,adm,cdrom,lpadmin,dip,plugdev,lxd,sambashare,audio,video,render,disk
         system: false
         append: true
         add_ssh_key: true
