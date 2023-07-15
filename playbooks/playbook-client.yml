@@ -26,6 +26,7 @@
     ### -------------------------
     - role: ansible-install-server
       clients: "{{ pl_a_clients }}"
+      install_server_service_name: "{{ pl_a_service_name }}"
       install_server_config:
         dev: true
         env_tun_setup: true
@@ -36,7 +37,7 @@
         # apt_build: false
         # apt_libs: false
         # APT (2) -------------------------------
-        # apt_snap: false
+        apt_snap: true
         # apt_vpn: false
         # apt_php: false
         # apt_rasp_pi_pkg: false
@@ -100,7 +101,8 @@
         # gnome_gui_setup_theme: false
         # gnome_gui_setup_dependencies: false
         gnome_gui_setup_extensions: true
-        gnome_gui_setup_extensions_git_caffeine: true
+        gnome_gui_setup_extensions_apt_ubuntu_tiling: true
+        # gnome_gui_setup_extensions_git_caffeine: false
         # gnome_gui_setup_extensions_git_sound: false
         gnome_gui_setup_extensions_git_blur_shell: true
         # gnome_gui_setup_extensions_git_burn_window: false
@@ -127,24 +129,26 @@
         # apt_latex: false
         # apt_pandoc: false
         # apt_virt_viewer: false
+        # apt_logitech_unifying_solaar: false
         # DPKG ----------------------------------
         # dpkg_virtualbox: false
         dpkg_veracrypt: true
+        # dpkg_veracrypt_cli: true
         # dpkg_parsec: false
         # dpkg_brim: false
-        dpkg_portmaster: true
+        # dpkg_portmaster: false
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
+        # APPIMAGE ------------------------------
         # app_image_logseq: false
-        # app_image_upscayl: false
         # SNAP ----------------------------------
         snap_firefox: true
-        snap_chromium: true
+        # snap_chromium: false
         snap_thunderbird: true
         snap_signal_desktop: true
         snap_telegram_desktop: true
         # snap_discord: false
-        snap_zoom_client: true
+        # snap_zoom_client: false
         snap_spotify: true
         # snap_libreoffice: false
         snap_onlyoffice_desktopeditors: true
@@ -154,11 +158,13 @@
         snap_gimp: true
         # snap_darktable: false
         # snap_pixelfx: false
+        # snap_upscayl: false
+        # snap_krita: false
         # snap_lunacy: false
         # snap_vlc: false
         # snap_obs_studio: false
         # snap_flameshot: false
-        snap_1password: true
+        # snap_1password: false
         # snap_okular: false
         # snap_yubioath_desktop: false
         # snap_code: false
@@ -187,7 +193,7 @@
         # flatpak_onlyoffice: false
         # flatpak_1password: false
         # flatpak_keepassxc: false
-        flatpak_cryptomator: true
+        # flatpak_cryptomator: false
         # flatpak_easy_effects: false
         # flatpak_signal: false
         # flatpak_telegram: false
