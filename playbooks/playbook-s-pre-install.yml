@@ -117,38 +117,66 @@
     ### -------------------------
     - role: ansible-postfix
       become: true
-      postfix_hostname: "{{ mailing_mail_username.split('@')[1] }}"
-      # postfix_mailname: "{{ mailing_mail_username.split('@')[1] }}"
-      postfix_aliases:
-        - user: root
-          alias: "{{ mailing_mail_username }}"
-        - user: "{{ ansible_user }}"
-          alias: "{{ mailing_mail_username }}"
-      # postfix_header_checks:
-      #   - pattern: "/From:.*/"
-      #     action: REPLACE
-      #     text: "From: {{ mailing_mail_username }}"
-      postfix_mydestination:
-        - localhost.$myhostname
-        - localhost
-        - localhost.localdomain
+      postfix_hostname: "{{ ansible_host_hostname }}"
+      postfix_mailname: "{{ pl_a_mailing_mail_email.split('@')[1] }}"
+      postfix_mynetworks: 127.0.0.0/8
       postfix_inet_interfaces: loopback-only
+      postfix_compatibility_level: 2
       postfix_inet_protocols: ipv4
-      postfix_relayhost: "{{ mailing_smtp_host }}"
-      postfix_relaytls: "{{ mailing_remote_ssl }}"
-      postfix_sasl_user: "{{ mailing_mail_username }}"
-      postfix_sasl_password: "{{ mailing_mail_password }}"
+      postfix_relayhost: "{{ pl_a_mailing_smtp_host }}"
+      postfix_relayhost_port: "{{ pl_a_mailing_smtp_port }}"
+      postfix_relaytls: "{{ pl_a_mailing_remote_ssl }}"
+      postfix_sasl_user: "{{ pl_a_mailing_mail_username }}"
+      postfix_sasl_password: "{{ pl_a_mailing_mail_password }}"
+      postfix_smtp_tls_wrappermode: true
+      postfix_smtp_tls_security_level: encrypt
+      postfix_smtp_tls_cafile: /etc/ssl/certs/Entrust_Root_Certification_Authority.pem
       postfix_raw_options:
         - |
-          sender_canonical_classes = envelope_sender
-          mailbox_size_limit = 0
-          message_size_limit = 0
-          compatibility_level = 2
+          biff = no
+
+          # Do not append .domain to local addresses
+          append_dot_mydomain = no
+
+          # Uncomment the next line to generate "delayed mail" warnings
+          delay_warning_time = 4h
+
+          recipient_delimiter = +
+
+          # SMTP authentication settings
+          smtp_sasl_auth_enable = yes
+          smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+          smtp_sasl_security_options = noanonymous
+          smtp_sasl_tls_security_options = noanonymous
+
+          # Use TLS for SMTP connections
+          smtp_use_tls = yes
+
+          # Enable the SMTPS wrapper mode
+          smtp_tls_wrappermode = yes
+
+          # Set the required TLS security level for SMTPS
+          smtp_tls_security_level = encrypt
+
+          # TLS protocol versions
+          smtp_tls_protocols = !SSLv2, !SSLv3, !TLSv1, TLSv1.1, TLSv1.2
+
+          # TLS ciphers
+          smtp_tls_ciphers = high
+
+          # CA file path
+          smtp_tls_CAfile = /etc/ssl/certs/Entrust_Root_Certification_Authority.pem
+
+          # Enable SMTP TLS session caching
+          smtp_tls_session_cache_database = btree:/var/lib/postfix/smtp_tls_session_cache
+          smtp_tls_session_cache_timeout = 3600s
       when:
         - pl_a_postfix_setup is defined
         - pl_a_postfix_setup | bool
     ### -------------------------
   tasks:
+    # can be test with:
+    # echo "Subject: Test mail from nullmailer on host $HOST" | sudo sendmail -f sender@example.com recipient@example.com
     # --------------------------------------------------------------------------
     - name: "PRE | install nullmailer"
       become: true
@@ -161,16 +189,54 @@
         - pl_a_nullmailer_setup is defined
         - pl_a_nullmailer_setup | bool
     # --------------------------------------------------------------------------
-    - name: "PRE | conf nullmailer"
+    - name: "PRE | conf nullmailer | file remotes"
       become: true
       ansible.builtin.copy:
         dest: /etc/nullmailer/remotes
         content: >-
-          {{ mailing_smtp_host }} smtp --port={{ mailing_smtp_port }}
-          {% if mailing_mail_username %}--auth-login --user={{ mailing_mail_username }} --pass={{ mailing_mail_password }}{% endif %}
-          {% if mailing_remote_ssl %}--ssl{% endif %}
-          {% if mailing_remote_starttls %}--starttls{% endif %}
+          {{ pl_a_mailing_smtp_host }} smtp --port={{ pl_a_mailing_smtp_port }}
+          {% if pl_a_mailing_mail_username %}--auth-login --user={{ pl_a_mailing_mail_username }} --pass={{ pl_a_mailing_mail_password }}{% endif %}
+          {% if pl_a_mailing_remote_ssl %}--ssl{% endif %}
+          {% if pl_a_mailing_remote_starttls %}--starttls{% endif %}
         mode: "600"
+        owner: mail
+        group: mail
+      when:
+        - pl_a_nullmailer_setup is defined
+        - pl_a_nullmailer_setup | bool
+    - name: "PRE | conf nullmailer | file allmailfrom"
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/nullmailer/allmailfrom
+        content: |
+          {{ ansible_host_hostname }}@{{ pl_a_mailing_mail_email.split('@')[1] }}
+        mode: "640"
+        owner: mail
+        group: mail
+      when:
+        - pl_a_nullmailer_setup is defined
+        - pl_a_nullmailer_setup | bool
+    - name: "PRE | conf nullmailer | defaultdomain"
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/nullmailer/defaultdomain
+        content: |
+          {{ pl_a_mailing_mail_email.split('@')[1] }}
+        mode: "640"
+        owner: mail
+        group: mail
+      when:
+        - pl_a_nullmailer_setup is defined
+        - pl_a_nullmailer_setup | bool
+    - name: "PRE | conf nullmailer | adminaddr"
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/nullmailer/adminaddr
+        content: |
+          {{ ansible_host_hostname }}@{{ pl_a_mailing_mail_email.split('@')[1] }}
+        mode: "640"
+        owner: mail
+        group: mail
       when:
         - pl_a_nullmailer_setup is defined
         - pl_a_nullmailer_setup | bool
@@ -180,40 +246,10 @@
       ansible.builtin.copy:
         dest: /etc/mailname
         content: |
-          {{ mailing_mail_email.split('@')[1] if mailing_mail_email is defined else mailing_mail_username }}
+          {{ ansible_host_hostname }}
         mode: "640"
-      when:
-        - pl_a_nullmailer_setup is defined
-        - pl_a_nullmailer_setup | bool
-    - name: "PRE | conf nullmailer"
-      become: true
-      ansible.builtin.copy:
-        dest: /etc/defaultdomain
-        content: |
-          {{ mailing_mail_email.split('@')[1] if mailing_mail_email is defined else mailing_mail_username }}
-        mode: "640"
-      when:
-        - pl_a_nullmailer_setup is defined
-        - pl_a_nullmailer_setup | bool
-    # --------------------------------------------------------------------------
-    - name: "PRE | conf nullmailer"
-      become: true
-      ansible.builtin.copy:
-        dest: /etc/nullmailer/adminaddr
-        content: |
-          {{ mailing_mail_email if mailing_mail_email is defined else mailing_mail_username }}
-        mode: "640"
-      when:
-        - pl_a_nullmailer_setup is defined
-        - pl_a_nullmailer_setup | bool
-    # --------------------------------------------------------------------------
-    - name: "PRE | conf nullmailer"
-      become: true
-      ansible.builtin.copy:
-        dest: /etc/nullmailer/allmailfrom
-        content: |
-          {{ mailing_mail_email if mailing_mail_email is defined else mailing_mail_username }}
-        mode: "640"
+        owner: mail
+        group: mail
       when:
         - pl_a_nullmailer_setup is defined
         - pl_a_nullmailer_setup | bool

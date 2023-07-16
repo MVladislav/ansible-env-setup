@@ -113,12 +113,13 @@ all:
       pl_a_cis_ipv6_required: false
       ## MAILING SETUP
       ## _______________________
-      mailing_mail_username: root # also used as mail from/to
-      mailing_mail_password: ""
-      mailing_smtp_host: home.local
-      mailing_smtp_port: 465
-      mailing_remote_ssl: true
-      mailing_remote_starttls: false
+      pl_a_mailing_mail_email: root@home.local
+      pl_a_mailing_mail_username: "{{ pl_a_mailing_mail_email }}"
+      pl_a_mailing_mail_password: ""
+      pl_a_mailing_smtp_host: home.local
+      pl_a_mailing_smtp_port: 465
+      pl_a_mailing_remote_ssl: true
+      pl_a_mailing_remote_starttls: false
       ## NULLMAILER SETUP
       ## _______________________
       pl_a_nullmailer_setup: false
@@ -128,8 +129,8 @@ all:
       ## HARDENING SCAN
       ## _______________________
       pl_a_hardening_scan_setup: true
-      pl_a_hardening_lynis_report_from: "{{ mailing_mail_username }}"
-      pl_a_hardening_lynis_report_to: "{{ mailing_mail_username }}"
+      pl_a_hardening_lynis_report_from: "{{ pl_a_mailing_mail_email }}"
+      pl_a_hardening_lynis_report_to: "{{ pl_a_mailing_mail_email }}"
       ## HARDENING SECURITY
       ## _______________________
       pl_a_auditd_setup: true
@@ -138,6 +139,7 @@ all:
       ## DOCKER
       ## _______________________
       pl_a_docker_user_shell: /bin/zsh
+      docker_is_swarm_mode: true
       docker_cis_rule_2_1: true # install docker as non root
     ## .........................................................................
     ## SERVER:: setup
@@ -239,12 +241,13 @@ all:
       pl_a_cis_ipv6_required: false
       ## MAILING SETUP
       ## _______________________
-      mailing_mail_username: root # also used as mail from/to
-      mailing_mail_password: ""
-      mailing_smtp_host: home.local
-      mailing_smtp_port: 465
-      mailing_remote_ssl: true
-      mailing_remote_starttls: false
+      pl_a_mailing_mail_email: root@home.local
+      pl_a_mailing_mail_username: "{{ pl_a_mailing_mail_email }}"
+      pl_a_mailing_mail_password: ""
+      pl_a_mailing_smtp_host: home.local
+      pl_a_mailing_smtp_port: 465
+      pl_a_mailing_remote_ssl: true
+      pl_a_mailing_remote_starttls: false
       ## NULLMAILER SETUP
       ## _______________________
       pl_a_nullmailer_setup: false
@@ -254,8 +257,8 @@ all:
       ## HARDENING SCAN
       ## _______________________
       pl_a_hardening_scan_setup: true
-      pl_a_hardening_lynis_report_from: "{{ mailing_mail_username }}"
-      pl_a_hardening_lynis_report_to: "{{ mailing_mail_username }}"
+      pl_a_hardening_lynis_report_from: "{{ pl_a_mailing_mail_email }}"
+      pl_a_hardening_lynis_report_to: "{{ pl_a_mailing_mail_email }}"
       ## HARDENING SECURITY
       ## _______________________
       pl_a_auditd_setup: true
@@ -264,6 +267,7 @@ all:
       ## DOCKER (host need to be added below in children: docker)
       ## _______________________
       pl_a_docker_user_shell: /bin/zsh
+      docker_is_swarm_mode: true
       docker_cis_rule_2_1: true # install docker as non root
       ## KUBERNETES (host need to be added below in children: kubernetes)
       ## _______________________
