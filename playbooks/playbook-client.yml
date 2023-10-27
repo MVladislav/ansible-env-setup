@@ -32,13 +32,18 @@
         env_tun_setup: true
         # APT (1) -------------------------------
         apt_base: true
-        apt_archive: true
+        apt_auth_priv: true
+        apt_cert: true
+        # apt_archive: false
         # apt_dev: false
         # apt_build: false
         # apt_libs: false
         # APT (2) -------------------------------
         apt_snap: true
-        # apt_vpn: false
+        # apt_vpn_resolvconf: false
+        # apt_vpn_wireguard: false
+        # apt_vpn_openvpn: false
+        # apt_vpn_openconnect: false
         # apt_php: false
         # apt_rasp_pi_pkg: false
         # apt_qemu_guest_agent: false
@@ -54,16 +59,20 @@
         snap_btop: true
         # snap_glow: false
         # snap_go: false
+        # snap_node: false
+        # snap_ruby: false
+        # snap_openjdk: false
+        # snap_openjfx: false
         # OTHER --------------------------------
-        git: true
-        # zsh: false
-        # tmux: false
+        apt_git_conf: true
+        # apt_zsh_conf: false
+        # git_tmux_conf: false
         # PYTHON --------------------------------
-        # python: false
-        # python_pip: false
         # python_pip_update: false
-        # python_venv: false
-        # python_dev: false
+        # apt_python: false
+        # apt_python_pip: false
+        # apt_python_venv: false
+        # apt_python_dev: false
         # pip_s_tui: false
         # pip_virtualenv: false
         # pip_autopep8: false
@@ -72,14 +81,16 @@
         # pip_pre_commit: false
         # pip_openconnect_sso: false
         # pip_ansible: false
-        # OTHER --------------------------------
+        # NPM --------------------------------
+        # npm_typescript: false
+        # GO --------------------------------
         # go_kompose: false
-        # ruby: false
-        # npm: false
+        # go_act: false
+        # OTHER --------------------------------
         # mongodb: false
-        # java: false
-        # java_ant: false
-    ### -------------------------
+        # apt_java_jre_headless: false
+        # apt_java_jdk: false
+        # apt_java_ant: false
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
@@ -95,13 +106,12 @@
       install_client_config:
         # GENERAL -------------------------------
         dev: true
-        fonts: true
+        fonts_install: true
         # GNOME ---------------------------------
         gnome_gui_setup: true # general of gnome setup should be triggered, below specific what (dependencies will than general installed)
-        # gnome_gui_setup_theme: false
         # gnome_gui_setup_dependencies: false
         gnome_gui_setup_extensions: true
-        gnome_gui_setup_extensions_apt_ubuntu_tiling: true
+        # gnome_gui_setup_extensions_apt_ubuntu_tiling: false
         # gnome_gui_setup_extensions_git_caffeine: false
         # gnome_gui_setup_extensions_git_sound: false
         gnome_gui_setup_extensions_git_blur_shell: true
@@ -115,32 +125,38 @@
         # cleanup_remove_flatpak: false
         # APT -----------------------------------
         apt_base: true
-        apt_base_ubuntu: true
-        apt_base_archive: true
-        apt_base_codec: true
-        apt_base_gnome: true
-        # NOTE: not need in new ubuntu, switched to pipewire
-        # apt_base_sound_pulseaudio: false
+        apt_auth_priv: true
+        # apt_ubuntu: false
+        # apt_archive: false
+        # apt_codec: false
+        # apt_gnome: false
         apt_snap: true
         apt_flatpak: true
-        # apt_vpn: false
+        # apt_vpn_resolvconf: false
+        # apt_vpn_wireguard: false
+        # apt_vpn_openvpn: false
+        # apt_vpn_openconnect: false
+        # apt_vpn_l2tp: false
         # apt_gnome_boxes: false
         # apt_texmaker: false
         # apt_latex: false
         # apt_pandoc: false
         # apt_virt_viewer: false
         # apt_logitech_unifying_solaar: false
+        # apt_mpv: false
         # DPKG ----------------------------------
         # dpkg_virtualbox: false
         dpkg_veracrypt: true
-        # dpkg_veracrypt_cli: true
+        # dpkg_veracrypt_cli: false
         # dpkg_parsec: false
         # dpkg_brim: false
         # dpkg_portmaster: false
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
+        # distribution_key_1password_cli: false
         # APPIMAGE ------------------------------
         # app_image_logseq: false
+        # app_image_ultimaker: false
         # SNAP ----------------------------------
         snap_firefox: true
         # snap_chromium: false
@@ -166,6 +182,7 @@
         # snap_flameshot: false
         # snap_1password: false
         # snap_okular: false
+        # snap_xournalpp: false
         # snap_yubioath_desktop: false
         # snap_code: false
         # snap_remmina: false
@@ -238,12 +255,6 @@
         # flatpak_betaflightconfigurator: false
         # OTHER --------------------------------
         # vs_code_ext: false
-        # java: false
-        # java_ant: false
-      # if you install java, by default as version is set 11, change below if you need
-      # version is as input for openjdk java version
-      # install_client_java_version: 11
-    ### -------------------------
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------

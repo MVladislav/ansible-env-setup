@@ -32,13 +32,18 @@
         env_tun_setup: true
         # APT (1) -------------------------------
         apt_base: true
+        apt_auth_priv: true
+        apt_cert: true
         apt_archive: true
         apt_dev: true
-        apt_build: true
+        # apt_build: false
         # apt_libs: false
         # APT (2) -------------------------------
-        # apt_snap: false
-        # apt_vpn: false
+        apt_snap: true
+        # apt_vpn_resolvconf: false
+        # apt_vpn_wireguard: false
+        # apt_vpn_openvpn: false
+        # apt_vpn_openconnect: false
         # apt_php: false
         # apt_rasp_pi_pkg: false
         apt_qemu_guest_agent: true
@@ -52,18 +57,22 @@
         # snap_helm: false
         # snap_multipass: false
         snap_btop: true
-        snap_glow: true
-        snap_go: true
+        # snap_glow: false
+        # snap_go: false
+        # snap_node: false
+        # snap_ruby: false
+        # snap_openjdk: false
+        # snap_openjfx: false
         # OTHER --------------------------------
-        git: true
-        zsh: true
-        tmux: true
+        apt_git_conf: true
+        apt_zsh_conf: true
+        git_tmux_conf: true
         # PYTHON --------------------------------
-        python: true
-        python_pip: true
         # python_pip_update: false
-        python_venv: true
-        python_dev: true
+        apt_python: true
+        apt_python_pip: true
+        apt_python_venv: true
+        apt_python_dev: true
         pip_s_tui: true
         # pip_virtualenv: false
         pip_autopep8: true
@@ -71,15 +80,17 @@
         pip_mypy: true
         pip_pre_commit: true
         # pip_openconnect_sso: false
-        # pip_ansible: false
-        # OTHER --------------------------------
+        pip_ansible: true
+        # NPM --------------------------------
+        # npm_typescript: false
+        # GO --------------------------------
         # go_kompose: false
-        # ruby: false
-        # npm: false
+        # go_act: false
+        # OTHER --------------------------------
         # mongodb: false
-        # java: false
-        # java_ant: false
-    ### -------------------------
+        # apt_java_jre_headless: false
+        # apt_java_jdk: false
+        # apt_java_ant: false
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
@@ -91,18 +102,19 @@
     ### -------------------------
     - role: ansible-install-client
       clients: "{{ pl_a_clients }}"
+      install_client_service_name: "{{ pl_a_service_name }}"
       install_client_config:
         # GENERAL -------------------------------
         dev: true
-        fonts: true
+        fonts_install: true
         # GNOME ---------------------------------
         gnome_gui_setup: true # general of gnome setup should be triggered, below specific what (dependencies will than general installed)
-        # gnome_gui_setup_theme: false
         # gnome_gui_setup_dependencies: false
         gnome_gui_setup_extensions: true
-        gnome_gui_setup_extensions_git_caffeine: true
+        # gnome_gui_setup_extensions_apt_ubuntu_tiling: false
+        # gnome_gui_setup_extensions_git_caffeine: false
         # gnome_gui_setup_extensions_git_sound: false
-        # gnome_gui_setup_extensions_git_blur_shell: false
+        gnome_gui_setup_extensions_git_blur_shell: true
         # gnome_gui_setup_extensions_git_burn_window: false
         gnome_gui_setup_extensions_git_dash_to_panel: true
         # gnome_gui_setup_extensions_git_ui_tune: false
@@ -113,30 +125,38 @@
         # cleanup_remove_flatpak: false
         # APT -----------------------------------
         apt_base: true
-        apt_base_ubuntu: true
-        apt_base_archive: true
-        apt_base_codec: true
-        apt_base_gnome: true
-        # NOTE: not need in new ubuntu, switched to pipewire
-        # apt_base_sound_pulseaudio: false
+        apt_auth_priv: true
+        # apt_ubuntu: false
+        apt_archive: true
+        # apt_codec: false
+        # apt_gnome: false
         apt_snap: true
         apt_flatpak: true
-        # apt_vpn: false
+        # apt_vpn_resolvconf: false
+        # apt_vpn_wireguard: false
+        # apt_vpn_openvpn: false
+        # apt_vpn_openconnect: false
+        # apt_vpn_l2tp: false
         # apt_gnome_boxes: false
         # apt_texmaker: false
         # apt_latex: false
         apt_pandoc: true
         # apt_virt_viewer: false
+        # apt_logitech_unifying_solaar: false
+        # apt_mpv: false
         # DPKG ----------------------------------
         # dpkg_virtualbox: false
         dpkg_veracrypt: true
+        # dpkg_veracrypt_cli: false
         # dpkg_parsec: false
         # dpkg_brim: false
-        dpkg_portmaster: true
+        # dpkg_portmaster: false
         # DIST KEY ------------------------------
         # distribution_key_virtualbox: false
+        # distribution_key_1password_cli: false
+        # APPIMAGE ------------------------------
         app_image_logseq: true
-        # app_image_upscayl: false
+        # app_image_ultimaker: false
         # SNAP ----------------------------------
         snap_firefox: true
         snap_chromium: true
@@ -160,6 +180,7 @@
         # snap_flameshot: false
         # snap_1password: false
         # snap_okular: false
+        # snap_xournalpp: false
         # snap_yubioath_desktop: false
         snap_code: true
         snap_remmina: true
@@ -177,7 +198,7 @@
         # snap_cornyjokes: false
         # snap_steam: false
         # FLATPAK -------------------------------
-        # flatpak_flatseal: false
+        flatpak_flatseal: true
         # flatpak_firefox: false
         # flatpak_chromium: false
         # flatpak_thunderbird: false
@@ -232,12 +253,6 @@
         # flatpak_betaflightconfigurator: false
         # OTHER --------------------------------
         # vs_code_ext: false
-        java: true
-        # java_ant: false
-      # if you install java, by default as version is set 11, change below if you need
-      # version is as input for openjdk java version
-      install_client_java_version: 11
-    ### -------------------------
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
