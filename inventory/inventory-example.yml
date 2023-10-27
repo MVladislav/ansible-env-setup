@@ -75,9 +75,6 @@ all:
                 - to: default
                   via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
       ## SSH
-      ## NOTE: ssh is not needed to run for harden, it is done by CIS
-      ##       use only if you need to setup something specific
-      ##       NOTE: here added only install the ssh client part over the ssh role
       ## _______________________
       pl_a_ssh_setup_enable: true
       ssh_only_client_setup: true
@@ -110,12 +107,13 @@ all:
       ## _______________________
       pl_a_cis_setup: true
       pl_a_cis_setup_aide: false
-      pl_a_cis_ipv6_required: false
+      pl_a_cis_ipv6_required: true
       ## MAILING SETUP
       ## _______________________
       pl_a_mailing_mail_email: root@home.local
       pl_a_mailing_mail_username: "{{ pl_a_mailing_mail_email }}"
       pl_a_mailing_mail_password: ""
+      pl_a_mailing_admin_mail_name: root
       pl_a_mailing_smtp_host: home.local
       pl_a_mailing_smtp_port: 465
       pl_a_mailing_remote_ssl: true
@@ -128,7 +126,7 @@ all:
       pl_a_postfix_setup: false
       ## HARDENING SCAN
       ## _______________________
-      pl_a_hardening_scan_setup: true
+      pl_a_hardening_scan_setup: false
       pl_a_hardening_lynis_report_from: "{{ pl_a_mailing_mail_email }}"
       pl_a_hardening_lynis_report_to: "{{ pl_a_mailing_mail_email }}"
       ## HARDENING SECURITY
@@ -140,7 +138,9 @@ all:
       ## _______________________
       pl_a_docker_user_shell: /bin/zsh
       docker_is_swarm_mode: true
-      docker_cis_rule_2_1: true # install docker as non root
+      docker_cis_rule_2_1: false # install docker as non root
+      docker_install_release_fallback: lunar
+      docker_install_release_skip_lunar: mantic
     ## .........................................................................
     ## SERVER:: setup
     server:
@@ -203,9 +203,6 @@ all:
                 - to: default
                   via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
       ## SSH
-      ## NOTE: ssh is not needed to run for harden, it is done by CIS
-      ##       use only if you need to setup something specific
-      ##       NOTE: here added only install the ssh client part over the ssh role
       ## _______________________
       pl_a_ssh_setup_enable: true
       ssh_only_client_setup: true
@@ -244,6 +241,7 @@ all:
       pl_a_mailing_mail_email: root@home.local
       pl_a_mailing_mail_username: "{{ pl_a_mailing_mail_email }}"
       pl_a_mailing_mail_password: ""
+      pl_a_mailing_admin_mail_name: root
       pl_a_mailing_smtp_host: home.local
       pl_a_mailing_smtp_port: 465
       pl_a_mailing_remote_ssl: true
@@ -268,7 +266,9 @@ all:
       ## _______________________
       pl_a_docker_user_shell: /bin/zsh
       docker_is_swarm_mode: true
-      docker_cis_rule_2_1: true # install docker as non root
+      docker_cis_rule_2_1: false # install docker as non root
+      docker_install_release_fallback: lunar
+      docker_install_release_skip_lunar: mantic
       ## KUBERNETES (host need to be added below in children: kubernetes)
       ## _______________________
       kubernetes_setup_server: true
