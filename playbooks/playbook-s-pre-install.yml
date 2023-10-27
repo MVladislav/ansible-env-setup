@@ -233,7 +233,7 @@
       ansible.builtin.copy:
         dest: /etc/nullmailer/adminaddr
         content: |
-          {{ ansible_host_hostname }}@{{ pl_a_mailing_mail_email.split('@')[1] }}
+          {{ pl_a_mailing_admin_mail_name | default(ansible_host_hostname) }}@{{ pl_a_mailing_mail_email.split('@')[1] }}
         mode: "640"
         owner: mail
         group: mail
@@ -246,7 +246,7 @@
       ansible.builtin.copy:
         dest: /etc/mailname
         content: |
-          {{ ansible_host_hostname }}
+          {{ pl_a_mailing_mail_email.split('@')[1] }}
         mode: "640"
         owner: mail
         group: mail

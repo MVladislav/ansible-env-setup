@@ -14,7 +14,7 @@
     ansible_user_conf_name_map: "{{ ansible_user }}-{{ ansible_host }}"
     ansible_user_conf_shell: /bin/bash
     ansible_user_conf_password: null
-    ansible_user_conf_update_password: always
+    ansible_user_conf_update_password: always # pragma: allowlist secret`
     ansible_user_conf_group: sudo,adm,cdrom
     ansible_user_conf_system: null
     ansible_user_conf_append: null
@@ -59,7 +59,7 @@
     ansible_user_conf_name_map: "{{ ansible_user }}-{{ ansible_host }}"
     ansible_user_conf_shell: /bin/bash
     ansible_user_conf_password: null
-    ansible_user_conf_update_password: always
+    ansible_user_conf_update_password: always # pragma: allowlist secret
     ansible_user_conf_group: sudo,adm,cdrom
     ansible_user_conf_system: null
     ansible_user_conf_append: null
@@ -90,7 +90,7 @@
       when:
         - ansible_user_conf_update is defined
         - ansible_user_conf_update | bool
-    # - name: "PRE-INSTALL | add user {{ ansible_user_conf_name }} into sudors without password promt"
+    # - name: "PRE-INSTALL | add user {{ ansible_user_conf_name }} into sudors without password prompt"
     #   become: true
     #   lineinfile:
     #     path: /etc/sudoers
@@ -191,7 +191,7 @@
         createhome: "{{ item.createhome | default('yes') | bool }}"
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "{{ item.password }}"
-        update_password: on_create
+        update_password: on_create # pragma: allowlist secret`
       loop: "{{ ansible_user_conf_clients | flatten(levels=1) }}"
       register: user_creation
       when:
