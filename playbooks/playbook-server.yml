@@ -28,41 +28,68 @@
       clients: "{{ pl_a_clients }}"
       install_server_service_name: "{{ pl_a_service_name }}"
       install_server_config:
-        dev: true
         env_tun_setup: true
         # APT (1) -------------------------------
         apt_base: true
+        apt_auth_priv: true
+        apt_cert: true
         # apt_archive: false
         apt_dev: true
-        apt_exfat: true
+        apt_build: true
         apt_libs: true
         # APT (2) -------------------------------
-        apt_vpn: true
-        apt_go: true
+        apt_snap: true
+        # apt_vpn_resolvconf: false
+        apt_vpn_wireguard: true
+        # apt_vpn_openvpn: false
+        # apt_vpn_openconnect: false
         # apt_php: false
         # apt_rasp_pi_pkg: false
-        # apt_qemu_guest_agent: false
+        apt_qemu_guest_agent: true
         # DPKG ----------------------------------
         # dpkg_...: false
         # SNAP ----------------------------------
+        # snap_juju: false
+        # snap_maas: false
         # snap_microk8s: false
+        # snap_kubectl: false
+        # snap_helm: false
         # snap_multipass: false
         snap_btop: true
+        # snap_glow: false
+        # snap_go: false
+        # snap_node: false
+        # snap_ruby: false
+        # snap_openjdk: false
+        # snap_openjfx: false
         # OTHER --------------------------------
-        git: true
-        zsh: true
-        tmux: true
-        python: true
-        python_pip: true
-        # python_pip_update: false
-        python_venv: true
-        python_dev: true
+        apt_git_conf: true
+        apt_zsh_conf: true
+        # git_tmux_conf: false
+        # PYTHON --------------------------------
+        # python_pip_update: false # if pip should update all installed pkg's
+        apt_python: true
+        apt_python_pip: true
+        apt_python_venv: false
+        apt_python_dev: false
+        pip_s_tui: false
+        # pip_virtualenv: false
+        # pip_autopep8: false
+        # pip_black: false
+        # pip_mypy: false
+        # pip_pre_commit: false
+        # pip_openconnect_sso: false
+        # pip_ansible: false
+        # NPM --------------------------------
+        # npm_typescript: false
+        # GO --------------------------------
         # go_kompose: false
-        ruby: true
-        npm: true
+        # go_act: false
+        # OTHER --------------------------------
         # mongodb: false
-        java: true # base|dev
-    ### -------------------------
+        apt_java_jre_headless: true
+        # apt_java_jdk: false
+        # apt_java_ant: false
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
