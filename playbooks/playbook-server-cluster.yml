@@ -3,18 +3,8 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: CIS installer
-  ansible.builtin.import_playbook: playbook-s-cis.yml
-
-# ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: Pre installer
-  ansible.builtin.import_playbook: playbook-s-pre-install.yml
-
-# ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: Hardening scan
-  ansible.builtin.import_playbook: playbook-s-hardening.yml
+- name: HARDEN PLAYBOOKS
+  ansible.builtin.import_playbook: playbook-sec-short.yml
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
@@ -31,65 +21,11 @@
         env_tun_setup: true
         # APT (1) -------------------------------
         apt_base: true
-        # apt_auth_priv: false
-        # apt_cert: false
-        # apt_archive: false
-        # apt_dev: false
-        # apt_build: false
-        # apt_libs: false
-        # APT (2) -------------------------------
-        apt_snap: true
-        # apt_vpn_resolvconf: false
-        # apt_vpn_wireguard: false
-        # apt_vpn_openvpn: false
-        # apt_vpn_openconnect: false
-        # apt_php: false
-        # apt_rasp_pi_pkg: false
-        # apt_qemu_guest_agent: false
-        # DPKG ----------------------------------
-        # dpkg_...: false
-        # SNAP ----------------------------------
-        # snap_juju: false
-        # snap_maas: false
-        # snap_microk8s: false
-        # snap_kubectl: false
-        # snap_helm: false
-        # snap_multipass: false
-        snap_btop: true
-        # snap_glow: false
-        # snap_go: false
-        # snap_node: false
-        # snap_ruby: false
-        # snap_openjdk: false
-        # snap_openjfx: false
+        apt_cert: true
+        apt_qemu_guest_agent: true
         # OTHER --------------------------------
-        # apt_git_conf: false
-        apt_zsh_conf: true
-        # git_tmux_conf: false
-        # PYTHON --------------------------------
-        # python_pip_update: false # if pip should update all installed pkg's
-        # apt_python: false
-        # apt_python_pip: false
-        # apt_python_venv: false
-        # apt_python_dev: false
-        # pip_s_tui: false
-        # pip_virtualenv: false
-        # pip_autopep8: false
-        # pip_black: false
-        # pip_mypy: false
-        # pip_pre_commit: false
-        # pip_openconnect_sso: false
-        # pip_ansible: false
-        # NPM --------------------------------
-        # npm_typescript: false
-        # GO --------------------------------
-        # go_kompose: false
-        # go_act: false
-        # OTHER --------------------------------
-        # mongodb: false
-        # apt_java_jre_headless: false
-        # apt_java_jdk: false
-        # apt_java_ant: false
+        inst_git_conf: true
+        inst_zsh_conf: true
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------

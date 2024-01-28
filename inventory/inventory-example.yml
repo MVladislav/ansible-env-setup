@@ -79,12 +79,12 @@ all:
       pl_a_ssh_setup_enable: true
       ssh_only_client_setup: true
       ## UFW
-      ## NOTE: ufw is not needed to run, it is done by CIS
-      ##       use only if you need to setup something specific
       ## _______________________
-      pl_a_ufw_setup_enable: false
+      ## NOTE: ufw is general setup by CIS
+      ## NOTE: use here to set logging level and extend rules
+      pl_a_ufw_setup_enable: true
       pl_a_ufw_logging_level: "medium"
-      # NOTE: ssh not needed, default var and setup by cis
+      # NOTE: ssh not needed, is general setup by CIS
       # pl_a_ufw_rules_extended:
       #   - rule: allow
       #     to_port: 161
@@ -110,6 +110,7 @@ all:
       pl_a_cis_ipv6_required: true
       ## MAILING SETUP
       ## _______________________
+      pl_a_mailing_mail_to: root # used in 'MAILTO' if cis-aide will used
       pl_a_mailing_mail_email: root@home.local
       pl_a_mailing_mail_username: "{{ pl_a_mailing_mail_email }}"
       pl_a_mailing_mail_password: ""
@@ -139,8 +140,12 @@ all:
       pl_a_docker_user_shell: /bin/zsh
       docker_is_swarm_mode: true
       docker_cis_rule_2_1: false # install docker as non root
-      docker_install_release_fallback: lunar
-      docker_install_release_skip_lunar: mantic
+      # docker_install_release_fallback: lunar
+      # docker_install_release_skip: mantic
+      pl_a_updater_unattended_allowed_origins_ext:
+        - "Docker:${distro_codename}"
+      pl_a_updater_unattended_origins_patterns_ext:
+        - "o=Docker,a=lunar,l=Docker CE,b=amd64"
     ## .........................................................................
     ## SERVER:: setup
     server:
@@ -267,8 +272,12 @@ all:
       pl_a_docker_user_shell: /bin/zsh
       docker_is_swarm_mode: true
       docker_cis_rule_2_1: false # install docker as non root
-      docker_install_release_fallback: lunar
-      docker_install_release_skip_lunar: mantic
+      # docker_install_release_fallback: lunar
+      # docker_install_release_skip: mantic
+      pl_a_updater_unattended_allowed_origins_ext:
+        - "Docker:${distro_codename}"
+      pl_a_updater_unattended_origins_patterns_ext:
+        - "o=Docker,a=lunar,l=Docker CE,b=amd64"
       ## KUBERNETES (host need to be added below in children: kubernetes)
       ## _______________________
       kubernetes_setup_server: true

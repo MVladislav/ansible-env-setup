@@ -162,7 +162,7 @@
         - key: CRON_DAILY_RUN
           value: "yes"
         - key: MAILTO
-          value: "{{ mailing_mail_username | default('root') }}"
+          value: "{{ pl_a_mailing_mail_to | default('root') }}"
         - key: COPYNEWDB
           value: "yes"
         - key: TRUNCATEDETAILS
@@ -186,7 +186,7 @@
         - key: CRON_DAILY_RUN
           value: "yes"
         - key: MAILTO
-          value: "{{ mailing_mail_username | default('root') }}"
+          value: "{{ pl_a_mailing_mail_to | default('root') }}"
         - key: COPYNEWDB
           value: "yes"
         - key: TRUNCATEDETAILS

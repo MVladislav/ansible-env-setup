@@ -23,11 +23,13 @@ playbooks/vars/*
 plugins/*
 # !plugins/mitogen-0.2.9/
 
+!playbooks/README.md
 !playbooks/playbook-s-*.yml
+!playbooks/playbook-sec-short.yml
 !playbooks/playbook-client-dev.yml
 !playbooks/playbook-client-pentest.yml
 !playbooks/playbook-client-vm.yml
 !playbooks/playbook-client.yml
 !playbooks/playbook-server-cluster.yml
+!playbooks/playbook-server-dev.yml
 !playbooks/playbook-server-minimal.yml
-!playbooks/playbook-server.yml

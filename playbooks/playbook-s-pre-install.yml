@@ -29,6 +29,21 @@
   remote_user: "{{ ansible_user }}"
   hosts:
     - pre
+  vars:
+    pl_a_updater_unattended_allowed_origins:
+      # - "Docker:${distro_codename}"
+      - "${distro_id}:${distro_codename}"
+      - "${distro_id}:${distro_codename}-security"
+      - "${distro_id}:${distro_codename}-updates"
+      - "${distro_id}ESMApps:${distro_codename}-apps-security"
+      - "${distro_id}ESM:${distro_codename}-infra-security"
+    pl_a_updater_unattended_origins_patterns:
+      # - "o=Docker,a=lunar,l=Docker CE,b=amd64"
+      # - "o=Ubuntu,a=${distro_codename},n=${distro_codename},l=Ubuntu"
+      - "o=Ubuntu,a=${distro_codename}-security,n=${distro_codename},l=Ubuntu"
+      - "o=Ubuntu,a=${distro_codename}-updates,n=${distro_codename},l=Ubuntu"
+      # - "o=Ubuntu,a=${distro_codename}-proposed-updates,n=${distro_codename},l=Ubuntu"
+      # - "o=Ubuntu,a=${distro_codename}-backports,n=${distro_codename},l=Ubuntu"
   roles:
     ### -------------------------
     - role: ansible-updater
@@ -41,13 +56,8 @@
         update_upgrade: true
         setup_zfs: true
         setup_unattended: true
-      updater_unattended_origins_patterns:
-        # - "origin=Ubuntu,archive=${distro_codename}-security,label=Ubuntu"
-        # - "origin=Ubuntu,archive=${distro_codename},label=Ubuntu"
-        - "origin=Ubuntu,archive=${distro_codename}-security"
-        # - "origin=Ubuntu,archive=${distro_codename}"
-        - "origin=Ubuntu,archive=${distro_codename}-updates"
-        - "origin=Ubuntu,archive=${distro_codename}-proposed-updates"
+      updater_unattended_allowed_origins: "{{ pl_a_updater_unattended_allowed_origins + pl_a_updater_unattended_allowed_origins_ext }}"
+      updater_unattended_origins_patterns: "{{ pl_a_updater_unattended_origins_patterns + pl_a_updater_unattended_origins_patterns_ext }}"
     ### -------------------------
 
 # ------------------------------------------------------------------------------

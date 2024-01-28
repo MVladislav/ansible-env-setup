@@ -21,8 +21,20 @@
         env_tun_setup: true
         # APT -------------------------------
         apt_base: true
+        apt_auth_priv: true
         apt_cert: true
+        apt_archive: true
+        apt_dev: true
+        apt_build: true
+        apt_libs: true
+        apt_java_jre_headless: true
+        apt_snap: true
+        apt_vpn_wireguard: true
         apt_qemu_guest_agent: true
+        # SNAP ----------------------------------
+        snap_btop: true
+        snap_glow: true
+        snap_nmap: true
         # OTHER --------------------------------
         inst_git_conf: true
         inst_zsh_conf: true
@@ -32,7 +44,13 @@
         apt_python: true
         apt_python_pip: true
         apt_python_venv: true
+        apt_python_dev: true
         pip_s_tui: true
+        pip_autopep8: true
+        pip_black: true
+        pip_mypy: true
+        pip_pre_commit: true
+        pip_ansible: true
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
