@@ -2,8 +2,6 @@
 
 [![Ansible Lint](https://github.com/MVladislav/ansible-env-setup/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/MVladislav/ansible-env-setup/actions/workflows/ansible-lint.yml)
 
----
-
 - [Ansible Env Setup](#ansible-env-setup)
   - [Clone project](#clone-project)
   - [Install dependencies on host](#install-dependencies-on-host)
