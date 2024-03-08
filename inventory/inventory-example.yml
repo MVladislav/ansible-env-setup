@@ -75,6 +75,8 @@ all:
                 - to: default
                   via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
       ## SSH
+      ## NOTE: ssh not needed, is general setup by CIS
+      ##       here only default conf to setup per user defaults
       ## _______________________
       pl_a_ssh_setup_enable: true
       ssh_only_client_setup: true
@@ -84,7 +86,6 @@ all:
       ## NOTE: use here to set logging level and extend rules
       pl_a_ufw_setup_enable: true
       pl_a_ufw_logging_level: "medium"
-      # NOTE: ssh not needed, is general setup by CIS
       # pl_a_ufw_rules_extended:
       #   - rule: allow
       #     to_port: 161
