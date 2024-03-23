@@ -175,6 +175,7 @@ In general following playbooks/roles/tasks are run by each client playbook with 
 | snap_openjdk            |     |     |     |     |     |     |     |     |
 | snap_openjfx            |     |     |     |     |     |     |     |     |
 | inst_git_conf           |     |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
+| inst_fonts              |     |  x  |  x  |  x  |     |  x  |  x  |  x  |
 | inst_zsh_conf           |     |  x  |  x  |  x  |     |  x  |  x  |  x  |
 | inst_tmux_conf          |     |  x  |  x  |     |     |  x  |  x  |  x  |
 | inst_nvim_conf          |     |  x  |  x  |     |     |  x  |  x  |  x  |
@@ -297,6 +298,7 @@ In general following playbooks/roles/tasks are run by each client playbook with 
 |                          |         |     |     |         |
 | cryptomator              |         |     |     |    x    |
 | flatseal                 |    x    |  x  |  x  |    x    |
+| pika_backup              |         |     |     |         |
 | ausweisapp2              |         |     |     |         |
 | easy_effects             |         |     |  x  |         |
 | extension_manager        |         |     |     |         |
