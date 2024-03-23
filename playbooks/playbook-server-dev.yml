@@ -37,6 +37,7 @@
         snap_nmap: true
         # OTHER --------------------------------
         inst_git_conf: true
+        inst_fonts: true
         inst_zsh_conf: true
         inst_tmux_conf: true
         inst_nvim_conf: true

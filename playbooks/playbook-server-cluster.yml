@@ -25,6 +25,7 @@
         apt_qemu_guest_agent: true
         # OTHER --------------------------------
         inst_git_conf: true
+        inst_fonts: true
         inst_zsh_conf: true
 
 # ------------------------------------------------------------------------------
