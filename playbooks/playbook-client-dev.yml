@@ -1,54 +1,57 @@
 ---
 # playbook client
 
-# ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: HARDEN PLAYBOOKS
-  ansible.builtin.import_playbook: playbook-sec-short.yml
+# # ------------------------------------------------------------------------------
+# # ------------------------------------------------------------------------------
+# - name: HARDEN PLAYBOOKS
+#   ansible.builtin.import_playbook: playbook-sec-short.yml
 
-# ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: Server installer
-  remote_user: "{{ ansible_user }}"
-  hosts:
-    - clients
-  roles:
-    ### -------------------------
-    - role: ansible-install-server
-      clients: "{{ pl_a_clients }}"
-      install_server_service_name: "{{ pl_a_service_name }}"
-      install_server_config:
-        dev: true
-        env_tun_setup: true
-        # APT -------------------------------
-        apt_base: true
-        apt_auth_priv: true
-        apt_cert: true
-        apt_archive: true
-        apt_dev: true
-        apt_snap: true
-        apt_latex: true
-        apt_pandoc: true
-        apt_nmap: true
-        # SNAP ----------------------------------
-        snap_btop: true
-        # OTHER --------------------------------
-        inst_git_conf: true
-        inst_fonts: true
-        inst_zsh_conf: true
-        inst_tmux_conf: true
-        inst_nvim_conf: true
-        # PYTHON --------------------------------
-        apt_python: true
-        apt_python_pip: true
-        apt_python_venv: true
-        apt_python_dev: true
-        pip_s_tui: true
-        pip_autopep8: true
-        pip_black: true
-        pip_mypy: true
-        pip_pre_commit: true
-        pip_ansible: true
+# # ------------------------------------------------------------------------------
+# # ------------------------------------------------------------------------------
+# - name: Server installer
+#   remote_user: "{{ ansible_user }}"
+#   hosts:
+#     - clients
+#   roles:
+#     ### -------------------------
+#     - role: ansible-install-server
+#       clients: "{{ pl_a_clients }}"
+#       install_server_service_name: "{{ pl_a_service_name }}"
+#       install_server_config:
+#         dev: true
+#         env_tun_setup: true
+#         # APT -------------------------------
+#         apt_base: true
+#         # apt_exa: false
+#         apt_eza: true
+#         apt_bat: true
+#         apt_auth_priv: true
+#         apt_cert: true
+#         apt_archive: true
+#         apt_dev: true
+#         apt_snap: true
+#         # apt_latex: true
+#         # apt_pandoc: true
+#         apt_nmap: true
+#         # SNAP ----------------------------------
+#         snap_btop: true
+#         # OTHER --------------------------------
+#         inst_git_conf: true
+#         inst_fonts: true
+#         inst_zsh_conf: true
+#         inst_tmux_conf: true
+#         inst_nvim_conf: true
+#         # PYTHON --------------------------------
+#         apt_python: true
+#         apt_python_pip: true
+#         apt_python_venv: true
+#         apt_python_dev: true
+#         pip_s_tui: true
+#         pip_autopep8: true
+#         pip_black: true
+#         pip_mypy: true
+#         pip_pre_commit: true
+#         pip_ansible: true
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
@@ -64,16 +67,13 @@
       install_client_config:
         # GENERAL -------------------------------
         dev: true
-        fonts_install: true
         # GNOME ---------------------------------
         gnome_gui_setup: true
         gnome_gui_setup_extensions: true
-        gnome_gui_setup_extensions_git_blur_shell: true
+        # gnome_gui_setup_extensions_git_blur_shell: true
         gnome_gui_setup_extensions_git_dash_to_panel: true
         gnome_gui_setup_overlay: true
         gnome_terminal_setup_overlay: true
-        # cleanup_remove_snap: false
-        # cleanup_remove_flatpak: false
         # APT -----------------------------------
         apt_base: true
         apt_auth_priv: true
@@ -81,7 +81,7 @@
         apt_archive: true
         apt_snap: true
         apt_flatpak: true
-        apt_logitech_unifying_solaar: true
+        # apt_logitech_unifying_solaar: true
         apt_virt_viewer: true
         # DPKG ----------------------------------
         dpkg_veracrypt: true
@@ -95,11 +95,11 @@
         snap_thunderbird: true
         snap_signal: true
         snap_telegram: true
-        snap_darktable: true
+        # snap_darktable: true
         snap_drawio: true
-        snap_gimp: true
+        # snap_gimp: true
         snap_inkscape: true
-        snap_lunacy: true
+        # snap_lunacy: true
         snap_spotify: true
         snap_code: true
         snap_remmina: true

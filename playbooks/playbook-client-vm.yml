@@ -22,6 +22,9 @@
         env_tun_setup: true
         # APT (1) -------------------------------
         apt_base: true
+        apt_exa: false
+        apt_eza: true
+        apt_bat: true
         apt_auth_priv: true
         apt_cert: true
         apt_archive: true
@@ -65,7 +68,6 @@
       install_client_config:
         # GENERAL -------------------------------
         dev: true
-        fonts_install: true
         # GNOME ---------------------------------
         gnome_gui_setup: true
         gnome_gui_setup_extensions: true

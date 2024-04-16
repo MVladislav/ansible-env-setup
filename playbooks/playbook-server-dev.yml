@@ -21,6 +21,9 @@
         env_tun_setup: true
         # APT -------------------------------
         apt_base: true
+        apt_exa: false
+        apt_eza: true
+        apt_bat: true
         apt_auth_priv: true
         apt_cert: true
         apt_archive: true
