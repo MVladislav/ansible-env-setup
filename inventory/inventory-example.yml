@@ -20,6 +20,7 @@ all:
       # NOTE: change to you needed dns and ntp server, or change in playbooks
       pl_a_host_default_dns: 1.1.1.1
       pl_a_host_default_ntp: time.cloudflare.com
+      pl_a_host_fallback_ntp: ntp.ubuntu.com
       ## ANSIBLE CLIENT ACCESS SETUP
       ## _______________________
       pl_a_user_setup: true
@@ -54,7 +55,7 @@ all:
       ## _______________________
       updater_time_timezone: Europe/Berlin
       updater_ntp_server: "{{ pl_a_host_default_ntp }}"
-      updater_ntp_fallback_server: ntp.ubuntu.com
+      updater_ntp_fallback_server: "{{ pl_a_host_fallback_ntp }}"
       ## NETPLAN
       ## _______________________
       pl_a_netplan_setup: false
@@ -100,10 +101,10 @@ all:
       security_snmp_encryption: <ENC>
       security_snmp_location: home
       security_snmp_contact: root
-      security_snmp_address_ipv4: null
-      security_snmp_address_ipv6: null
+      security_snmp_address_ipv4: "{{ omit }}"
+      security_snmp_address_ipv6: "{{ omit }}"
       security_snmp_port_ipv4: 161
-      security_snmp_port_ipv6: null
+      security_snmp_port_ipv6: "{{ omit }}"
       ## UBUNTU2004 CIS
       ## _______________________
       pl_a_cis_setup: true
@@ -141,12 +142,12 @@ all:
       pl_a_docker_user_shell: /bin/zsh
       docker_is_swarm_mode: true
       docker_cis_rule_2_1: false # install docker as non root
-      # docker_install_release_fallback: lunar
+      # docker_install_release_fallback: mantic
       # docker_install_release_skip: mantic
       pl_a_updater_unattended_allowed_origins_ext:
         - "Docker:${distro_codename}"
       pl_a_updater_unattended_origins_patterns_ext:
-        - "o=Docker,a=lunar,l=Docker CE,b=amd64"
+        - "o=Docker,a=${distro_codename},l=Docker CE,b=amd64"
     ## .........................................................................
     ## SERVER:: setup
     server:
@@ -166,6 +167,7 @@ all:
       # NOTE: change to you needed dns and ntp server, or change in playbooks
       pl_a_host_default_dns: 1.1.1.1
       pl_a_host_default_ntp: time.cloudflare.com
+      pl_a_host_fallback_ntp: ntp.ubuntu.com
       ## ANSIBLE CLIENT ACCESS SETUP
       ## _______________________
       pl_a_user_setup: true
@@ -188,7 +190,7 @@ all:
       ## _______________________
       updater_time_timezone: Europe/Berlin
       updater_ntp_server: "{{ pl_a_host_default_ntp }}"
-      updater_ntp_fallback_server: ntp.ubuntu.com
+      updater_ntp_fallback_server: "{{ pl_a_host_fallback_ntp }}"
       ## NETPLAN
       ## _______________________
       pl_a_netplan_setup: true
@@ -233,10 +235,10 @@ all:
       security_snmp_encryption: <ENC>
       security_snmp_location: home
       security_snmp_contact: root
-      security_snmp_address_ipv4: null
-      security_snmp_address_ipv6: null
+      security_snmp_address_ipv4: "{{ omit }}"
+      security_snmp_address_ipv6: "{{ omit }}"
       security_snmp_port_ipv4: 161
-      security_snmp_port_ipv6: null
+      security_snmp_port_ipv6: "{{ omit }}"
       ## UBUNTU2004 CIS
       ## _______________________
       pl_a_cis_setup: true
@@ -273,12 +275,12 @@ all:
       pl_a_docker_user_shell: /bin/zsh
       docker_is_swarm_mode: true
       docker_cis_rule_2_1: false # install docker as non root
-      # docker_install_release_fallback: lunar
+      # docker_install_release_fallback: mantic
       # docker_install_release_skip: mantic
       pl_a_updater_unattended_allowed_origins_ext:
         - "Docker:${distro_codename}"
       pl_a_updater_unattended_origins_patterns_ext:
-        - "o=Docker,a=lunar,l=Docker CE,b=amd64"
+        - "o=Docker,a=${distro_codename},l=Docker CE,b=amd64"
       ## KUBERNETES (host need to be added below in children: kubernetes)
       ## _______________________
       kubernetes_setup_server: true
