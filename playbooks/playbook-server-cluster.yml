@@ -32,10 +32,5 @@
         inst_zsh_conf: true
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: Docker installer
-  ansible.builtin.import_playbook: playbook-s-docker.yml
-
-# ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: Kubernetes installer
-  ansible.builtin.import_playbook: playbook-s-kubernetes.yml
+- name: Container installer
+  ansible.builtin.import_playbook: playbook-s-container.yml

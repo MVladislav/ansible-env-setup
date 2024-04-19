@@ -313,12 +313,12 @@ all:
       hosts:
         client:
         server:
-    ## docker playbook (playbook-s-docker.yml)
+    ## docker playbook (playbook-s-container.yml)
     docker:
       hosts:
         client:
         server:
-    ## kubernetes playbook (playbook-s-kubernetes.yml)
+    ## kubernetes playbook (playbook-s-container.yml)
     kubernetes:
       hosts:
         server:

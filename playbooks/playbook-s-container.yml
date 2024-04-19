@@ -1,9 +1,9 @@
 ---
-# playbook docker
+# playbook container
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: Docker installer
+- name: "Container | Docker installer"
   remote_user: "{{ ansible_user }}"
   hosts:
     - docker
@@ -12,4 +12,15 @@
     - role: ansible-docker
       docker_user_shell: "{{ pl_a_docker_user_shell | default('/bin/zsh') }}"
       docker_users_to_add_group: "{{ pl_a_clients }}"
+    ### -------------------------
+
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+- name: "Container | Kubernetes installer"
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - kubernetes
+  roles:
+    ### -------------------------
+    - role: ansible-kubernetes
     ### -------------------------
