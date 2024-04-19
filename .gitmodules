@@ -30,10 +30,6 @@ branch = main
 path = roles/ansible-install-client
 url = https://github.com/MVladislav/ansible-install-client.git
 branch = main
-[submodule "roles/ansible-lynis"]
-path = roles/ansible-lynis
-url = https://github.com/mablanco/ansible-lynis.git
-branch = master
 [submodule "roles/ansible-postfix"]
 path = roles/ansible-postfix
 url = https://github.com/Oefenweb/ansible-postfix.git

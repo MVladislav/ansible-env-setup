@@ -1,28 +1,6 @@
 ---
 # playbook hardening
 
-# # ------------------------------------------------------------------------------
-# # ------------------------------------------------------------------------------
-# - name: Setup hardening scan
-#   remote_user: "{{ ansible_user }}"
-#   hosts:
-#     - sec
-#   become: true
-#   roles:
-#     ### -------------------------
-#     - role: ansible-lynis
-#       lynis_deploy_method: git
-#       lynis_git_repo: "https://github.com/CISOfy/lynis"
-#       lynis_report_from: "{{ pl_a_hardening_lynis_report_from | default('root') }}"
-#       lynis_report_to: "{{ pl_a_hardening_lynis_report_to | default('root') }}"
-#       lynis_cron_hour: 21
-#       lynis_cron_minute: 42
-#       lynis_cron_dow: 7
-#       when:
-#         - pl_a_hardening_scan_setup is defined
-#         - pl_a_hardening_scan_setup | bool
-#     ### -------------------------
-
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Setup Security Services and improves
