@@ -1,7 +1,3 @@
-[submodule "roles/ansible-backup"]
-path = roles/ansible-backup
-url = https://github.com/MVladislav/ansible-backup.git
-branch = main
 [submodule "roles/ansible-docker"]
 path = roles/ansible-docker
 url = https://github.com/MVladislav/ansible-docker.git
