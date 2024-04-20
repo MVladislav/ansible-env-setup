@@ -2,11 +2,9 @@
 # playbook client
 
 # ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: HARDEN PLAYBOOKS
+- name: HARDENING PLAYBOOKS
   ansible.builtin.import_playbook: playbook-sec-short.yml
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Server installer
   remote_user: "{{ ansible_user }}"
@@ -22,7 +20,7 @@
         env_tun_setup: true
         # APT -------------------------------
         apt_base: true
-        apt_exa: false
+        # apt_exa: false
         apt_eza: true
         apt_bat: true
         apt_auth_priv: true
@@ -33,7 +31,6 @@
         # OTHER --------------------------------
         inst_git_conf: true
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Client installer
   remote_user: "{{ ansible_user }}"
@@ -80,7 +77,6 @@
         # OTHER -------------------------------
         firefox_setup: true
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Container installer
   ansible.builtin.import_playbook: playbook-s-container.yml

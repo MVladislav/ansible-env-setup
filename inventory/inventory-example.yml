@@ -84,7 +84,8 @@ all:
       ## UFW
       ## _______________________
       ## NOTE: ufw is general setup by CIS
-      ## NOTE: use here to set logging level and extend rules
+      ## NOTE: use here to set logging level and ssh if not setup by cis
+      ## optional: use extend variable for add more ufw rules
       pl_a_ufw_setup_enable: true
       pl_a_ufw_logging_level: "medium"
       # pl_a_ufw_rules_extended:
@@ -215,10 +216,12 @@ all:
       pl_a_ssh_setup_enable: true
       ssh_only_client_setup: true
       ## UFW
-      ## NOTE: ufw is not needed to run, it is done by CIS
-      ##       use only if you need to setup something specific
       ## _______________________
-      pl_a_ufw_setup_enable: false
+      ## NOTE: ufw is general setup by CIS
+      ## NOTE: use here to set logging level and ssh if not setup by cis
+      ## optional: use extend variable for add more ufw rules
+      ## _______________________
+      pl_a_ufw_setup_enable: true
       pl_a_ufw_logging_level: "medium"
       # NOTE: ssh not needed, default var and setup by cis
       # pl_a_ufw_rules_extended:

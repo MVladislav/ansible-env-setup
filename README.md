@@ -97,26 +97,28 @@ In general following playbooks/roles/tasks are run by each client playbook with 
 - playbook-s-cis
   > Harden the client by CIS rules
   - ansible-cis-ubuntu-2204
-  - cis aide env extend
+  - cis aide env extender
 - playbook-s-pre-install
   > some pre installs and configs
   - pre-tasks
   - ansible-updater
+  - community.general.ufw
   - ansible-ssh
   - ansible-netplan
-  - community.general.ufw
-  - ansible-postfix
-  - nullmailer
+  - playbook-s-pre-mailing
+    - ansible-postfix
+    - nullmailer
 - playbook-s-hardening
   > some more general client hardenings
-  - ~~lynis~~
   - ansible-security
 - [ansible-install-server](#ansible-install-server)
   > install tools/service for server usage, which also useful for clients
 - [ansible-install-client](#ansible-install-client)
   > install tools/service for client usage
-- ansible-docker
-  > install docker with CIS harden
+- playbook-s-container
+  - ansible-docker
+    > install docker with CIS harden
+  - ansible-kubernetes
 
 ### ansible-install-server
 
@@ -134,6 +136,10 @@ In general following playbooks/roles/tasks are run by each client playbook with 
 | apps                    | s1  | s2  | s3  | s4  | c1  | c2  | c3  | c4  |
 | :---------------------- | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | apt_base                |     |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
+| apt_exa                 |     |     |     |     |     |     |     |     |
+| apt_eza                 |     |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
+| apt_bat                 |     |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
+| apt_ncdu                |     |     |     |     |     |     |     |     |
 | apt_auth_priv           |     |     |  x  |     |  x  |  x  |  x  |  x  |
 | apt_cert                |     |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
 | apt_archive             |     |     |  x  |     |     |  x  |  x  |  x  |

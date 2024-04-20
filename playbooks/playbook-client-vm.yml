@@ -3,7 +3,7 @@
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
-- name: HARDEN PLAYBOOKS
+- name: HARDENING PLAYBOOKS
   ansible.builtin.import_playbook: playbook-sec-short.yml
 
 # ------------------------------------------------------------------------------
@@ -22,7 +22,7 @@
         env_tun_setup: true
         # APT (1) -------------------------------
         apt_base: true
-        apt_exa: false
+        # apt_exa: false
         apt_eza: true
         apt_bat: true
         apt_auth_priv: true

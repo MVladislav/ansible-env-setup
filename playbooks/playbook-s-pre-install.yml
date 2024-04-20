@@ -1,8 +1,8 @@
 ---
-# playbook client
+# playbook PRE
 
 # ------------------------------------------------------------------------------
-- name: PRE | pre installer (0) | include pre-task playbook
+- name: PRE | configuration task (0) | include pre-task playbook
   import_playbook: ./pre-tasks.yml
   vars:
     ansible_user_conf_on_hosts:
@@ -24,8 +24,7 @@
     - pl_a_user_setup | bool
 
 # ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: PRE | pre installer (1) | updater
+- name: PRE | configuration task (1) | updater
   remote_user: "{{ ansible_user }}"
   hosts:
     - pre
@@ -45,7 +44,6 @@
       # - "o=Ubuntu,a=${distro_codename}-proposed-updates,n=${distro_codename},l=Ubuntu"
       # - "o=Ubuntu,a=${distro_codename}-backports,n=${distro_codename},l=Ubuntu"
   roles:
-    ### -------------------------
     - role: ansible-updater
       clients: "{{ pl_a_clients }}"
       updater_config:
@@ -56,13 +54,11 @@
         update_upgrade: true
         setup_zfs: true
         setup_unattended: true
-      updater_unattended_allowed_origins: "{{ pl_a_updater_unattended_allowed_origins + pl_a_updater_unattended_allowed_origins_ext }}"
-      updater_unattended_origins_patterns: "{{ pl_a_updater_unattended_origins_patterns + pl_a_updater_unattended_origins_patterns_ext }}"
-    ### -------------------------
+      updater_unattended_allowed_origins: "{{ pl_a_updater_unattended_allowed_origins + pl_a_updater_unattended_allowed_origins_ext | default([]) }}"
+      updater_unattended_origins_patterns: "{{ pl_a_updater_unattended_origins_patterns + pl_a_updater_unattended_origins_patterns_ext | default([]) }}"
 
 # ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: PRE | installer (2) | ssh/netplan/ufw
+- name: PRE | configuration task (2) | ufw
   remote_user: "{{ ansible_user }}"
   hosts:
     - pre
@@ -73,19 +69,6 @@
         protocol: tcp
         interface: "{{ ansible_default_ipv4['interface'] }}"
         comment: "allow incoming connection on standard ssh port"
-  roles:
-    ### -------------------------
-    - role: ansible-ssh
-      clients: "{{ pl_a_clients }}"
-      when:
-        - pl_a_ssh_setup_enable | bool
-    ### -------------------------
-    - role: ansible-netplan
-      netplan_service_name: "{{ pl_a_service_name }}"
-      when:
-        - pl_a_netplan_setup is defined
-        - pl_a_netplan_setup | bool
-    ### -------------------------
   tasks:
     # --------------------------------------------------------------------------
     - name: "PRE | setup ufw | logging"
@@ -93,9 +76,7 @@
       community.general.ufw:
         logging: "{{ pl_a_ufw_logging_level }}"
       when:
-        - pl_a_ufw_setup_enable is defined
-        - pl_a_ufw_setup_enable | bool
-        - pl_a_ufw_logging_level is defined
+        - (pl_a_ufw_setup_enable is defined and pl_a_ufw_setup_enable | bool) or pl_a_ufw_logging_level is defined
     # --------------------------------------------------------------------------
     - name: "PRE | setup ufw | rules"
       become: true
@@ -111,155 +92,29 @@
         route: "{{ item.route | default(omit) }}"
         log: "{{ item.log | default(false) }}"
         comment: "{{ item.comment | default(omit) }}"
-      with_items: "{{ pl_a_ufw_rules_default + pl_a_ufw_rules_extended }}"
+      with_items: "{{ pl_a_ufw_rules_default + pl_a_ufw_rules_extended | default([]) }}"
       when:
         - pl_a_ufw_setup_enable is defined
         - pl_a_ufw_setup_enable | bool
-        - pl_a_ufw_rules_extended is defined
 
 # ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: PRE | installer (2) | mail
+- name: PRE | configuration task (3) | ssh/netplan
   remote_user: "{{ ansible_user }}"
   hosts:
     - pre
   roles:
     ### -------------------------
-    - role: ansible-postfix
-      become: true
-      postfix_hostname: "{{ ansible_host_hostname }}"
-      postfix_mailname: "{{ pl_a_mailing_mail_email.split('@')[1] }}"
-      postfix_mynetworks: 127.0.0.0/8
-      postfix_inet_interfaces: loopback-only
-      postfix_compatibility_level: 2
-      postfix_inet_protocols: ipv4
-      postfix_relayhost: "{{ pl_a_mailing_smtp_host }}"
-      postfix_relayhost_port: "{{ pl_a_mailing_smtp_port }}"
-      postfix_relaytls: "{{ pl_a_mailing_remote_ssl }}"
-      postfix_sasl_user: "{{ pl_a_mailing_mail_username }}"
-      postfix_sasl_password: "{{ pl_a_mailing_mail_password }}"
-      postfix_smtp_tls_wrappermode: true
-      postfix_smtp_tls_security_level: encrypt
-      postfix_smtp_tls_cafile: /etc/ssl/certs/Entrust_Root_Certification_Authority.pem
-      postfix_raw_options:
-        - |
-          biff = no
-
-          # Do not append .domain to local addresses
-          append_dot_mydomain = no
-
-          # Uncomment the next line to generate "delayed mail" warnings
-          delay_warning_time = 4h
-
-          recipient_delimiter = +
-
-          # SMTP authentication settings
-          smtp_sasl_auth_enable = yes
-          smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
-          smtp_sasl_security_options = noanonymous
-          smtp_sasl_tls_security_options = noanonymous
-
-          # Use TLS for SMTP connections
-          smtp_use_tls = yes
-
-          # Enable the SMTPS wrapper mode
-          smtp_tls_wrappermode = yes
-
-          # Set the required TLS security level for SMTPS
-          smtp_tls_security_level = encrypt
-
-          # TLS protocol versions
-          smtp_tls_protocols = !SSLv2, !SSLv3, !TLSv1, TLSv1.1, TLSv1.2
-
-          # TLS ciphers
-          smtp_tls_ciphers = high
-
-          # CA file path
-          smtp_tls_CAfile = /etc/ssl/certs/Entrust_Root_Certification_Authority.pem
-
-          # Enable SMTP TLS session caching
-          smtp_tls_session_cache_database = btree:/var/lib/postfix/smtp_tls_session_cache
-          smtp_tls_session_cache_timeout = 3600s
+    - role: ansible-ssh
+      clients: "{{ pl_a_clients }}"
       when:
-        - pl_a_postfix_setup is defined
-        - pl_a_postfix_setup | bool
+        - pl_a_ssh_setup_enable | bool
     ### -------------------------
-  tasks:
-    # can be test with:
-    # echo "Subject: Test mail from nullmailer on host $HOST" | sudo sendmail -f sender@example.com recipient@example.com
-    # --------------------------------------------------------------------------
-    - name: "PRE | install nullmailer"
-      become: true
-      ansible.builtin.apt:
-        pkg: nullmailer
-        state: present
-        force_apt_get: true # apt-get instead of aptitude
-        update_cache: true
+    - role: ansible-netplan
+      netplan_service_name: "{{ pl_a_service_name }}"
       when:
-        - pl_a_nullmailer_setup is defined
-        - pl_a_nullmailer_setup | bool
-    # --------------------------------------------------------------------------
-    - name: "PRE | conf nullmailer | file remotes"
-      become: true
-      ansible.builtin.copy:
-        dest: /etc/nullmailer/remotes
-        content: >-
-          {{ pl_a_mailing_smtp_host }} smtp --port={{ pl_a_mailing_smtp_port }}
-          {% if pl_a_mailing_mail_username %}--auth-login --user={{ pl_a_mailing_mail_username }} --pass={{ pl_a_mailing_mail_password }}{% endif %}
-          {% if pl_a_mailing_remote_ssl %}--ssl{% endif %}
-          {% if pl_a_mailing_remote_starttls %}--starttls{% endif %}
-        mode: "600"
-        owner: mail
-        group: mail
-      when:
-        - pl_a_nullmailer_setup is defined
-        - pl_a_nullmailer_setup | bool
-    - name: "PRE | conf nullmailer | file allmailfrom"
-      become: true
-      ansible.builtin.copy:
-        dest: /etc/nullmailer/allmailfrom
-        content: |
-          {{ ansible_host_hostname }}@{{ pl_a_mailing_mail_email.split('@')[1] }}
-        mode: "640"
-        owner: mail
-        group: mail
-      when:
-        - pl_a_nullmailer_setup is defined
-        - pl_a_nullmailer_setup | bool
-    - name: "PRE | conf nullmailer | defaultdomain"
-      become: true
-      ansible.builtin.copy:
-        dest: /etc/nullmailer/defaultdomain
-        content: |
-          {{ pl_a_mailing_mail_email.split('@')[1] }}
-        mode: "640"
-        owner: mail
-        group: mail
-      when:
-        - pl_a_nullmailer_setup is defined
-        - pl_a_nullmailer_setup | bool
-    - name: "PRE | conf nullmailer | adminaddr"
-      become: true
-      ansible.builtin.copy:
-        dest: /etc/nullmailer/adminaddr
-        content: |
-          {{ pl_a_mailing_admin_mail_name | default(ansible_host_hostname) }}@{{ pl_a_mailing_mail_email.split('@')[1] }}
-        mode: "640"
-        owner: mail
-        group: mail
-      when:
-        - pl_a_nullmailer_setup is defined
-        - pl_a_nullmailer_setup | bool
-    # --------------------------------------------------------------------------
-    - name: "PRE | conf nullmailer"
-      become: true
-      ansible.builtin.copy:
-        dest: /etc/mailname
-        content: |
-          {{ pl_a_mailing_mail_email.split('@')[1] }}
-        mode: "640"
-        owner: mail
-        group: mail
-      when:
-        - pl_a_nullmailer_setup is defined
-        - pl_a_nullmailer_setup | bool
+        - pl_a_netplan_setup is defined
+        - pl_a_netplan_setup | bool
+
+# ------------------------------------------------------------------------------
+- name: PRE | configuration task (4) | include mailing playbook
+  import_playbook: ./playbook-s-pre-mailing.yml

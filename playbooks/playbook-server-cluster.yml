@@ -2,11 +2,9 @@
 # playbook server
 
 # ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: HARDEN PLAYBOOKS
+- name: HARDENING PLAYBOOKS
   ansible.builtin.import_playbook: playbook-sec-short.yml
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Server installer
   remote_user: "{{ ansible_user }}"
@@ -30,7 +28,7 @@
         # inst_git_conf: true
         # inst_fonts: true
         inst_zsh_conf: true
-# ------------------------------------------------------------------------------
+
 # ------------------------------------------------------------------------------
 - name: Container installer
   ansible.builtin.import_playbook: playbook-s-container.yml

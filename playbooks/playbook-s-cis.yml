@@ -42,8 +42,9 @@
       cis_ubuntu2204_allow_autofs: "{{ pl_a_var_client_server }}" # Disable auto mount, set to true to allow it and not disable
       cis_ubuntu2204_rule_1_1_1_8: "{{ pl_a_var_server_client }}" # Disable USB Storage, set to false to not disable
       cis_ubuntu2204_time_synchronization_service: chrony # chrony | systemd-timesyncd
-      cis_ubuntu2204_time_synchronization_time_server: '{{ pl_a_host_default_ntp | default("time.cloudflare.com")}}'
-      cis_ubuntu2204_time_synchronization_time_fallback_server: '{{ pl_a_host_fallback_ntp | default("ntp.ubuntu.com")}}'
+      cis_ubuntu2204_time_synchronization_time_server:
+        - uri: '{{ pl_a_host_default_ntp | default("time.cloudflare.com")}}'
+        - uri: '{{ pl_a_host_fallback_ntp | default("ntp.ubuntu.com")}}'
       cis_ubuntu2204_allow_cups: "{{ pl_a_var_client_server }}"
       # -------------------------
       cis_ubuntu2204_install_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
@@ -101,11 +102,11 @@
     - servers
   become: true
   tasks:
-    - name: CIS | set/update system variables for aide
+    - name: "CIS | set/update system variables for aide"
       ansible.builtin.lineinfile:
         dest: "/etc/environment"
         state: present
-        regexp: "^(#)?{{ item.key }}=(\\s|$)"
+        regexp: '^(#(\s)*)?{{ item.key }}\s*=.*$'
         line: "{{ item.key }}={{ item.value }}"
       with_items:
         - key: CRON_DAILY_RUN
@@ -125,11 +126,11 @@
         - pl_a_cis_setup | bool
         - pl_a_cis_setup_aide is defined
         - pl_a_cis_setup_aide | bool
-    - name: CIS | set/update aide variables for aide
+    - name: "CIS | set/update aide variables for aide"
       ansible.builtin.lineinfile:
         dest: "/etc/default/aide"
         state: present
-        regexp: "^(#)?{{ item.key }}=(\\s|$)"
+        regexp: '^(#(\s)*)?{{ item.key }}\s*=.*$'
         line: "{{ item.key }}={{ item.value }}"
       with_items:
         - key: CRON_DAILY_RUN
@@ -149,4 +150,3 @@
         - pl_a_cis_setup | bool
         - pl_a_cis_setup_aide is defined
         - pl_a_cis_setup_aide | bool
-    ### -------------------------

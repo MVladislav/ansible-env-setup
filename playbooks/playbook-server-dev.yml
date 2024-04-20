@@ -2,11 +2,9 @@
 # playbook server
 
 # ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-- name: HARDEN PLAYBOOKS
+- name: HARDENING PLAYBOOKS
   ansible.builtin.import_playbook: playbook-sec-short.yml
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Server installer
   remote_user: "{{ ansible_user }}"
@@ -21,7 +19,7 @@
         env_tun_setup: true
         # APT -------------------------------
         apt_base: true
-        apt_exa: false
+        # apt_exa: false
         apt_eza: true
         apt_bat: true
         apt_auth_priv: true
@@ -56,7 +54,6 @@
         pip_pre_commit: true
         pip_ansible: true
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Container installer
   ansible.builtin.import_playbook: playbook-s-container.yml
