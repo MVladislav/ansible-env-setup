@@ -9,8 +9,9 @@ all:
       ## NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
       ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}":
       ansible_ssh_private_key_file: ~/.ssh/id_ed25519
-      ansible_user: username
-      ansible_host: 192.168.0.0
+      # pl_a_cis_setup_ssh_pub_key: ~/.ssh/id_ed25519
+      ansible_user: <USERNAME>
+      ansible_host: <192.168.0.0>
       ansible_port: 22
       ansible_host_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
       pl_a_service_name: "client_{{ ansible_user }}"
@@ -18,7 +19,7 @@ all:
       # NOTE: change this to your email instead of user
       install_server_git_email: "{{ ansible_user }}"
       # NOTE: change to you needed dns and ntp server, or change in playbooks
-      pl_a_host_default_dns: 1.1.1.1
+      pl_a_host_default_dns: 9.9.9.9
       pl_a_host_default_ntp: time.cloudflare.com
       pl_a_host_fallback_ntp: ntp.ubuntu.com
       ## ANSIBLE CLIENT ACCESS SETUP
@@ -36,17 +37,18 @@ all:
       ## _______________________
       pl_a_clients:
         - name: "{{ ansible_user }}"
-          dev: true
+          dev: true # will used for install additional services per user as (git|zsh|tmux|nvim|python|go|npm)
+          setup: false # if client should be setup with additional tools and gui (default true)
           updateOrCreate: false
-          # if client should be setup with additional tools and gui (default true)
-          setup: false
         # rename to any user, to use without sudo
         - name: local_user
+          dev: false # will used for install additional services per user as (git|zsh|tmux|nvim|python|go|npm)
+          setup: true # if client should be setup with additional tools and gui (default true)
           shell: /bin/bash
-          group: adm,cdrom,lpadmin,plugdev,audio,video,render,input,disk,netdev
+          group: cdrom,lpadmin,plugdev,audio,video,render,input,netdev
           createhome: true
           # sudo apt install whois && mkpasswd --method=sha-512
-          password: "$6$Il3FROvn/RU9dfpy$kaTLw4ch.TQyY8KkBJdoZ1CkFiM19ypkJTG5I2sItsPGplwzknayHIHa0lllaSMqF4jpHbkb8vymTAks4yXuD."
+          password: "$6$YF.tKVjwypoJm.Mv$78Z7b5L40voqI7yftgm0atwXsYadn0hSaGvv7smtl4pXrOXhO7hqqchlT.UpaWhz0.JN/8wqC.TMtE4W9JTaN."
           # password: "!"
           updateOrCreate: true
           locale: de_DE.UTF-8
@@ -110,7 +112,7 @@ all:
       ## _______________________
       pl_a_cis_setup: true
       pl_a_cis_setup_aide: false
-      pl_a_cis_ipv6_required: true
+      pl_a_cis_ipv6_required: false
       ## MAILING SETUP
       ## _______________________
       pl_a_mailing_mail_to: root # used in 'MAILTO' if cis-aide will used
@@ -184,9 +186,9 @@ all:
       ## _______________________
       pl_a_clients:
         - name: "{{ ansible_user }}"
-          dev: true
+          dev: true # will used for install additional services per user as (git|zsh|tmux|nvim|python|go|npm)
+          setup: true # if client should be setup with additional tools and gui (default true)
           updateOrCreate: false
-          setup: true
       ## UPDATER
       ## _______________________
       updater_time_timezone: Europe/Berlin
