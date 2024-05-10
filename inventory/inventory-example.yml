@@ -159,6 +159,7 @@ all:
       ## NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
       ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}":
       ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      pl_a_cis_setup_ssh_pub_key: "..."
       ansible_user: username
       ansible_host: 192.168.0.0
       ansible_port: 22
@@ -168,7 +169,7 @@ all:
       # NOTE: change this to your email instead of user
       install_server_git_email: "{{ ansible_user }}"
       # NOTE: change to you needed dns and ntp server, or change in playbooks
-      pl_a_host_default_dns: 1.1.1.1
+      pl_a_host_default_dns: 9.9.9.9
       pl_a_host_default_ntp: time.cloudflare.com
       pl_a_host_fallback_ntp: ntp.ubuntu.com
       ## ANSIBLE CLIENT ACCESS SETUP
@@ -214,6 +215,8 @@ all:
                 - to: default
                   via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
       ## SSH
+      ## NOTE: ssh not needed, is general setup by CIS
+      ##       here only default conf to setup per user defaults
       ## _______________________
       pl_a_ssh_setup_enable: true
       ssh_only_client_setup: true
@@ -222,10 +225,8 @@ all:
       ## NOTE: ufw is general setup by CIS
       ## NOTE: use here to set logging level and ssh if not setup by cis
       ## optional: use extend variable for add more ufw rules
-      ## _______________________
       pl_a_ufw_setup_enable: true
       pl_a_ufw_logging_level: "medium"
-      # NOTE: ssh not needed, default var and setup by cis
       # pl_a_ufw_rules_extended:
       #   - rule: allow
       #     to_port: 161
