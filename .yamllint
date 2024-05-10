@@ -35,8 +35,7 @@ rules:
     level: error
     require-starting-space: true
     min-spaces-from-content: 1
-  comments-indentation:
-    level: warning
+  comments-indentation: false
   document-end:
     level: error
     present: false
