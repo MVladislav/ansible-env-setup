@@ -21,8 +21,8 @@
         # APT -------------------------------
         apt_base: true
         # apt_exa: false
-        apt_eza: true
-        apt_bat: true
+        # apt_eza: true
+        # apt_bat: true
         apt_auth_priv: true
         apt_cert: true
         apt_snap: true
@@ -30,6 +30,7 @@
         snap_btop: true
         # OTHER --------------------------------
         inst_git_conf: true
+        inst_fonts: true
 
 # ------------------------------------------------------------------------------
 - name: Client installer
@@ -47,12 +48,10 @@
         # GNOME ---------------------------------
         gnome_gui_setup: true
         gnome_gui_setup_extensions: true
-        gnome_gui_setup_extensions_git_blur_shell: true
+        # gnome_gui_setup_extensions_git_blur_shell: true
         gnome_gui_setup_extensions_git_dash_to_panel: true
         gnome_gui_setup_overlay: true
         gnome_terminal_setup_overlay: true
-        # cleanup_remove_snap: false
-        # cleanup_remove_flatpak: false
         # APT -----------------------------------
         apt_base: true
         apt_auth_priv: true
@@ -62,13 +61,13 @@
         # DPKG ----------------------------------
         dpkg_veracrypt: true
         # SNAP ----------------------------------
+        snap_chromium: true
         snap_firefox: true
         snap_onlyoffice: true
         snap_thunderbird: true
         snap_signal: true
         snap_telegram: true
         snap_drawio: true
-        snap_gimp: true
         snap_inkscape: true
         snap_spotify: true
         # FLATPAK -------------------------------
@@ -76,7 +75,3 @@
         flatpak_haruna: true
         # OTHER -------------------------------
         firefox_setup: true
-
-# ------------------------------------------------------------------------------
-- name: Container installer
-  ansible.builtin.import_playbook: playbook-s-container.yml

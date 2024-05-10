@@ -10,8 +10,8 @@
     - servers
   become: true
   vars:
-    pl_a_var_client_server: "{{ true if inventory_hostname in groups['clients'] else false }}"
-    pl_a_var_server_client: "{{ false if inventory_hostname in groups['clients'] else true }}"
+    pl_a_var_client_server: "{{ true if inventory_hostname in (groups['clients'] | default([])) else false }}"
+    pl_a_var_server_client: "{{ false if inventory_hostname in (groups['clients'] | default([])) else true }}"
   roles:
     - role: ansible-cis-ubuntu-2204
       cis_ubuntu2204_section1: true

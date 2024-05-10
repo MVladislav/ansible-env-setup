@@ -12,3 +12,23 @@
 # ------------------------------------------------------------------------------
 - name: Hardening scan
   ansible.builtin.import_playbook: playbook-s-hardening.yml
+
+# ------------------------------------------------------------------------------
+- name: "RESTART PLAYBOOKS"
+  remote_user: "{{ ansible_user }}"
+  hosts:
+    - clients
+    - servers
+  tasks:
+    - name: "RESTART | Restart the system"
+      become: true
+      ansible.builtin.command: /sbin/reboot
+      async: 1
+      poll: 0
+      changed_when: false
+      failed_when: false
+
+    - name: "RESTART | Wait for the system to restart"
+      ansible.builtin.wait_for_connection:
+        delay: 30
+        timeout: 300

@@ -69,7 +69,7 @@
     ### -------------------------
   tasks:
     # can be test with:
-    # echo "Subject: Test mail from nullmailer on host $HOST" | sudo sendmail -f sender@example.com recipient@example.com
+    # echo "Subject: Test mail from nullmailer on host '$HOSTNAME'" | sudo sendmail -f "$HOSTNAME" recipient@example.com
     # --------------------------------------------------------------------------
     - name: "PRE | MAILING | install nullmailer"
       become: true
@@ -129,7 +129,7 @@
       ansible.builtin.copy:
         dest: /etc/nullmailer/adminaddr
         content: |
-          {{ pl_a_mailing_admin_mail_name | default(ansible_host_hostname) }}@{{ pl_a_mailing_mail_email.split('@')[1] }}
+          {{ pl_a_mailing_admin_mail_name.split('@')[0] | default(ansible_host_hostname) }}@{{ pl_a_mailing_mail_email.split('@')[1] }}
         mode: "640"
         owner: mail
         group: mail
@@ -143,7 +143,7 @@
         dest: /etc/mailname
         content: |
           {{ pl_a_mailing_mail_email.split('@')[1] }}
-        mode: "640"
+        mode: "644"
         owner: mail
         group: mail
       when:
