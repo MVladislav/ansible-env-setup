@@ -1,0 +1,174 @@
+---
+all:
+  hosts:
+    ## .........................................................................
+    ## SERVER:: setup
+    server:
+      ## ANSIBLE DEFAULTS
+      ## _______________________
+      ## NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
+      ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}":
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
+      # pl_a_cis_setup_ssh_pub_key: ~/.ssh/id_ed25519
+      pl_a_cis_setup_ssh_pub_key: "..."
+      ansible_user: <USERNAME>
+      ansible_host: <192.168.0.0>
+      ansible_port: 22
+      ansible_host_hostname: "WFd8ScWIylnJVXzyvKP8k7aX"
+      pl_a_service_name: "server_{{ ansible_user }}"
+      install_server_git_user: "{{ ansible_user }}"
+      # NOTE: change this to your email instead of user
+      install_server_git_email: "{{ ansible_user }}"
+      # NOTE: change to you needed dns and ntp server, or change in playbooks
+      pl_a_host_default_dns: 9.9.9.9
+      pl_a_host_default_ntp: time.cloudflare.com
+      pl_a_host_fallback_ntp: ntp.ubuntu.com
+      ## ANSIBLE CLIENT ACCESS SETUP
+      ## _______________________
+      pl_a_user_setup: true
+      pl_a_user_config:
+        is_update: true
+        ## sudo apt install whois && mkpasswd --method=sha-512
+        password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
+        group: sudo,dip,lxd,adm,cdrom,plugdev
+        system: false
+        append: true
+        add_ssh_key: true
+      ## CLIENT USED FOR ADDING TO SERVICES
+      ## _______________________
+      pl_a_clients:
+        - name: "{{ ansible_user }}"
+          dev: true # will used for install additional services per user as (git|zsh|tmux|nvim|python|go|npm)
+          setup: true # if client should be setup with additional tools and gui (default true)
+          updateOrCreate: false
+      ## UPDATER
+      ## _______________________
+      updater_time_timezone: Europe/Berlin
+      updater_ntp_server: "{{ pl_a_host_default_ntp }}"
+      updater_ntp_fallback_server: "{{ pl_a_host_fallback_ntp }}"
+      ## NETPLAN
+      ## _______________________
+      pl_a_netplan_setup: true
+      netplan_remove_existing: false
+      netplan_configuration:
+        network:
+          ethernets:
+            eth0:
+              dhcp4: true
+              dhcp6: false
+              addresses:
+                - "{{ ansible_host }}/24"
+              nameservers:
+                addresses:
+                  - "{{ pl_a_host_default_dns }}"
+                  - 9.9.9.9
+              routes:
+                - to: default
+                  via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
+      ## SSH
+      ## NOTE: ssh not needed, is general setup by CIS
+      ##       here only default conf to setup per user defaults
+      ## _______________________
+      pl_a_ssh_setup_enable: true
+      ssh_only_client_setup: true
+      ## UFW
+      ## _______________________
+      ## NOTE: ufw is general setup by CIS
+      ## NOTE: use here to set logging level and ssh if not setup by cis
+      ## optional: use extend variable for add more ufw rules
+      pl_a_ufw_setup_enable: true
+      pl_a_ufw_logging_level: "medium"
+      # pl_a_ufw_rules_extended:
+      #   - rule: allow
+      #     to_port: 161
+      #     protocol: udp
+      #     interface: "{{ ansible_default_ipv4['interface'] }}"
+      #     comment: "allow incoming connection on standard snmp port"
+      ## SNMP
+      ## _______________________
+      pl_a_snmp_setup: false
+      security_snmp_user: snmp
+      security_snmp_password: <PASSWORD>
+      security_snmp_encryption: <ENC>
+      security_snmp_location: home
+      security_snmp_contact: root
+      security_snmp_address_ipv4: "{{ omit }}"
+      security_snmp_address_ipv6: "{{ omit }}"
+      security_snmp_port_ipv4: 161
+      security_snmp_port_ipv6: "{{ omit }}"
+      ## UBUNTU2004 CIS
+      ## _______________________
+      pl_a_cis_setup: true
+      pl_a_cis_setup_aide: false
+      pl_a_cis_ipv6_required: false
+      ## MAILING SETUP
+      ## _______________________
+      pl_a_mailing_mail_to: root # used in 'MAILTO' if cis-aide will used
+      pl_a_mailing_mail_email: root@home.local
+      pl_a_mailing_mail_username: "{{ pl_a_mailing_mail_email }}"
+      pl_a_mailing_mail_password: ""
+      pl_a_mailing_admin_mail_name: root
+      pl_a_mailing_smtp_host: home.local
+      pl_a_mailing_smtp_port: 465
+      pl_a_mailing_remote_ssl: true
+      pl_a_mailing_remote_starttls: false
+      ## NULLMAILER SETUP
+      ## _______________________
+      pl_a_nullmailer_setup: false
+      ## POSTFIX SETUP (most case not needed, by CIS nullmailer will set per default)
+      ## _______________________
+      pl_a_postfix_setup: false
+      ## HARDENING SCAN
+      ## _______________________
+      pl_a_hardening_scan_setup: true
+      pl_a_hardening_lynis_report_from: "{{ pl_a_mailing_mail_email }}"
+      pl_a_hardening_lynis_report_to: "{{ pl_a_mailing_mail_email }}"
+      ## HARDENING SECURITY
+      ## _______________________
+      pl_a_auditd_setup: true
+      pl_a_fail2ban_setup: true
+      security_fail2ban_proxmox: false
+      ## DOCKER
+      ## _______________________
+      pl_a_docker_user_shell: /bin/zsh
+      docker_is_swarm_mode: true
+      docker_cis_rule_2_1: false # install docker as non root
+      # docker_install_release_fallback: mantic
+      # docker_install_release_skip: mantic
+      pl_a_updater_unattended_allowed_origins_ext:
+        - "Docker:${distro_codename}"
+      pl_a_updater_unattended_origins_patterns_ext:
+        - "o=Docker,a=${distro_codename},l=Docker CE"
+      ## KUBERNETES (host need to be added below in children: kubernetes)
+      ## _______________________
+      kubernetes_setup_server: true
+      # kubernetes_setup_server_slave: false
+      kubernetes_fetch_k3s_yaml: true
+      kubernetes_token: ...
+      kubernetes_server_dns_name: ...
+      kubernetes_server_ip: ...
+      # kubernetes_server_slave_ip: ...
+  ## ---------------------------------------------------------------------------
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  children:
+    ## server playbook for install server (playbook-server-*.yml) + (playbook-s-cis.yml)
+    servers:
+      hosts:
+        server:
+    ## pre install playbook (playbook-s-pre-install.yml)
+    pre:
+      hosts:
+        server:
+    ## sec and hardening playbook (playbook-s-hardening.yml)
+    sec:
+      hosts:
+        server:
+    ## docker playbook (playbook-s-container.yml)
+    docker:
+      hosts:
+        server:
+    ## kubernetes playbook (playbook-s-container.yml)
+    kubernetes:
+      hosts:
+        server:
