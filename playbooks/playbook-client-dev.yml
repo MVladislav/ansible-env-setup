@@ -33,6 +33,8 @@
         apt_nmap: true
         # SNAP ----------------------------------
         snap_btop: true
+        snap_httpie: true
+        snap_node: true
         # OTHER --------------------------------
         inst_git_conf: true
         inst_fonts: true

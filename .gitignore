@@ -8,7 +8,8 @@
 
 !inventory/
 inventory/*
-!inventory/inventory-example.yml
+!inventory/inventory-example-client.yml
+!inventory/inventory-example-server.yml
 
 !playbooks/
 playbooks/*

@@ -175,7 +175,8 @@ In general following playbooks/roles/tasks are run by each client playbook with 
 | snap_btop               |     |     |  x  |     |  x  |  x  |  x  |  x  |
 | snap_glow               |     |     |  x  |     |     |     |     |  x  |
 | snap_go                 |     |     |     |     |     |     |     |     |
-| snap_node               |     |     |     |     |     |     |     |     |
+| snap_httpie             |     |     |     |     |     |     |  x  |     |
+| snap_node               |     |     |     |     |     |     |  x  |     |
 | snap_ruby               |     |     |     |     |     |     |     |     |
 | snap_rust               |     |     |     |     |     |     |     |     |
 | snap_openjdk            |     |     |     |     |     |     |     |     |
