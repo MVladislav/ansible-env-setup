@@ -16,7 +16,6 @@
       clients: "{{ pl_a_clients }}"
       install_server_service_name: "{{ pl_a_service_name }}"
       install_server_config:
-        dev: true
         env_tun_setup: true
         # APT -------------------------------
         apt_base: true
@@ -43,8 +42,6 @@
       clients: "{{ pl_a_clients }}"
       install_client_service_name: "{{ pl_a_service_name }}"
       install_client_config:
-        # GENERAL -------------------------------
-        dev: true
         # GNOME ---------------------------------
         gnome_gui_setup: true
         gnome_gui_setup_extensions: true
