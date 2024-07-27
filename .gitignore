@@ -1,10 +1,34 @@
-# Created by https://www.toptal.com/developers/gitignore/api/ansible
-# Edit at https://www.toptal.com/developers/gitignore?templates=ansible
+# Ignore .hidden files
+.*
+# Ignore everything
+*
+
+!.github/
+!.github/**
+
+!.gitattributes
+!.gitignore
+!.gitempty
+!.gitmodules
+
+!CONTRIBUTING.md
+!LICENCE
+!SECURITY.md
+
+!README.md
+
+!.pre-commit-config.yaml
+!.prettierrc.yml
+!.yamllint
 
 ### Ansible ###
 *.retry
+!ansible.cfg
 
-# End of https://www.toptal.com/developers/gitignore/api/ansible
+# ADD more
+!.ansible-lint
+!requirements.txt
+!requirements.yml
 
 !inventory/
 inventory/*
@@ -20,10 +44,6 @@ playbooks/*
 playbooks/vars/*
 !playbooks/vars/default-example.yml
 
-!plugins/
-plugins/*
-# !plugins/mitogen-0.2.9/
-
 !playbooks/README.md
 !playbooks/playbook-s-*.yml
 !playbooks/playbook-sec-short.yml
@@ -34,3 +54,6 @@ plugins/*
 !playbooks/playbook-server-cluster.yml
 !playbooks/playbook-server-dev.yml
 !playbooks/playbook-server-minimal.yml
+
+!roles/
+!roles/*

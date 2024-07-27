@@ -1,44 +1,44 @@
 [submodule "roles/ansible-docker"]
-path = roles/ansible-docker
-url = https://github.com/MVladislav/ansible-docker.git
-branch = main
+	path = roles/ansible-docker
+	url = https://github.com/MVladislav/ansible-docker.git
+	branch = main
 [submodule "roles/ansible-netplan"]
-path = roles/ansible-netplan
-url = https://github.com/MVladislav/ansible-netplan.git
-branch = main
+	path = roles/ansible-netplan
+	url = https://github.com/MVladislav/ansible-netplan.git
+	branch = main
 [submodule "roles/ansible-security"]
-path = roles/ansible-security
-url = https://github.com/MVladislav/ansible-security.git
-branch = main
+	path = roles/ansible-security
+	url = https://github.com/MVladislav/ansible-security.git
+	branch = main
 [submodule "roles/ansible-ssh"]
-path = roles/ansible-ssh
-url = https://github.com/MVladislav/ansible-ssh.git
-branch = main
+	path = roles/ansible-ssh
+	url = https://github.com/MVladislav/ansible-ssh.git
+	branch = main
 [submodule "roles/ansible-updater"]
-path = roles/ansible-updater
-url = https://github.com/MVladislav/ansible-updater.git
-branch = main
+	path = roles/ansible-updater
+	url = https://github.com/MVladislav/ansible-updater.git
+	branch = main
 [submodule "roles/ansible-install-server"]
-path = roles/ansible-install-server
-url = https://github.com/MVladislav/ansible-install-server.git
-branch = main
+	path = roles/ansible-install-server
+	url = https://github.com/MVladislav/ansible-install-server.git
+	branch = main
 [submodule "roles/ansible-install-client"]
-path = roles/ansible-install-client
-url = https://github.com/MVladislav/ansible-install-client.git
-branch = main
+	path = roles/ansible-install-client
+	url = https://github.com/MVladislav/ansible-install-client.git
+	branch = main
 [submodule "roles/ansible-postfix"]
-path = roles/ansible-postfix
-url = https://github.com/Oefenweb/ansible-postfix.git
-branch = master
+	path = roles/ansible-postfix
+	url = https://github.com/Oefenweb/ansible-postfix.git
+	branch = master
 [submodule "roles/ansible-kubernetes"]
-path = roles/ansible-kubernetes
-url = https://github.com/MVladislav/ansible-kubernetes.git
-branch = main
+	path = roles/ansible-kubernetes
+	url = https://github.com/MVladislav/ansible-kubernetes.git
+	branch = main
 [submodule "roles/ansible-cis-ubuntu-2204"]
-path = roles/ansible-cis-ubuntu-2204
-url = https://github.com/MVladislav/ansible-cis-ubuntu-2204.git
-branch = main
+	path = roles/ansible-cis-ubuntu-2204
+	url = https://github.com/MVladislav/ansible-cis-ubuntu-2204.git
+	branch = main
 [submodule "roles/ansible-pentest"]
-path = roles/ansible-pentest
-url = https://github.com/MVladislav/ansible-pentest.git
-branch = main
+	path = roles/ansible-pentest
+	url = https://github.com/MVladislav/ansible-pentest.git
+	branch = main
