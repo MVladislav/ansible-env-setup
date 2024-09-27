@@ -14,84 +14,164 @@
     pl_a_var_server_client: "{{ false if inventory_hostname in (groups['clients'] | default([])) else true }}"
   roles:
     - role: ansible-cis-ubuntu-2204
-      cis_ubuntu2204_section1: true
-      cis_ubuntu2204_section2: true
-      cis_ubuntu2204_section3: true
-      cis_ubuntu2204_section4: true
-      cis_ubuntu2204_section5: true
-      cis_ubuntu2204_section6: true
-      cis_ubuntu2204_section7: true
-      # -------------------------
-      # cis_ubuntu2204_rule_1_1_1_6: false # squashfs - IMPACT: Snap packages utilizes squashfs as a compressed filesystem, disabling squashfs will cause Snap packages to fail.
-      # -------------------------
-      cis_ubuntu2204_rule_5_1_24: true
-      cis_ubuntu2204_rule_5_1_24_ssh_user: "{{ ansible_user }}"
-      cis_ubuntu2204_rule_5_1_24_ssh_pub_key: "{{ pl_a_cis_setup_ssh_pub_key | default(omit) }}"
-      # -------------------------
-      cis_ubuntu2204_rule_1_3_1_3: false # AppArmor complain mode
-      cis_ubuntu2204_rule_1_3_1_4: false # AppArmor enforce mode
-      # -------------------------
-      cis_ubuntu2204_rule_1_4_1: false # bootloader password (disabled)
-      cis_ubuntu2204_set_boot_pass: false # bootloader password (disabled)
-      cis_ubuntu2204_disable_boot_pass: true # bootloader password (disabled)
-      # -------------------------
-      cis_ubuntu2204_rule_3_1_3: "{{ pl_a_var_server_client }}" # bluetooth service
-      cis_ubuntu2204_rule_3_1_3_remove: "{{ pl_a_var_server_client }}" # bluetooth service
-      # -------------------------
-      cis_ubuntu2204_allow_gdm_gui: "{{ pl_a_var_client_server }}"
-      cis_ubuntu2204_allow_autofs: "{{ pl_a_var_client_server }}" # Disable auto mount, set to true to allow it and not disable
-      cis_ubuntu2204_rule_1_1_1_8: "{{ pl_a_var_server_client }}" # Disable USB Storage, set to false to not disable
-      cis_ubuntu2204_time_synchronization_service: chrony # chrony | systemd-timesyncd
-      cis_ubuntu2204_time_synchronization_time_server:
-        - uri: '{{ pl_a_host_default_ntp | default("time.cloudflare.com")}}'
-        - uri: '{{ pl_a_host_fallback_ntp | default("ntp.ubuntu.com")}}'
-      cis_ubuntu2204_allow_cups: "{{ pl_a_var_client_server }}"
-      # -------------------------
-      cis_ubuntu2204_install_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
-      cis_ubuntu2204_config_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
-      cis_ubuntu2204_aide_cron:
-        cron_user: root
-        cron_file: aide
-        aide_job: "/usr/bin/aide.wrapper --config /etc/aide/aide.conf --check"
-        aide_minute: 0
-        aide_hour: 5
-        aide_day: "*"
-        aide_month: "*"
-        aide_weekday: "*"
-      # -------------------------
-      cis_ubuntu2204_journald_system_max_use: 4G
-      cis_ubuntu2204_journald_system_keep_free: 8G
-      cis_ubuntu2204_journald_runtime_max_use: 256M
-      cis_ubuntu2204_journald_runtime_keep_free: 512M
-      cis_ubuntu2204_journald_max_file_sec: 1month
-      # -------------------------
-      cis_ubuntu2204_required_ipv6: "{{ pl_a_cis_ipv6_required | default(false) | bool }}"
-      cis_ubuntu2204_firewall: ufw
-      # -------------------------
-      cis_ubuntu2204_cron_allow_users:
-        - root
-      cis_ubuntu2204_at_allow_users:
-        - root
-      # -------------------------
-      cis_ubuntu2204_faillock_deny: 5
-      cis_ubuntu2204_faillock_unlock_time: 900
-      cis_ubuntu2204_faillock_minlen: 8
-      cis_ubuntu2204_password_complexity:
-        - key: "minclass"
-          value: "3"
-        - key: "dcredit"
-          value: "-1"
-        - key: "ucredit"
-          value: "-1"
-        - key: "ocredit"
-          value: "-1"
-        - key: "lcredit"
-          value: "-1"
-      # -------------------------
       when:
         - pl_a_cis_setup is defined
         - pl_a_cis_setup | bool
-    ### -------------------------
+        - ansible_distribution | lower == "ubuntu"
+        - ansible_distribution_version in ["22.04", "22.10", "23.04", "23.10"]
+      vars:
+        cis_ubuntu2204_section1: true
+        cis_ubuntu2204_section2: true
+        cis_ubuntu2204_section3: true
+        cis_ubuntu2204_section4: true
+        cis_ubuntu2204_section5: true
+        cis_ubuntu2204_section6: true
+        cis_ubuntu2204_section7: true
+        # -------------------------
+        cis_ubuntu2204_rule_1_1_1_6: false # squashfs - IMPACT: Snap packages utilizes squashfs as a compressed filesystem, disabling squashfs will cause Snap packages to fail.
+        # -------------------------
+        cis_ubuntu2204_rule_5_1_24: true
+        cis_ubuntu2204_rule_5_1_24_ssh_user: "{{ ansible_user }}"
+        cis_ubuntu2204_rule_5_1_24_ssh_pub_key: "{{ pl_a_cis_setup_ssh_pub_key | default(omit) }}"
+        # -------------------------
+        cis_ubuntu2204_rule_1_3_1_3: false # AppArmor complain mode
+        cis_ubuntu2204_rule_1_3_1_4: false # AppArmor enforce mode
+        # -------------------------
+        cis_ubuntu2204_rule_1_4_1: false # bootloader password (disabled)
+        cis_ubuntu2204_set_boot_pass: false # bootloader password (disabled)
+        cis_ubuntu2204_disable_boot_pass: true # bootloader password (disabled)
+        # -------------------------
+        cis_ubuntu2204_rule_3_1_3: "{{ pl_a_var_server_client }}" # bluetooth service
+        cis_ubuntu2204_rule_3_1_3_remove: "{{ pl_a_var_server_client }}" # bluetooth service
+        # -------------------------
+        cis_ubuntu2204_allow_gdm_gui: "{{ pl_a_var_client_server }}"
+        cis_ubuntu2204_allow_autofs: "{{ pl_a_var_client_server }}" # Disable auto mount, set to true to allow it and not disable
+        cis_ubuntu2204_rule_1_1_1_8: "{{ pl_a_var_server_client }}" # Disable USB Storage, set to false to not disable
+        cis_ubuntu2204_time_synchronization_service: chrony # chrony | systemd-timesyncd
+        cis_ubuntu2204_time_synchronization_time_server:
+          - uri: '{{ pl_a_host_default_ntp | default("time.cloudflare.com")}}'
+          - uri: '{{ pl_a_host_fallback_ntp | default("ntp.ubuntu.com")}}'
+        cis_ubuntu2204_allow_cups: "{{ pl_a_var_client_server }}"
+        # -------------------------
+        cis_ubuntu2204_install_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
+        cis_ubuntu2204_config_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
+        cis_ubuntu2204_aide_cron:
+          cron_user: root
+          cron_file: aide
+          aide_job: "/usr/bin/aide.wrapper --config /etc/aide/aide.conf --check"
+          aide_minute: 0
+          aide_hour: 5
+          aide_day: "*"
+          aide_month: "*"
+          aide_weekday: "*"
+        # -------------------------
+        cis_ubuntu2204_journald_system_max_use: 4G
+        cis_ubuntu2204_journald_system_keep_free: 8G
+        cis_ubuntu2204_journald_runtime_max_use: 256M
+        cis_ubuntu2204_journald_runtime_keep_free: 512M
+        cis_ubuntu2204_journald_max_file_sec: 1month
+        # -------------------------
+        cis_ubuntu2204_required_ipv6: "{{ pl_a_cis_ipv6_required | default(false) | bool }}"
+        cis_ubuntu2204_firewall: ufw
+        # -------------------------
+        cis_ubuntu2204_cron_allow_users:
+          - root
+        cis_ubuntu2204_at_allow_users:
+          - root
+        # -------------------------
+        cis_ubuntu2204_faillock_deny: 5
+        cis_ubuntu2204_faillock_unlock_time: 900
+        cis_ubuntu2204_faillock_minlen: 8
+        cis_ubuntu2204_password_complexity:
+          - key: "minclass"
+            value: "3"
+          - key: "dcredit"
+            value: "-1"
+          - key: "ucredit"
+            value: "-1"
+          - key: "ocredit"
+            value: "-1"
+          - key: "lcredit"
+            value: "-1"
+    - role: ansible-cis-ubuntu-2404
+      when:
+        - pl_a_cis_setup is defined
+        - pl_a_cis_setup | bool
+        - ansible_distribution | lower == "ubuntu"
+        - ansible_distribution_version in ["24.04", "24.10"]
+      vars:
+        cis_ubuntu2404_section1: true
+        cis_ubuntu2404_section2: true
+        cis_ubuntu2404_section3: true
+        cis_ubuntu2404_section4: true
+        cis_ubuntu2404_section5: true
+        cis_ubuntu2404_section6: true
+        cis_ubuntu2404_section7: true
+        # -------------------------
+        cis_ubuntu2404_rule_1_1_1_7: false # squashfs - IMPACT: Snap packages utilizes squashfs as a compressed filesystem, disabling squashfs will cause Snap packages to fail.
+        # -------------------------
+        cis_ubuntu2404_rule_5_1_24: true
+        cis_ubuntu2404_rule_5_1_24_ssh_user: "{{ ansible_user }}"
+        cis_ubuntu2404_rule_5_1_24_ssh_pub_key: "{{ pl_a_cis_setup_ssh_pub_key | default(omit) }}"
+        # -------------------------
+        cis_ubuntu2404_rule_1_3_1_3: false # AppArmor complain mode
+        cis_ubuntu2404_rule_1_3_1_4: false # AppArmor enforce mode
+        # -------------------------
+        cis_ubuntu2404_set_boot_pass: false # bootloader password (disabled)
+        cis_ubuntu2404_disable_boot_pass: true # bootloader password (disabled with cis_ubuntu2404_set_boot_pass)
+        # -------------------------
+        cis_ubuntu2404_rule_3_1_3: "{{ pl_a_var_server_client }}" # bluetooth service
+        cis_ubuntu2404_rule_3_1_3_remove: "{{ pl_a_var_server_client }}" # bluetooth service
+        # -------------------------
+        cis_ubuntu2404_allow_gdm_gui: "{{ pl_a_var_client_server }}"
+        cis_ubuntu2404_allow_autofs: "{{ pl_a_var_client_server }}" # Disable auto mount, set to true to allow it and not disable
+        cis_ubuntu2404_rule_1_1_1_9: "{{ pl_a_var_server_client }}" # Disable USB Storage, set to false to not disable
+        cis_ubuntu2404_time_synchronization_service: chrony # chrony | systemd-timesyncd
+        cis_ubuntu2404_time_synchronization_time_server:
+          - uri: '{{ pl_a_host_default_ntp | default("time.cloudflare.com")}}'
+          - uri: '{{ pl_a_host_fallback_ntp | default("ntp.ubuntu.com")}}'
+        cis_ubuntu2404_allow_cups: "{{ pl_a_var_client_server }}"
+        # -------------------------
+        cis_ubuntu2404_install_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
+        cis_ubuntu2404_config_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
+        cis_ubuntu2404_aide_cron:
+          cron_user: root
+          cron_file: aide
+          aide_job: "/usr/bin/aide.wrapper --config /etc/aide/aide.conf --check"
+          aide_minute: 0
+          aide_hour: 5
+          aide_day: "*"
+          aide_month: "*"
+          aide_weekday: "*"
+        # -------------------------
+        cis_ubuntu2404_journald_system_max_use: 4G
+        cis_ubuntu2404_journald_system_keep_free: 8G
+        cis_ubuntu2404_journald_runtime_max_use: 256M
+        cis_ubuntu2404_journald_runtime_keep_free: 512M
+        cis_ubuntu2404_journald_max_file_sec: 1month
+        # -------------------------
+        cis_ubuntu2404_required_ipv6: "{{ pl_a_cis_ipv6_required | default(false) | bool }}"
+        cis_ubuntu2404_firewall: ufw
+        # -------------------------
+        cis_ubuntu2404_cron_allow_users:
+          - root
+        cis_ubuntu2404_at_allow_users:
+          - root
+        # -------------------------
+        cis_ubuntu2404_faillock_deny: 5
+        cis_ubuntu2404_faillock_unlock_time: 900
+        cis_ubuntu2404_faillock_minlen: 8
+        cis_ubuntu2404_password_complexity:
+          - key: "minclass"
+            value: "3"
+          - key: "dcredit"
+            value: "-1"
+          - key: "ucredit"
+            value: "-1"
+          - key: "ocredit"
+            value: "-1"
+          - key: "lcredit"
+            value: "-1"
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------

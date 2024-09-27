@@ -8,8 +8,8 @@ all:
       ## _______________________
       ## NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
       ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}":
-      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
-      # pl_a_cis_setup_ssh_pub_key: ~/.ssh/id_ed25519
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519...
+      # pl_a_cis_setup_ssh_pub_key: < cat ~/.ssh/id_ed25519...
       pl_a_cis_setup_ssh_pub_key: "..."
       ansible_user: <USERNAME>
       ansible_host: <192.168.0.0>
@@ -154,14 +154,6 @@ all:
   children:
     ## server playbook for install server (playbook-server-*.yml) + (playbook-s-cis.yml)
     servers:
-      hosts:
-        server:
-    ## pre install playbook (playbook-s-pre-install.yml)
-    pre:
-      hosts:
-        server:
-    ## sec and hardening playbook (playbook-s-hardening.yml)
-    sec:
       hosts:
         server:
     ## docker playbook (playbook-s-container.yml)

@@ -16,9 +16,7 @@
 # ------------------------------------------------------------------------------
 - name: "RESTART PLAYBOOKS"
   remote_user: "{{ ansible_user }}"
-  hosts:
-    - clients
-    - servers
+  hosts: all
   tasks:
     - name: "RESTART | Restart the system"
       become: true

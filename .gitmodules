@@ -42,3 +42,7 @@
 	path = roles/ansible-pentest
 	url = https://github.com/MVladislav/ansible-pentest.git
 	branch = main
+[submodule "roles/ansible-cis-ubuntu-2404"]
+	path = roles/ansible-cis-ubuntu-2404
+	url = https://github.com/MVladislav/ansible-cis-ubuntu-2404.git
+	branch = develop

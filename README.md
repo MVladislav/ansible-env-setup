@@ -7,6 +7,7 @@
   - [Install dependencies on host](#install-dependencies-on-host)
   - [Setup host](#setup-host)
   - [Setup targets](#setup-targets)
+    - [Flow for Security Playbook](#flow-for-security-playbook)
   - [Playbooks overview](#playbooks-overview)
     - [ansible-install-server](#ansible-install-server)
     - [ansible-install-client](#ansible-install-client)
@@ -86,9 +87,18 @@ Following are some main playbooks to install clients or servers:
 > `-k` => will use **ssh with a password**, as a fresh setup has no **ssh-key** installed
 > if **ssh-key** is installed on target you not need to inclide `-k`
 
+Example to run `playbook-sec-short`:
+
 ```sh
 $ansible-playbook playbooks/playbook-sec-short.yml --ask-become-pass -k
+
+# or with less output information
+$ansible-playbook playbooks/playbook-sec-short.yml --ask-become-pass -k | grep -v "started TASK\|included: "
 ```
+
+### Flow for Security Playbook
+
+![Playbook Sec Short](<docs/Playbook Sec Short.png>)
 
 ## Playbooks overview
 

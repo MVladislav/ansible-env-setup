@@ -57,3 +57,8 @@ playbooks/vars/*
 
 !roles/
 !roles/*
+
+!docs/
+docs/*
+!docs/*.png
+!docs/*.excalidraw

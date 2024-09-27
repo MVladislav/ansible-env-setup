@@ -6,9 +6,8 @@
   remote_user: "{{ ansible_user_conf_name }}"
   check_mode: true
   gather_facts: false
-  hosts: "{{ ansible_user_conf_on_hosts }}"
+  hosts: all
   vars:
-    ansible_user_conf_on_hosts: []
     ansible_user_conf_update: null
     ansible_user_conf_name: "{{ ansible_user }}"
     ansible_user_conf_name_map: "{{ ansible_user }}-{{ ansible_host }}"
@@ -28,7 +27,6 @@
       check_mode: true
       ansible.builtin.debug:
         msg:
-          - "on_hosts        (on which host to install)                : {{ ansible_user_conf_on_hosts }}"
           - "update          (if user should updated)                  : {{ ansible_user_conf_update | bool }}"
           - "name            (name of user for ansible)                : {{ ansible_user_conf_name }}"
           - "name-map        (map for var/default.yml)                 : {{ ansible_user_conf_name_map }}"
@@ -51,9 +49,8 @@
 - name: "PRE-INSTALL | remote-user: update user and deploy ssh-key"
   gather_facts: false
   remote_user: "{{ ansible_user_conf_name }}"
-  hosts: "{{ ansible_user_conf_on_hosts }}"
+  hosts: all
   vars:
-    ansible_user_conf_on_hosts: []
     ansible_user_conf_update: null
     ansible_user_conf_name: "{{ ansible_user }}"
     ansible_user_conf_name_map: "{{ ansible_user }}-{{ ansible_host }}"
@@ -125,9 +122,8 @@
 - name: "PRE-INSTALL | change hostname"
   gather_facts: true
   remote_user: "{{ ansible_user_conf_name }}"
-  hosts: "{{ ansible_user_conf_on_hosts }}"
+  hosts: all
   vars:
-    ansible_user_conf_on_hosts: []
     ansible_host_conf_hostname: null
   tasks:
     - name: "PRE-INSTALL | set/update hostname | update /etc/hosts"
@@ -155,9 +151,8 @@
   become: true
   gather_facts: false
   remote_user: "{{ ansible_user_conf_name }}"
-  hosts: "{{ ansible_user_conf_on_hosts }}"
+  hosts: all
   vars:
-    ansible_user_conf_on_hosts: []
     ansible_user_conf_name: "{{ ansible_user }}"
   pre_tasks:
     - name: "PRE-INSTALL | check for python3"
@@ -175,9 +170,8 @@
 - name: "PRE-INSTALL | update/create user accounts"
   gather_facts: false
   remote_user: "{{ ansible_user_conf_name }}"
-  hosts: "{{ ansible_user_conf_on_hosts }}"
+  hosts: all
   vars:
-    ansible_user_conf_on_hosts: []
     ansible_user_conf_clients: []
     ansible_user_conf_name: "{{ ansible_user }}"
   tasks:

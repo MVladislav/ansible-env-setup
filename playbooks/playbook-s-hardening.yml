@@ -2,10 +2,97 @@
 # playbook hardening
 
 # ------------------------------------------------------------------------------
-- name: Setup Security Services and improves
+- name: HARDEN | configuration task (1) | updater
   remote_user: "{{ ansible_user }}"
-  hosts:
-    - sec
+  hosts: all
+  vars:
+    pl_a_updater_unattended_allowed_origins:
+      - "${distro_id}:${distro_codename}"
+      - "${distro_id}:${distro_codename}-security"
+      - "${distro_id}:${distro_codename}-updates"
+      - "${distro_id}ESMApps:${distro_codename}-apps-security"
+      - "${distro_id}ESM:${distro_codename}-infra-security"
+      # - "Docker:${distro_codename}"
+    pl_a_updater_unattended_origins_patterns:
+      # - "o=Ubuntu,a=${distro_codename},n=${distro_codename},l=Ubuntu"
+      - "o=Ubuntu,a=${distro_codename}-security,n=${distro_codename},l=Ubuntu"
+      - "o=Ubuntu,a=${distro_codename}-updates,n=${distro_codename},l=Ubuntu"
+      # - "o=Ubuntu,a=${distro_codename}-proposed-updates,n=${distro_codename},l=Ubuntu"
+      # - "o=Ubuntu,a=${distro_codename}-backports,n=${distro_codename},l=Ubuntu"
+      # - "o=Docker,a=${distro_codename},l=Docker CE"
+  roles:
+    - role: ansible-updater
+      clients: "{{ pl_a_clients }}"
+      updater_config:
+        set_timezone: true
+        set_time_sync: true
+        set_language: true
+        update_upgrade: true
+        setup_zfs: true
+        setup_unattended: true
+      updater_unattended_allowed_origins: "{{ pl_a_updater_unattended_allowed_origins + pl_a_updater_unattended_allowed_origins_ext | default([]) }}"
+      updater_unattended_origins_patterns: "{{ pl_a_updater_unattended_origins_patterns + pl_a_updater_unattended_origins_patterns_ext | default([]) }}"
+
+# ------------------------------------------------------------------------------
+- name: HARDEN | configuration task (2) | ufw
+  remote_user: "{{ ansible_user }}"
+  hosts: all
+  vars:
+    pl_a_ufw_rules_default:
+      - rule: allow
+        to_port: 22
+        protocol: tcp
+        interface: "{{ ansible_default_ipv4['interface'] }}"
+        comment: "allow incoming connection on standard ssh port"
+  tasks:
+    # --------------------------------------------------------------------------
+    - name: "HARDEN | setup ufw | logging"
+      become: true
+      community.general.ufw:
+        logging: "{{ pl_a_ufw_logging_level }}"
+      when:
+        - (pl_a_ufw_setup_enable is defined and pl_a_ufw_setup_enable | bool) or pl_a_ufw_logging_level is defined
+    # --------------------------------------------------------------------------
+    - name: "HARDEN | setup ufw | rules"
+      become: true
+      community.general.ufw:
+        rule: "{{ item.rule }}"
+        interface: "{{ item.interface | default('') }}"
+        direction: "{{ item.direction | default('in') }}"
+        from_ip: "{{ item.from_ip | default('any') }}"
+        to_ip: "{{ item.to_ip | default('any') }}"
+        from_port: "{{ item.from_port | default('') }}"
+        to_port: "{{ item.to_port | default('') }}"
+        protocol: "{{ item.protocol | default('any') }}"
+        route: "{{ item.route | default(omit) }}"
+        log: "{{ item.log | default(false) }}"
+        comment: "{{ item.comment | default(omit) }}"
+      with_items: "{{ pl_a_ufw_rules_default + pl_a_ufw_rules_extended | default([]) }}"
+      when:
+        - pl_a_ufw_setup_enable is defined
+        - pl_a_ufw_setup_enable | bool
+
+# ------------------------------------------------------------------------------
+- name: HARDEN | configuration task (3) | ssh/netplan
+  remote_user: "{{ ansible_user }}"
+  hosts: all
+  roles:
+    ### -------------------------
+    - role: ansible-ssh
+      clients: "{{ pl_a_clients }}"
+      when:
+        - pl_a_ssh_setup_enable | bool
+    ### -------------------------
+    - role: ansible-netplan
+      netplan_service_name: "{{ pl_a_service_name }}"
+      when:
+        - pl_a_netplan_setup is defined
+        - pl_a_netplan_setup | bool
+
+# ------------------------------------------------------------------------------
+- name: HARDEN | configuration task (4) | setup Security services and improves
+  remote_user: "{{ ansible_user }}"
+  hosts: all
   roles:
     - role: ansible-security
       security_setup_services:

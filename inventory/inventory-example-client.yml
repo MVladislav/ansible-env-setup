@@ -8,8 +8,8 @@ all:
       ## _______________________
       ## NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
       ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}":
-      ansible_ssh_private_key_file: ~/.ssh/id_ed25519
-      # pl_a_cis_setup_ssh_pub_key: ~/.ssh/id_ed25519
+      ansible_ssh_private_key_file: ~/.ssh/id_ed25519...
+      # pl_a_cis_setup_ssh_pub_key: < cat ~/.ssh/id_ed25519...
       pl_a_cis_setup_ssh_pub_key: "..."
       ansible_user: <USERNAME>
       ansible_host: <192.168.0.0>
@@ -63,21 +63,23 @@ all:
       ## _______________________
       pl_a_netplan_setup: false
       netplan_remove_existing: false
-      netplan_configuration:
-        network:
-          ethernets:
-            eth0:
-              dhcp4: true
-              dhcp6: false
-              addresses:
-                - "{{ ansible_host }}/24"
-              nameservers:
-                addresses:
-                  - "{{ pl_a_host_default_dns }}"
-                  - 9.9.9.9
-              routes:
-                - to: default
-                  via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
+      # netplan_configuration:
+      #   network:
+      #     version: 2
+      #     ethernets:
+      #       "enp6s18":
+      #         renderer: NetworkManager
+      #         match: {}
+      #         dhcp4: true
+      #         networkmanager:
+      #           # uuidgen
+      #           uuid: "d18b4114-37b9-4b96-af69-6345636c5781"
+      #           name: "netplan-enp6s18"
+      #           passthrough:
+      #             connection.timestamp: "1726957411"
+      #             ipv6.method: "disabled"
+      #             ipv6.ip6-privacy: "-1"
+      #             proxy._: ""
       ## SSH
       ## NOTE: ssh not needed, is general setup by CIS
       ##       here only default conf to setup per user defaults
@@ -158,14 +160,6 @@ all:
   children:
     ## client playbook for install client (playbook-client-*.yml) + (playbook-s-cis.yml)
     clients:
-      hosts:
-        client:
-    ## pre install playbook (playbook-s-pre-install.yml)
-    pre:
-      hosts:
-        client:
-    ## sec and hardening playbook (playbook-s-hardening.yml)
-    sec:
       hosts:
         client:
     ## docker playbook (playbook-s-container.yml)

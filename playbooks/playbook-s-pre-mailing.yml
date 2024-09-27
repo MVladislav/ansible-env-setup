@@ -4,8 +4,7 @@
 # ------------------------------------------------------------------------------
 - name: "PRE | MAILING | postfix/nullmailer setup"
   remote_user: "{{ ansible_user }}"
-  hosts:
-    - pre
+  hosts: all
   roles:
     ### -------------------------
     - role: ansible-postfix
