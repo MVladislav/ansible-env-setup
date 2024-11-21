@@ -12,6 +12,7 @@
   vars:
     pl_a_var_client_server: "{{ true if inventory_hostname in (groups['clients'] | default([])) else false }}"
     pl_a_var_server_client: "{{ false if inventory_hostname in (groups['clients'] | default([])) else true }}"
+    # pl_a_cis_preferred_capturing_log_method: "{{ 'rsyslog' if inventory_hostname in (groups['clients'] | default([])) else 'journald' }}"
   roles:
     - role: ansible-cis-ubuntu-2204
       when:
@@ -32,7 +33,7 @@
         # -------------------------
         cis_ubuntu2204_rule_5_1_24: true
         cis_ubuntu2204_rule_5_1_24_ssh_user: "{{ ansible_user }}"
-        cis_ubuntu2204_rule_5_1_24_ssh_pub_key: "{{ pl_a_cis_setup_ssh_pub_key | default(omit) }}"
+        cis_ubuntu2204_rule_5_1_24_ssh_pub_key: "{{ pl_a_cis_setup_ssh_pub_key | default(null) }}"
         # -------------------------
         cis_ubuntu2204_rule_1_3_1_3: false # AppArmor complain mode
         cis_ubuntu2204_rule_1_3_1_4: false # AppArmor enforce mode
@@ -108,14 +109,19 @@
         cis_ubuntu2404_section6: true
         cis_ubuntu2404_section7: true
         # -------------------------
-        cis_ubuntu2404_rule_1_1_1_7: false # squashfs - IMPACT: Snap packages utilizes squashfs as a compressed filesystem, disabling squashfs will cause Snap packages to fail.
+        cis_ubuntu2404_rule_1_1_1_4: "{{ pl_a_var_server_client }}" # hfsplus
+        cis_ubuntu2404_rule_1_1_1_7: "{{ pl_a_var_server_client }}" # squashfs - IMPACT: Snap packages utilizes squashfs as a compressed filesystem, disabling squashfs will cause Snap packages to fail.
         # -------------------------
         cis_ubuntu2404_rule_5_1_24: true
         cis_ubuntu2404_rule_5_1_24_ssh_user: "{{ ansible_user }}"
-        cis_ubuntu2404_rule_5_1_24_ssh_pub_key: "{{ pl_a_cis_setup_ssh_pub_key | default(omit) }}"
+        cis_ubuntu2404_rule_5_1_24_ssh_pub_key: "{{ pl_a_cis_setup_ssh_pub_key | default(null) }}"
         # -------------------------
-        cis_ubuntu2404_rule_1_3_1_3: false # AppArmor complain mode
+        cis_ubuntu2404_rule_1_3_1_3: true # AppArmor complain mode
         cis_ubuntu2404_rule_1_3_1_4: false # AppArmor enforce mode
+        # cis_ubuntu2404_apparmor_update_to_complain_profiles:
+        #   - firefox
+        # cis_ubuntu2404_apparmor_update_to_enforce_profiles:
+        #   - firefox
         # -------------------------
         cis_ubuntu2404_set_boot_pass: false # bootloader password (disabled)
         cis_ubuntu2404_disable_boot_pass: true # bootloader password (disabled with cis_ubuntu2404_set_boot_pass)
@@ -140,6 +146,8 @@
         cis_ubuntu2404_journald_runtime_max_use: 256M
         cis_ubuntu2404_journald_runtime_keep_free: 512M
         cis_ubuntu2404_journald_max_file_sec: 1month
+        # -------------------------
+        cis_ubuntu2404_preferred_capturing_log_method: "{{ pl_a_cis_preferred_capturing_log_method | default('rsyslog') }}"
         # -------------------------
         cis_ubuntu2404_required_ipv6: "{{ pl_a_cis_ipv6_required | default(false) | bool }}"
         cis_ubuntu2404_firewall: ufw

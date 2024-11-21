@@ -20,14 +20,14 @@
         # APT (1) -------------------------------
         # apt_base: true
         # apt_exa: false
-        apt_eza: true
-        apt_bat: true
-        apt_cert: true
+        # apt_eza: true
+        # apt_bat: true
+        # apt_cert: true
         apt_qemu_guest_agent: true
         # OTHER --------------------------------
         # inst_git_conf: true
         # inst_fonts: true
-        inst_zsh_conf: true
+        # inst_zsh_conf: true
 
 # ------------------------------------------------------------------------------
 - name: Container installer

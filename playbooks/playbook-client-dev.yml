@@ -19,13 +19,12 @@
         env_tun_setup: true
         # APT -------------------------------
         apt_base: true
-        # apt_exa: false
         apt_eza: true
         apt_bat: true
-        apt_auth_priv: true
-        apt_cert: true
-        apt_archive: true
-        apt_dev: true
+        # apt_auth_priv: true
+        # apt_cert: true
+        # apt_archive: true
+        # apt_dev: true
         apt_snap: true
         # apt_latex: true
         # apt_pandoc: true
@@ -34,23 +33,24 @@
         snap_btop: true
         snap_httpie: true
         snap_node: true
+        snap_go: true
         # OTHER --------------------------------
         inst_git_conf: true
         inst_fonts: true
-        inst_zsh_conf: true
-        inst_tmux_conf: true
-        inst_nvim_conf: true
+        # inst_zsh_conf: true
+        # inst_tmux_conf: true
+        # inst_nvim_conf: true
         # PYTHON --------------------------------
         apt_python: true
         apt_python_pip: true
         apt_python_venv: true
-        apt_python_dev: true
-        pip_s_tui: true
-        pip_autopep8: true
-        pip_black: true
-        pip_mypy: true
+        # apt_python_dev: true
+        # pip_s_tui: true
+        # pip_autopep8: true
+        # pip_black: true
+        # pip_mypy: true
         pip_pre_commit: true
-        pip_ansible: true
+        # pip_ansible: true
 
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
@@ -66,16 +66,13 @@
       install_client_config:
         # GNOME ---------------------------------
         gnome_gui_setup: true
-        gnome_gui_setup_extensions: true
-        # gnome_gui_setup_extensions_git_blur_shell: true
-        gnome_gui_setup_extensions_git_dash_to_panel: true
         gnome_gui_setup_overlay: true
         gnome_terminal_setup_overlay: true
         # APT -----------------------------------
-        apt_base: true
-        apt_auth_priv: true
-        apt_ubuntu: true
-        apt_archive: true
+        # apt_base: true
+        # apt_auth_priv: true
+        # apt_ubuntu: true
+        # apt_archive: true
         apt_snap: true
         apt_flatpak: true
         # apt_logitech_unifying_solaar: true
@@ -83,17 +80,16 @@
         # DPKG ----------------------------------
         dpkg_veracrypt: true
         # APPIMAGE ------------------------------
-        app_image_logseq: true
-        app_image_ultimaker: true
+        # app_image_ultimaker: true
         # SNAP ----------------------------------
         snap_chromium: true
         snap_firefox: true
         snap_onlyoffice: true
         snap_thunderbird: true
         snap_signal: true
-        snap_telegram: true
+        # snap_telegram: true
         # snap_darktable: true
-        snap_drawio: true
+        # snap_drawio: true
         # snap_gimp: true
         snap_inkscape: true
         # snap_lunacy: true
@@ -101,8 +97,9 @@
         snap_code: true
         snap_remmina: true
         # FLATPAK -------------------------------
-        flatpak_flatseal: true
-        flatpak_easy_effects: true
+        flatpak_logseq: true
+        # flatpak_flatseal: true
+        # flatpak_easy_effects: true
         flatpak_haruna: true
         flatpak_upscayl: true
         # OTHER -------------------------------
