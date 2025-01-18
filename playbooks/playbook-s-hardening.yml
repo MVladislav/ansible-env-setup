@@ -30,6 +30,7 @@
         update_upgrade: true
         setup_zfs: true
         setup_unattended: true
+        setup_sysctl: true
       updater_unattended_allowed_origins: "{{ pl_a_updater_unattended_allowed_origins + pl_a_updater_unattended_allowed_origins_ext | default([]) }}"
       updater_unattended_origins_patterns: "{{ pl_a_updater_unattended_origins_patterns + pl_a_updater_unattended_origins_patterns_ext | default([]) }}"
 

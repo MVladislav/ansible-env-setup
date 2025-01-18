@@ -16,7 +16,6 @@
       clients: "{{ pl_a_clients }}"
       install_server_service_name: "{{ pl_a_service_name }}"
       install_server_config:
-        # env_tun_setup: true
         # APT (1) -------------------------------
         # apt_base: true
         # apt_exa: false

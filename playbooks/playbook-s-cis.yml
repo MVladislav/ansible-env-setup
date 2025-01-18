@@ -12,6 +12,7 @@
   vars:
     pl_a_var_client_server: "{{ true if inventory_hostname in (groups['clients'] | default([])) else false }}"
     pl_a_var_server_client: "{{ false if inventory_hostname in (groups['clients'] | default([])) else true }}"
+    pl_a_var_docker_install: "{{ false if inventory_hostname in (groups['docker'] | default([])) else true }}"
     # pl_a_cis_preferred_capturing_log_method: "{{ 'rsyslog' if inventory_hostname in (groups['clients'] | default([])) else 'journald' }}"
   roles:
     - role: ansible-cis-ubuntu-2204
@@ -110,6 +111,7 @@
         cis_ubuntu2404_section7: true
         # -------------------------
         cis_ubuntu2404_rule_1_1_1_4: "{{ pl_a_var_server_client }}" # hfsplus
+        cis_ubuntu2404_rule_1_1_1_6: "{{ pl_a_var_docker_install }}" # overlayfs - IMPACT: consider the impact on containerized workloads, as disabling may severely disrupt containerization.
         cis_ubuntu2404_rule_1_1_1_7: "{{ pl_a_var_server_client }}" # squashfs - IMPACT: Snap packages utilizes squashfs as a compressed filesystem, disabling squashfs will cause Snap packages to fail.
         # -------------------------
         cis_ubuntu2404_rule_5_1_24: true

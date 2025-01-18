@@ -16,7 +16,6 @@
       clients: "{{ pl_a_clients }}"
       install_server_service_name: "{{ pl_a_service_name }}"
       install_server_config:
-        env_tun_setup: true
         # APT -------------------------------
         apt_base: true
         apt_eza: true
@@ -44,11 +43,7 @@
         apt_python: true
         apt_python_pip: true
         apt_python_venv: true
-        # apt_python_dev: true
         # pip_s_tui: true
-        # pip_autopep8: true
-        # pip_black: true
-        # pip_mypy: true
         pip_pre_commit: true
         # pip_ansible: true
 
@@ -80,8 +75,9 @@
         # DPKG ----------------------------------
         dpkg_veracrypt: true
         # APPIMAGE ------------------------------
-        # app_image_ultimaker: true
+        # ...
         # SNAP ----------------------------------
+        snap_1password: true
         snap_chromium: true
         snap_firefox: true
         snap_onlyoffice: true
@@ -96,11 +92,15 @@
         snap_spotify: true
         snap_code: true
         snap_remmina: true
+        # snap_android_studio: true
         # FLATPAK -------------------------------
+        flatpak_zed: true
         flatpak_logseq: true
         # flatpak_flatseal: true
         # flatpak_easy_effects: true
-        flatpak_haruna: true
+        flatpak_ultimaker: true
+        flatpak_totem: true
+        flatpak_loupe: true
         flatpak_upscayl: true
         # OTHER -------------------------------
         firefox_setup: true

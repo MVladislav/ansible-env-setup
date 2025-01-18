@@ -110,12 +110,12 @@ all:
       security_snmp_address_ipv4: "{{ omit }}"
       security_snmp_address_ipv6: "{{ omit }}"
       security_snmp_port_ipv4: 161
-      security_snmp_port_ipv6: "{{ omit }}"
-      ## UBUNTU2004 CIS
+      # security_snmp_port_ipv6: "{{ omit }}"
+      ## CIS
       ## _______________________
       pl_a_cis_setup: true
       pl_a_cis_setup_aide: false
-      pl_a_cis_ipv6_required: false
+      pl_a_cis_ipv6_required: true
       ## MAILING SETUP
       ## _______________________
       pl_a_mailing_mail_to: root # used in 'MAILTO' if cis-aide will used
@@ -146,14 +146,15 @@ all:
       ## DOCKER
       ## _______________________
       pl_a_docker_user_shell: /bin/zsh
-      docker_is_swarm_mode: true
-      docker_cis_rule_2_1: false # install docker as non root
+      cis_docker_is_swarm_mode: true
+      cis_docker_rule_2_1: false # install docker as non root
       # docker_install_release_fallback: mantic
       # docker_install_release_skip: mantic
-      pl_a_updater_unattended_allowed_origins_ext:
-        - "Docker:${distro_codename}"
-      pl_a_updater_unattended_origins_patterns_ext:
-        - "o=Docker,a=${distro_codename},l=Docker CE"
+      # NOTE: add origins below if docker will install, without docker unattended will fail
+      # pl_a_updater_unattended_allowed_origins_ext:
+      #   - "Docker:${distro_codename}"
+      # pl_a_updater_unattended_origins_patterns_ext:
+      #   - "o=Docker,a=${distro_codename},l=Docker CE"
   ## ---------------------------------------------------------------------------
   vars:
     ansible_python_interpreter: /usr/bin/python3
