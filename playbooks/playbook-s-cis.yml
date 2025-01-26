@@ -100,7 +100,7 @@
         - pl_a_cis_setup is defined
         - pl_a_cis_setup | bool
         - ansible_distribution | lower == "ubuntu"
-        - ansible_distribution_version in ["24.04", "24.10"]
+        - ansible_distribution_version in ["24.04", "24.10", "25.04"]
       vars:
         cis_ubuntu2404_section1: true
         cis_ubuntu2404_section2: true
