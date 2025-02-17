@@ -18,6 +18,7 @@
       install_server_config:
         # APT -------------------------------
         apt_base: true
+        apt_duf: true
         apt_eza: true
         apt_bat: true
         # apt_auth_priv: true
