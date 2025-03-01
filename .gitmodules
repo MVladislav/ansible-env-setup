@@ -10,10 +10,6 @@
 	path = roles/ansible-security
 	url = https://github.com/MVladislav/ansible-security.git
 	branch = main
-[submodule "roles/ansible-ssh"]
-	path = roles/ansible-ssh
-	url = https://github.com/MVladislav/ansible-ssh.git
-	branch = main
 [submodule "roles/ansible-updater"]
 	path = roles/ansible-updater
 	url = https://github.com/MVladislav/ansible-updater.git

@@ -74,30 +74,21 @@
         - pl_a_ufw_setup_enable | bool
 
 # ------------------------------------------------------------------------------
-- name: HARDEN | configuration task (3) | ssh/netplan
+- name: HARDEN | configuration task (3) | setup Security services, improves and netplan
   remote_user: "{{ ansible_user }}"
   hosts: all
   roles:
-    ### -------------------------
-    - role: ansible-ssh
+    - role: ansible-security
       clients: "{{ pl_a_clients }}"
-      when:
-        - pl_a_ssh_setup_enable | bool
+
+      security_setup_services:
+        auditd: "{{ pl_a_auditd_setup | default(true) }}"
+        fail2ban: "{{ pl_a_fail2ban_setup | default(true) }}"
+        snmp: "{{ pl_a_snmp_setup | default(false) }}"
+        ssh: "{{ pl_a_ssh_setup | default(true) }}"
     ### -------------------------
     - role: ansible-netplan
       netplan_service_name: "{{ pl_a_service_name }}"
       when:
         - pl_a_netplan_setup is defined
         - pl_a_netplan_setup | bool
-
-# ------------------------------------------------------------------------------
-- name: HARDEN | configuration task (4) | setup Security services and improves
-  remote_user: "{{ ansible_user }}"
-  hosts: all
-  roles:
-    - role: ansible-security
-      security_setup_services:
-        security_auditd_add_custom_cron_compressor: "{{ pl_a_auditd_compressor | default(false) }}"
-        auditd: "{{ pl_a_auditd_setup | default(true) }}"
-        fail2ban: "{{ pl_a_fail2ban_setup | default(true) }}"
-        snmp: "{{ pl_a_snmp_setup | default(false) }}"

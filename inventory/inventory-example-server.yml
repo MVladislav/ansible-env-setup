@@ -69,8 +69,8 @@ all:
       ## NOTE: ssh not needed, is general setup by CIS
       ##       here only default conf to setup per user defaults
       ## _______________________
-      pl_a_ssh_setup_enable: true
-      ssh_only_client_setup: true
+      pl_a_ssh_setup: true
+      security_ssh_only_client_setup: true
       ## UFW
       ## _______________________
       ## NOTE: ufw is general setup by CIS
