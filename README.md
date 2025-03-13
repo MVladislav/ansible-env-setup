@@ -4,7 +4,8 @@
 
 - [Ansible Env Setup](#ansible-env-setup)
   - [Clone project](#clone-project)
-  - [Install dependencies on host](#install-dependencies-on-host)
+  - [Install dependencies on host \& setup](#install-dependencies-on-host--setup)
+    - [\[Optional\] Molecule install for tests](#optional-molecule-install-for-tests)
   - [Setup host](#setup-host)
   - [Setup targets](#setup-targets)
     - [Flow for Security Playbook](#flow-for-security-playbook)
@@ -27,24 +28,23 @@ $git submodule update --init --recursive
 $git submodule update --recursive --remote
 ```
 
-## Install dependencies on host
+## Install dependencies on host & setup
 
 Install ansible on host to run the playbook:
 
 ```sh
-# optional: openssh-sftp-server
-$sudo apt install python3 python3-pip sshpass
-$python3 -m pip install [--break-system-packages] ansible molecule molecule-plugins[docker] yamllint ansible-lint
-
-# for use of "ansible-galaxy collection install"
-$python3 -m pip install [--break-system-packages] -Iv "resolvelib<0.8.1"
+$sudo apt install python3 python3-pip python3-venv libssl-dev sshpass
+$python3 -m venv .venv && source .venv/bin/activate
+$python3 -m pip install ansible-core ansible-lint yamllint
+$ansible-galaxy collection install --upgrade -r requirements.yml
 ```
 
-Update ansible on host:
+### [Optional] Molecule install for tests
 
 ```sh
-$python3 -m pip install [--break-system-packages] --upgrade ansible molecule molecule-plugins[docker] yamllint ansible-lint
-$ansible-galaxy collection install --upgrade -r requirements.yml
+$python3 -m pip install molecule molecule-plugins[docker]
+
+
 ```
 
 ## Setup host
