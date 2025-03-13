@@ -26,8 +26,8 @@
         # apt_archive: true
         # apt_dev: true
         apt_snap: true
-        # apt_latex: true
-        # apt_pandoc: true
+        apt_latex: true
+        apt_pandoc: true
         apt_nmap: true
         # SNAP ----------------------------------
         snap_btop: true
@@ -37,9 +37,6 @@
         # OTHER --------------------------------
         inst_git_conf: true
         inst_fonts: true
-        # inst_zsh_conf: true
-        # inst_tmux_conf: true
-        # inst_nvim_conf: true
         # PYTHON --------------------------------
         apt_python: true
         apt_python_pip: true
@@ -48,7 +45,6 @@
         pip_pre_commit: true
         # pip_ansible: true
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Client installer
   remote_user: "{{ ansible_user }}"
@@ -67,16 +63,12 @@
         # APT -----------------------------------
         # apt_base: true
         # apt_auth_priv: true
-        # apt_ubuntu: true
         # apt_archive: true
         apt_snap: true
         apt_flatpak: true
-        # apt_logitech_unifying_solaar: true
         apt_virt_viewer: true
         # DPKG ----------------------------------
         dpkg_veracrypt: true
-        # APPIMAGE ------------------------------
-        # ...
         # SNAP ----------------------------------
         snap_1password: true
         snap_chromium: true
@@ -84,11 +76,11 @@
         snap_onlyoffice: true
         snap_thunderbird: true
         snap_signal: true
-        # snap_telegram: true
         # snap_darktable: true
         # snap_drawio: true
         # snap_gimp: true
         snap_inkscape: true
+        snap_loupe: true
         # snap_lunacy: true
         snap_spotify: true
         snap_code: true
@@ -98,15 +90,12 @@
         flatpak_zed: true
         flatpak_logseq: true
         # flatpak_flatseal: true
-        # flatpak_easy_effects: true
         flatpak_ultimaker: true
-        flatpak_totem: true
-        flatpak_loupe: true
+        flatpak_showtime: true
         flatpak_upscayl: true
         # OTHER -------------------------------
         firefox_setup: true
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Container installer
   ansible.builtin.import_playbook: playbook-s-container.yml

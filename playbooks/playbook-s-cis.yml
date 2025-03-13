@@ -2,7 +2,6 @@
 # playbook CIS
 
 # ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
 - name: "CIS | hardening run"
   remote_user: "{{ ansible_user }}"
   hosts:
@@ -132,6 +131,7 @@
         cis_ubuntu2404_rule_3_1_3_remove: "{{ pl_a_var_server_client }}" # bluetooth service
         # -------------------------
         cis_ubuntu2404_allow_gdm_gui: "{{ pl_a_var_client_server }}"
+        cis_ubuntu2404_rule_1_7_3: false # Ensure GDM disable-user-list
         cis_ubuntu2404_allow_autofs: "{{ pl_a_var_client_server }}" # Disable auto mount, set to true to allow it and not disable
         cis_ubuntu2404_rule_1_1_1_9: "{{ pl_a_var_server_client }}" # Disable USB Storage, set to false to not disable
         cis_ubuntu2404_time_synchronization_service: chrony # chrony | systemd-timesyncd
@@ -174,7 +174,6 @@
           - key: "lcredit"
             value: "-1"
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: "CIS | additional configs for client/server"
   remote_user: "{{ ansible_user }}"

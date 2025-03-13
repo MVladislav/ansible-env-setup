@@ -46,11 +46,17 @@ playbooks/vars/*
 
 !playbooks/README.md
 !playbooks/playbook-s-*.yml
+
 !playbooks/playbook-sec-short.yml
+
+!playbook-client-n-normal.yml
+!playbook-client-n-extended.yml
+
 !playbooks/playbook-client-dev.yml
 !playbooks/playbook-client-pentest.yml
 !playbooks/playbook-client-vm.yml
 !playbooks/playbook-client.yml
+
 !playbooks/playbook-server-cluster.yml
 !playbooks/playbook-server-dev.yml
 !playbooks/playbook-server-minimal.yml

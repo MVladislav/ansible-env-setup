@@ -2,11 +2,9 @@
 # playbook client
 
 # ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
 - name: HARDENING PLAYBOOKS
   ansible.builtin.import_playbook: playbook-sec-short.yml
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Server installer
   remote_user: "{{ ansible_user }}"
@@ -18,9 +16,9 @@
       clients: "{{ pl_a_clients }}"
       install_server_service_name: "{{ pl_a_service_name }}"
       install_server_config:
-        # APT (1) -------------------------------
+        # APT -------------------------------
         apt_base: true
-        # apt_exa: false
+        apt_duf: true
         apt_eza: true
         apt_bat: true
         apt_auth_priv: true
@@ -37,22 +35,14 @@
         # OTHER --------------------------------
         inst_git_conf: true
         inst_fonts: true
-        inst_zsh_conf: true
-        inst_tmux_conf: true
-        inst_nvim_conf: true
         # PYTHON --------------------------------
         apt_python: true
         apt_python_pip: true
         apt_python_venv: true
         apt_python_dev: true
-        pip_s_tui: true
-        pip_autopep8: true
-        pip_black: true
-        pip_mypy: true
         pip_pre_commit: true
         pip_ansible: true
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Client installer
   remote_user: "{{ ansible_user }}"
@@ -66,35 +56,27 @@
       install_client_config:
         # GNOME ---------------------------------
         gnome_gui_setup: true
-        gnome_gui_setup_extensions: true
-        gnome_gui_setup_extensions_git_blur_shell: true
-        gnome_gui_setup_extensions_git_dash_to_panel: true
         gnome_gui_setup_overlay: true
         gnome_terminal_setup_overlay: true
         # APT -----------------------------------
         apt_base: true
         apt_auth_priv: true
-        apt_ubuntu: true
         apt_archive: true
         apt_snap: true
         apt_flatpak: true
         # DPKG ----------------------------------
         dpkg_veracrypt: true
-        # APPIMAGE ------------------------------
-        app_image_logseq: true
         # SNAP ----------------------------------
         snap_chromium: true
         snap_firefox: true
         snap_onlyoffice: true
-        snap_code: true
         snap_remmina: true
         # FLATPAK -------------------------------
+        flatpak_zed: true
         flatpak_flatseal: true
-        flatpak_haruna: true
         # OTHER -------------------------------
         firefox_setup: true
 
-# ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 - name: Container installer
   ansible.builtin.import_playbook: playbook-s-container.yml

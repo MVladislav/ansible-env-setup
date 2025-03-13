@@ -30,7 +30,7 @@ all:
         is_update: true
         ## sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
-        group: sudo,dip,lxd,adm,cdrom,plugdev
+        group: sudo,adm,dip,lxd,plugdev
         system: false
         append: true
         add_ssh_key: true
@@ -52,6 +52,7 @@ all:
       netplan_remove_existing: false
       netplan_configuration:
         network:
+          version: 2
           ethernets:
             eth0:
               dhcp4: true
@@ -77,7 +78,7 @@ all:
       ## NOTE: use here to set logging level and ssh if not setup by cis
       ## optional: use extend variable for add more ufw rules
       pl_a_ufw_setup_enable: true
-      pl_a_ufw_logging_level: "medium"
+      pl_a_ufw_logging_level: "medium" # low | medium | off
       # pl_a_ufw_rules_extended:
       #   - rule: allow
       #     to_port: 161
@@ -95,11 +96,11 @@ all:
       security_snmp_address_ipv4: "{{ omit }}"
       security_snmp_address_ipv6: "{{ omit }}"
       security_snmp_port_ipv4: 161
-      # security_snmp_port_ipv6: "{{ omit }}"
+      # security_snmp_port_ipv6: 161
       ## CIS
       ## _______________________
       pl_a_cis_setup: true
-      pl_a_cis_setup_aide: false
+      pl_a_cis_setup_aide: true
       pl_a_cis_ipv6_required: false
       ## MAILING SETUP
       ## _______________________
@@ -130,7 +131,7 @@ all:
       security_fail2ban_proxmox: false
       ## DOCKER
       ## _______________________
-      pl_a_docker_user_shell: /bin/zsh
+      # pl_a_docker_user_shell: /bin/zsh
       cis_docker_is_swarm_mode: true
       cis_docker_rule_2_1: false # install docker as non root
       # cis_docker_install_release_fallback: mantic

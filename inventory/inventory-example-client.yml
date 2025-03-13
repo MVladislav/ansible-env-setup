@@ -30,7 +30,7 @@ all:
         is_update: true
         ## sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
-        group: sudo,dip,lxd,adm,cdrom,lpadmin,plugdev,audio,video,render,input,disk,netdev
+        group: sudo,adm,disk,dip,lxd,dialout,tty,lpadmin,plugdev,audio,video,render,input,bluetooth,netdev
         system: false
         append: true
         add_ssh_key: true
@@ -46,7 +46,7 @@ all:
           dev: false # will used for install additional services per user as (git|zsh|tmux|nvim|python|go|npm)
           setup: true # if client should be setup with additional tools and gui (default true)
           shell: /bin/bash
-          group: cdrom,lpadmin,plugdev,audio,video,render,input,netdev
+          group: lpadmin,plugdev,audio,video,render,input,bluetooth,netdev
           createhome: true
           # sudo apt install whois && mkpasswd --method=sha-512
           password: "$6$YF.tKVjwypoJm.Mv$78Z7b5L40voqI7yftgm0atwXsYadn0hSaGvv7smtl4pXrOXhO7hqqchlT.UpaWhz0.JN/8wqC.TMtE4W9JTaN."
@@ -92,7 +92,7 @@ all:
       ## NOTE: use here to set logging level and ssh if not setup by cis
       ## optional: use extend variable for add more ufw rules
       pl_a_ufw_setup_enable: true
-      pl_a_ufw_logging_level: "medium"
+      pl_a_ufw_logging_level: "medium" # low | medium | off
       # pl_a_ufw_rules_extended:
       #   - rule: allow
       #     to_port: 161
@@ -110,7 +110,7 @@ all:
       security_snmp_address_ipv4: "{{ omit }}"
       security_snmp_address_ipv6: "{{ omit }}"
       security_snmp_port_ipv4: 161
-      # security_snmp_port_ipv6: "{{ omit }}"
+      # security_snmp_port_ipv6: 161
       ## CIS
       ## _______________________
       pl_a_cis_setup: true
@@ -145,7 +145,7 @@ all:
       security_fail2ban_proxmox: false
       ## DOCKER
       ## _______________________
-      pl_a_docker_user_shell: /bin/zsh
+      # pl_a_docker_user_shell: /bin/zsh
       cis_docker_is_swarm_mode: true
       cis_docker_rule_2_1: false # install docker as non root
       # cis_docker_install_release_fallback: mantic

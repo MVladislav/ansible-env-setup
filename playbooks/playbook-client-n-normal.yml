@@ -18,16 +18,7 @@
       install_server_config:
         # APT -------------------------------
         apt_base: true
-        # apt_duf: true
-        # apt_eza: true
-        # apt_bat: true
-        # apt_auth_priv: true
-        # apt_cert: true
-        # apt_archive: true
-        # apt_dev: true
         apt_snap: true
-        # apt_latex: true
-        # apt_pandoc: true
         # SNAP ----------------------------------
         snap_btop: true
         # OTHER --------------------------------
@@ -50,16 +41,14 @@
         gnome_gui_setup_overlay: true
         gnome_terminal_setup_overlay: true
         # APT -----------------------------------
-        # apt_base: true
-        # apt_auth_priv: true
         apt_snap: true
         apt_flatpak: true
         # DPKG ----------------------------------
         dpkg_veracrypt: true
         # SNAP ----------------------------------
-        snap_1password: true
         snap_chromium: true
         snap_firefox: true
+        snap_1password: true
         snap_onlyoffice: true
         snap_thunderbird: true
         snap_signal: true
@@ -68,7 +57,6 @@
         snap_loupe: true
         snap_spotify: true
         # FLATPAK -------------------------------
-        # flatpak_flatseal: true
         flatpak_showtime: true
         # OTHER -------------------------------
         firefox_setup: true

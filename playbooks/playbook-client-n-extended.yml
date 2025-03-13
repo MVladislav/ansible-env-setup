@@ -18,21 +18,29 @@
       install_server_config:
         # APT -------------------------------
         apt_base: true
-        # apt_duf: true
-        # apt_eza: true
-        # apt_bat: true
-        # apt_auth_priv: true
-        # apt_cert: true
-        # apt_archive: true
-        # apt_dev: true
+        apt_duf: true
+        apt_eza: true
+        apt_bat: true
+        # apt_dev: false
         apt_snap: true
         # apt_latex: true
         # apt_pandoc: true
+        apt_nmap: true
         # SNAP ----------------------------------
         snap_btop: true
+        snap_httpie: true
+        snap_node: true
+        snap_go: true
         # OTHER --------------------------------
         inst_git_conf: true
         inst_fonts: true
+        # PYTHON --------------------------------
+        apt_python: true
+        apt_python_pip: true
+        apt_python_venv: true
+        apt_python_dev: true
+        pip_pre_commit: true
+        pip_ansible: true
 
 # ------------------------------------------------------------------------------
 - name: Client installer
@@ -50,25 +58,36 @@
         gnome_gui_setup_overlay: true
         gnome_terminal_setup_overlay: true
         # APT -----------------------------------
-        # apt_base: true
-        # apt_auth_priv: true
         apt_snap: true
         apt_flatpak: true
+        apt_virt_viewer: true
         # DPKG ----------------------------------
         dpkg_veracrypt: true
         # SNAP ----------------------------------
-        snap_1password: true
+        snap_brave: true
         snap_chromium: true
         snap_firefox: true
+        snap_1password: true
         snap_onlyoffice: true
         snap_thunderbird: true
         snap_signal: true
-        # snap_drawio: true
         snap_inkscape: true
         snap_loupe: true
         snap_spotify: true
+        # snap_code: true
+        snap_remmina: true
+        # snap_android_studio: false
         # FLATPAK -------------------------------
-        # flatpak_flatseal: true
+        flatpak_librewolf: true
+        flatpak_zed: true
+        flatpak_logseq: true
+        # flatpak_flatseal: false
+        # flatpak_ultimaker: true
         flatpak_showtime: true
+        # flatpak_upscayl: true
         # OTHER -------------------------------
         firefox_setup: true
+
+# ------------------------------------------------------------------------------
+- name: Container installer
+  ansible.builtin.import_playbook: playbook-s-container.yml
