@@ -148,8 +148,8 @@ all:
       # pl_a_docker_user_shell: /bin/zsh
       cis_docker_is_swarm_mode: true
       cis_docker_rule_2_1: false # install docker as non root
-      # cis_docker_install_release_fallback: mantic
-      # cis_docker_install_release_skip: mantic
+      # cis_docker_install_release_fallback: noble
+      # cis_docker_install_release_skip: noble
       # NOTE: add origins below if docker will install, without docker unattended will fail
       # pl_a_updater_unattended_allowed_origins_ext:
       #   - "Docker:${distro_codename}"

@@ -2,19 +2,23 @@
 # playbook CIS
 
 # ------------------------------------------------------------------------------
-- name: "CIS | hardening run"
+- name: CIS | Ubuntu Harden
   remote_user: "{{ ansible_user }}"
   hosts:
     - clients
     - servers
   become: true
+  # gather_facts: true
   vars:
     pl_a_var_client_server: "{{ true if inventory_hostname in (groups['clients'] | default([])) else false }}"
     pl_a_var_server_client: "{{ false if inventory_hostname in (groups['clients'] | default([])) else true }}"
     pl_a_var_docker_install: "{{ false if inventory_hostname in (groups['docker'] | default([])) else true }}"
     # pl_a_cis_preferred_capturing_log_method: "{{ 'rsyslog' if inventory_hostname in (groups['clients'] | default([])) else 'journald' }}"
-  roles:
-    - role: ansible-cis-ubuntu-2204
+  tasks:
+    - name: Ubuntu 22.04 Harden
+      tags: always
+      ansible.builtin.include_role:
+        name: ansible-cis-ubuntu-2204
       when:
         - pl_a_cis_setup is defined
         - pl_a_cis_setup | bool
@@ -50,8 +54,8 @@
         cis_ubuntu2204_rule_1_1_1_8: "{{ pl_a_var_server_client }}" # Disable USB Storage, set to false to not disable
         cis_ubuntu2204_time_synchronization_service: chrony # chrony | systemd-timesyncd
         cis_ubuntu2204_time_synchronization_time_server:
-          - uri: '{{ pl_a_host_default_ntp | default("time.cloudflare.com")}}'
-          - uri: '{{ pl_a_host_fallback_ntp | default("ntp.ubuntu.com")}}'
+          - uri: '{{ pl_a_host_default_ntp | default("time.cloudflare.com") }}'
+          - uri: '{{ pl_a_host_fallback_ntp | default("ntp.ubuntu.com") }}'
         cis_ubuntu2204_allow_cups: "{{ pl_a_var_client_server }}"
         # -------------------------
         cis_ubuntu2204_install_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
@@ -94,7 +98,11 @@
             value: "-1"
           - key: "lcredit"
             value: "-1"
-    - role: ansible-cis-ubuntu-2404
+
+    - name: Ubuntu 24.04 Harden
+      tags: always
+      ansible.builtin.include_role:
+        name: ansible-cis-ubuntu-2404
       when:
         - pl_a_cis_setup is defined
         - pl_a_cis_setup | bool
@@ -136,8 +144,8 @@
         cis_ubuntu2404_rule_1_1_1_9: "{{ pl_a_var_server_client }}" # Disable USB Storage, set to false to not disable
         cis_ubuntu2404_time_synchronization_service: chrony # chrony | systemd-timesyncd
         cis_ubuntu2404_time_synchronization_time_server:
-          - uri: '{{ pl_a_host_default_ntp | default("time.cloudflare.com")}}'
-          - uri: '{{ pl_a_host_fallback_ntp | default("ntp.ubuntu.com")}}'
+          - uri: '{{ pl_a_host_default_ntp | default("time.cloudflare.com") }}'
+          - uri: '{{ pl_a_host_fallback_ntp | default("ntp.ubuntu.com") }}'
         cis_ubuntu2404_allow_cups: "{{ pl_a_var_client_server }}"
         # -------------------------
         cis_ubuntu2404_install_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
@@ -162,6 +170,7 @@
         cis_ubuntu2404_faillock_deny: 5
         cis_ubuntu2404_faillock_unlock_time: 900
         cis_ubuntu2404_faillock_minlen: 8
+        cis_ubuntu2404_password_pass_max_days: 730 # 365
         cis_ubuntu2404_password_complexity:
           - key: "minclass"
             value: "3"

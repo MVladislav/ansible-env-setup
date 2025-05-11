@@ -90,10 +90,10 @@ Following are some main playbooks to install clients or servers:
 Example to run `playbook-sec-short`:
 
 ```sh
-$ansible-playbook playbooks/playbook-sec-short.yml --ask-become-pass -k
+$ansible-playbook playbooks/playbook-sec-short.yml -i inventory/inventory-example-server.yml --ask-become-pass -k
 
 # or with less output information
-$ansible-playbook playbooks/playbook-sec-short.yml --ask-become-pass -k | grep -v "started TASK\|included: "
+$ansible-playbook playbooks/playbook-sec-short.yml -i inventory/inventory-example-server.yml --ask-become-pass -k | grep -v "started TASK\|included: "
 ```
 
 ### Flow for Security Playbook
