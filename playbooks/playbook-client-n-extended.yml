@@ -40,7 +40,7 @@
         apt_python_venv: true
         apt_python_dev: true
         pip_pre_commit: true
-        pip_ansible: true
+        # pip_ansible: true
 
 # ------------------------------------------------------------------------------
 - name: Client installer
@@ -72,19 +72,21 @@
         snap_thunderbird: true
         snap_signal: true
         snap_inkscape: true
-        snap_loupe: true
         snap_spotify: true
-        # snap_code: true
+        snap_code: true
         snap_remmina: true
-        # snap_android_studio: false
+        snap_android_studio: true
         # FLATPAK -------------------------------
         flatpak_librewolf: true
         flatpak_zed: true
         flatpak_logseq: true
         # flatpak_flatseal: false
         # flatpak_ultimaker: true
+        flatpak_loupe: true
         flatpak_showtime: true
+        flatpak_papers: true
         # flatpak_upscayl: true
+        flatpak_connections: true
         # OTHER -------------------------------
         firefox_setup: true
 

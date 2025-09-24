@@ -64,17 +64,11 @@
     ansible_user_conf_home: "/home/{{ ansible_user }}"
     ansible_user_conf_add_ssh_key: null
   tasks:
-    # - name: check if user {{ ansible_user_conf_name }} exist in sudors
-    #  become: true
-    #  shell: grep -c "^{{ ansible_user_conf_name }}" /etc/sudoers || true
-    #  changed_when: test_grep is defined and test_grep.stdout == "0"
-    #  register: test_grep
     - name: "PRE-INSTALL | update user: {{ ansible_user_conf_name }}"
       become: true
       ansible.builtin.user:
         name: "{{ ansible_user_conf_name | default(ansible_user) }}"
         state: present
-        # shell: "{{ ansible_user_conf_shell }}" # TODO:
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "{{ ansible_user_conf_password }}"
         update_password: "{{ ansible_user_conf_update_password | default('always') }}"
@@ -83,21 +77,20 @@
         append: "{{ ansible_user_conf_append | default('yes') | bool }}"
         createhome: "{{ ansible_user_conf_createhome | default('yes') | bool }}"
         # home: "{{ ansible_user_conf_home | default('/var/none') }}" # TODO:
+        # shell: "{{ ansible_user_conf_shell }}" # TODO:
+      when:
+        - ansible_user_conf_update is defined
+        - ansible_user_conf_update | bool
+    - name: "PRE-INSTALL | update user 'expires': {{ ansible_user_conf_name }}"
+      become: true
+      ansible.builtin.user:
+        name: "{{ ansible_user_conf_name | default(ansible_user) }}"
+        state: present
         expires: -1
       when:
         - ansible_user_conf_update is defined
         - ansible_user_conf_update | bool
-    # - name: "PRE-INSTALL | add user {{ ansible_user_conf_name }} into sudors without password prompt"
-    #   become: true
-    #   lineinfile:
-    #     path: /etc/sudoers
-    #     state: present
-    #     regexp: "^{{ ansible_user_conf_name }}"
-    #     line: "{{ ansible_user_conf_name }}\tALL=(ALL)\tNOPASSWD:\tALL"
-    #     validate: "/usr/sbin/visudo -cf %s"
-    #   when:
-    #     - ansible_user_conf_update is defined
-    #     - ansible_user_conf_update | bool
+        - "'sudo' in ansible_user_conf_group"
     - name: "PRE-INSTALL | read ssh key variables: {{ ansible_user_conf_name }}"
       ansible.builtin.include_vars: "{{ item }}"
       with_first_found:
@@ -180,12 +173,13 @@
       ansible.builtin.user:
         name: "{{ item.name }}"
         state: present
-        shell: "{{ item.shell | default('/bin/bash') }}"
-        groups: "{{ item.group | default('adm, cdrom, sudo') }}"
-        createhome: "{{ item.createhome | default('yes') | bool }}"
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "{{ item.password }}"
         update_password: on_create # pragma: allowlist secret`
+        groups: "{{ item.group | default('sudo, adm, cdrom') }}"
+        system: "{{ item.system | default('no') | bool }}"
+        shell: "{{ item.shell | default('/bin/bash') }}"
+        createhome: "{{ item.createhome | default('yes') | bool }}"
       loop: "{{ ansible_user_conf_clients | flatten(levels=1) }}"
       register: user_creation
       when:

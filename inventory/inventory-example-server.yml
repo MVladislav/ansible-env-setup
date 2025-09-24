@@ -23,10 +23,11 @@ all:
       pl_a_host_default_dns: 9.9.9.9
       pl_a_host_default_ntp: time.cloudflare.com
       pl_a_host_fallback_ntp: ntp.ubuntu.com
+      pl_a_time_synchronization_service: chrony # chrony | systemd-timesyncd
       ## ANSIBLE CLIENT ACCESS SETUP
       ## _______________________
       pl_a_user_setup: true
-      pl_a_user_config:
+      pl_a_user_config: # ./pre-tasks.yml
         is_update: true
         ## sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
@@ -44,6 +45,7 @@ all:
       ## UPDATER
       ## _______________________
       updater_time_timezone: Europe/Berlin
+      updater_ntp_serivce_use_time_synchronization_service: "{{ pl_a_time_synchronization_service }}"
       updater_ntp_server: "{{ pl_a_host_default_ntp }}"
       updater_ntp_fallback_server: "{{ pl_a_host_fallback_ntp }}"
       ## NETPLAN
@@ -100,8 +102,8 @@ all:
       ## CIS
       ## _______________________
       pl_a_cis_setup: true
-      pl_a_cis_setup_aide: true
-      pl_a_cis_ipv6_required: false
+      pl_a_cis_setup_aide: false
+      pl_a_cis_ipv6_required: true
       ## MAILING SETUP
       ## _______________________
       pl_a_mailing_mail_to: root # used in 'MAILTO' if cis-aide will used
@@ -121,7 +123,7 @@ all:
       pl_a_postfix_setup: false
       ## HARDENING SCAN
       ## _______________________
-      pl_a_hardening_scan_setup: true
+      pl_a_hardening_scan_setup: false
       pl_a_hardening_lynis_report_from: "{{ pl_a_mailing_mail_email }}"
       pl_a_hardening_lynis_report_to: "{{ pl_a_mailing_mail_email }}"
       ## HARDENING SECURITY
@@ -134,8 +136,8 @@ all:
       # pl_a_docker_user_shell: /bin/zsh
       cis_docker_is_swarm_mode: true
       cis_docker_rule_2_1: false # install docker as non root
-      # cis_docker_install_release_fallback: mantic
-      # cis_docker_install_release_skip: mantic
+      # cis_docker_install_release_fallback: noble
+      # cis_docker_install_release_skip: noble
       # NOTE: add origins below if docker will install, without docker unattended will fail
       # pl_a_updater_unattended_allowed_origins_ext:
       #   - "Docker:${distro_codename}"

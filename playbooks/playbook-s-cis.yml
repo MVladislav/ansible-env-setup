@@ -10,8 +10,8 @@
   become: true
   # gather_facts: true
   vars:
-    pl_a_var_client_server: "{{ true if inventory_hostname in (groups['clients'] | default([])) else false }}"
-    pl_a_var_server_client: "{{ false if inventory_hostname in (groups['clients'] | default([])) else true }}"
+    pl_a_var_client_enable: "{{ true if inventory_hostname in (groups['clients'] | default([])) else false }}"
+    pl_a_var_client_not_setup: "{{ false if inventory_hostname in (groups['clients'] | default([])) else true }}"
     pl_a_var_docker_install: "{{ false if inventory_hostname in (groups['docker'] | default([])) else true }}"
     # pl_a_cis_preferred_capturing_log_method: "{{ 'rsyslog' if inventory_hostname in (groups['clients'] | default([])) else 'journald' }}"
   tasks:
@@ -46,17 +46,17 @@
         cis_ubuntu2204_set_boot_pass: false # bootloader password (disabled)
         cis_ubuntu2204_disable_boot_pass: true # bootloader password (disabled)
         # -------------------------
-        cis_ubuntu2204_rule_3_1_3: "{{ pl_a_var_server_client }}" # bluetooth service
-        cis_ubuntu2204_rule_3_1_3_remove: "{{ pl_a_var_server_client }}" # bluetooth service
+        cis_ubuntu2204_rule_3_1_3: "{{ pl_a_var_client_not_setup }}" # bluetooth service
+        cis_ubuntu2204_rule_3_1_3_remove: "{{ pl_a_var_client_not_setup }}" # bluetooth service
         # -------------------------
-        cis_ubuntu2204_allow_gdm_gui: "{{ pl_a_var_client_server }}"
-        cis_ubuntu2204_allow_autofs: "{{ pl_a_var_client_server }}" # Disable auto mount, set to true to allow it and not disable
-        cis_ubuntu2204_rule_1_1_1_8: "{{ pl_a_var_server_client }}" # Disable USB Storage, set to false to not disable
-        cis_ubuntu2204_time_synchronization_service: chrony # chrony | systemd-timesyncd
+        cis_ubuntu2204_allow_gdm_gui: "{{ pl_a_var_client_enable }}"
+        cis_ubuntu2204_allow_autofs: "{{ pl_a_var_client_enable }}" # Disable auto mount, set to true to allow it and not disable
+        cis_ubuntu2204_rule_1_1_1_8: "{{ pl_a_var_client_not_setup }}" # Disable USB Storage, set to false to not disable
+        cis_ubuntu2204_time_synchronization_service: '{{ pl_a_time_synchronization_service | default("chrony") }}' # chrony | systemd-timesyncd
         cis_ubuntu2204_time_synchronization_time_server:
           - uri: '{{ pl_a_host_default_ntp | default("time.cloudflare.com") }}'
           - uri: '{{ pl_a_host_fallback_ntp | default("ntp.ubuntu.com") }}'
-        cis_ubuntu2204_allow_cups: "{{ pl_a_var_client_server }}"
+        cis_ubuntu2204_allow_cups: "{{ pl_a_var_client_enable }}"
         # -------------------------
         cis_ubuntu2204_install_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
         cis_ubuntu2204_config_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
@@ -117,9 +117,9 @@
         cis_ubuntu2404_section6: true
         cis_ubuntu2404_section7: true
         # -------------------------
-        cis_ubuntu2404_rule_1_1_1_4: "{{ pl_a_var_server_client }}" # hfsplus
+        cis_ubuntu2404_rule_1_1_1_4: "{{ pl_a_var_client_not_setup }}" # hfsplus
         cis_ubuntu2404_rule_1_1_1_6: "{{ pl_a_var_docker_install }}" # overlayfs - IMPACT: consider the impact on containerized workloads, as disabling may severely disrupt containerization.
-        cis_ubuntu2404_rule_1_1_1_7: "{{ pl_a_var_server_client }}" # squashfs - IMPACT: Snap packages utilizes squashfs as a compressed filesystem, disabling squashfs will cause Snap packages to fail.
+        cis_ubuntu2404_rule_1_1_1_7: "{{ pl_a_var_client_not_setup }}" # squashfs - IMPACT: Snap packages utilizes squashfs as a compressed filesystem, disabling squashfs will cause Snap packages to fail.
         # -------------------------
         cis_ubuntu2404_rule_5_1_24: true
         cis_ubuntu2404_rule_5_1_24_ssh_user: "{{ ansible_user }}"
@@ -135,18 +135,18 @@
         cis_ubuntu2404_set_boot_pass: false # bootloader password (disabled)
         cis_ubuntu2404_disable_boot_pass: true # bootloader password (disabled with cis_ubuntu2404_set_boot_pass)
         # -------------------------
-        cis_ubuntu2404_rule_3_1_3: "{{ pl_a_var_server_client }}" # bluetooth service
-        cis_ubuntu2404_rule_3_1_3_remove: "{{ pl_a_var_server_client }}" # bluetooth service
+        cis_ubuntu2404_rule_3_1_3: "{{ pl_a_var_client_not_setup }}" # bluetooth service
+        cis_ubuntu2404_rule_3_1_3_remove: "{{ pl_a_var_client_not_setup }}" # bluetooth service
         # -------------------------
-        cis_ubuntu2404_allow_gdm_gui: "{{ pl_a_var_client_server }}"
-        cis_ubuntu2404_rule_1_7_3: false # Ensure GDM disable-user-list
-        cis_ubuntu2404_allow_autofs: "{{ pl_a_var_client_server }}" # Disable auto mount, set to true to allow it and not disable
-        cis_ubuntu2404_rule_1_1_1_9: "{{ pl_a_var_server_client }}" # Disable USB Storage, set to false to not disable
-        cis_ubuntu2404_time_synchronization_service: chrony # chrony | systemd-timesyncd
+        cis_ubuntu2404_allow_gdm_gui: "{{ pl_a_var_client_enable }}"
+        cis_ubuntu2404_rule_1_7_3: "{{ pl_a_var_client_not_setup }}" # Ensure GDM disable-user-list
+        cis_ubuntu2404_allow_autofs: "{{ pl_a_var_client_enable }}" # Disable auto mount, set to true to allow it and not disable
+        cis_ubuntu2404_rule_1_1_1_9: "{{ pl_a_var_client_not_setup }}" # Disable USB Storage, set to false to not disable
+        cis_ubuntu2404_time_synchronization_service: '{{ pl_a_time_synchronization_service | default("chrony") }}' # chrony | systemd-timesyncd
         cis_ubuntu2404_time_synchronization_time_server:
           - uri: '{{ pl_a_host_default_ntp | default("time.cloudflare.com") }}'
           - uri: '{{ pl_a_host_fallback_ntp | default("ntp.ubuntu.com") }}'
-        cis_ubuntu2404_allow_cups: "{{ pl_a_var_client_server }}"
+        cis_ubuntu2404_allow_cups: "{{ pl_a_var_client_enable }}"
         # -------------------------
         cis_ubuntu2404_install_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"
         cis_ubuntu2404_config_aide: "{{ pl_a_cis_setup_aide | default(false) | bool }}"

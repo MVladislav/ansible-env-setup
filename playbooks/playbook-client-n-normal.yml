@@ -52,11 +52,11 @@
         snap_onlyoffice: true
         snap_thunderbird: true
         snap_signal: true
-        # snap_drawio: true
         snap_inkscape: true
-        snap_loupe: true
         snap_spotify: true
         # FLATPAK -------------------------------
+        flatpak_loupe: true
         flatpak_showtime: true
+        flatpak_papers: true
         # OTHER -------------------------------
         firefox_setup: true
