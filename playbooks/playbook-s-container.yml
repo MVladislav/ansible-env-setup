@@ -10,6 +10,8 @@
     - role: ansible-docker
       cis_docker_user_shell: "{{ pl_a_docker_user_shell | default('/bin/bash') }}"
       cis_docker_users_to_add_group: "{{ pl_a_clients }}"
+      cis_docker_storage_driver: overlay2
+      cis_docker_distribution_key_use_modern_sources: "{{ pl_a_apt_modern_src | default(false)}}"
 
 # ------------------------------------------------------------------------------
 - name: "Container | Kubernetes installer"

@@ -13,7 +13,6 @@
     pl_a_var_client_enable: "{{ true if inventory_hostname in (groups['clients'] | default([])) else false }}"
     pl_a_var_client_not_setup: "{{ false if inventory_hostname in (groups['clients'] | default([])) else true }}"
     pl_a_var_docker_install: "{{ false if inventory_hostname in (groups['docker'] | default([])) else true }}"
-    # pl_a_cis_preferred_capturing_log_method: "{{ 'rsyslog' if inventory_hostname in (groups['clients'] | default([])) else 'journald' }}"
   tasks:
     - name: Ubuntu 22.04 Harden
       tags: always
@@ -33,25 +32,27 @@
         cis_ubuntu2204_section6: true
         cis_ubuntu2204_section7: true
         # -------------------------
-        cis_ubuntu2204_rule_1_1_1_6: false # squashfs - IMPACT: Snap packages utilizes squashfs as a compressed filesystem, disabling squashfs will cause Snap packages to fail.
+        cis_ubuntu2204_rule_1_1_1_4: "{{ pl_a_var_client_not_setup }}" # hfsplus
+        cis_ubuntu2204_rule_1_1_1_7: false # squashfs - IMPACT: Snap packages utilizes squashfs as a compressed filesystem, disabling squashfs will cause Snap packages to fail.
         # -------------------------
         cis_ubuntu2204_rule_5_1_24: true
         cis_ubuntu2204_rule_5_1_24_ssh_user: "{{ ansible_user }}"
-        cis_ubuntu2204_rule_5_1_24_ssh_pub_key: "{{ pl_a_cis_setup_ssh_pub_key | default(null) }}"
+        cis_ubuntu2204_rule_5_1_24_ssh_pub_key: "{{ pl_a_setup_ssh_pub_key | default(null) }}"
         # -------------------------
-        cis_ubuntu2204_rule_1_3_1_3: false # AppArmor complain mode
+        cis_ubuntu2204_rule_1_3_1_3: true # AppArmor complain mode
         cis_ubuntu2204_rule_1_3_1_4: false # AppArmor enforce mode
         # -------------------------
         cis_ubuntu2204_rule_1_4_1: false # bootloader password (disabled)
         cis_ubuntu2204_set_boot_pass: false # bootloader password (disabled)
         cis_ubuntu2204_disable_boot_pass: true # bootloader password (disabled)
         # -------------------------
+        cis_ubuntu2204_rule_3_1_2: true # "{{ pl_a_var_client_not_setup }}" # wireless service
         cis_ubuntu2204_rule_3_1_3: "{{ pl_a_var_client_not_setup }}" # bluetooth service
         cis_ubuntu2204_rule_3_1_3_remove: "{{ pl_a_var_client_not_setup }}" # bluetooth service
         # -------------------------
         cis_ubuntu2204_allow_gdm_gui: "{{ pl_a_var_client_enable }}"
         cis_ubuntu2204_allow_autofs: "{{ pl_a_var_client_enable }}" # Disable auto mount, set to true to allow it and not disable
-        cis_ubuntu2204_rule_1_1_1_8: "{{ pl_a_var_client_not_setup }}" # Disable USB Storage, set to false to not disable
+        cis_ubuntu2204_rule_1_1_1_9: "{{ pl_a_var_client_not_setup }}" # Disable USB Storage, set to false to not disable
         cis_ubuntu2204_time_synchronization_service: '{{ pl_a_time_synchronization_service | default("chrony") }}' # chrony | systemd-timesyncd
         cis_ubuntu2204_time_synchronization_time_server:
           - uri: '{{ pl_a_host_default_ntp | default("time.cloudflare.com") }}'
@@ -75,6 +76,8 @@
         cis_ubuntu2204_journald_runtime_max_use: 256M
         cis_ubuntu2204_journald_runtime_keep_free: 512M
         cis_ubuntu2204_journald_max_file_sec: 1month
+        # -------------------------
+        cis_ubuntu2204_preferred_capturing_log_method: "{{ pl_a_cis_preferred_capturing_log_method | default('rsyslog') }}"
         # -------------------------
         cis_ubuntu2204_required_ipv6: "{{ pl_a_cis_ipv6_required | default(false) | bool }}"
         cis_ubuntu2204_firewall: ufw
@@ -107,7 +110,7 @@
         - pl_a_cis_setup is defined
         - pl_a_cis_setup | bool
         - ansible_distribution | lower == "ubuntu"
-        - ansible_distribution_version in ["24.04", "24.10", "25.04"]
+        - ansible_distribution_version in ["24.04", "24.10", "25.04", "25.10"]
       vars:
         cis_ubuntu2404_section1: true
         cis_ubuntu2404_section2: true
@@ -123,7 +126,7 @@
         # -------------------------
         cis_ubuntu2404_rule_5_1_24: true
         cis_ubuntu2404_rule_5_1_24_ssh_user: "{{ ansible_user }}"
-        cis_ubuntu2404_rule_5_1_24_ssh_pub_key: "{{ pl_a_cis_setup_ssh_pub_key | default(null) }}"
+        cis_ubuntu2404_rule_5_1_24_ssh_pub_key: "{{ pl_a_setup_ssh_pub_key | default(null) }}"
         # -------------------------
         cis_ubuntu2404_rule_1_3_1_3: true # AppArmor complain mode
         cis_ubuntu2404_rule_1_3_1_4: false # AppArmor enforce mode

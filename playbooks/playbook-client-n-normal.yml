@@ -20,7 +20,7 @@
         apt_base: true
         apt_snap: true
         # SNAP ----------------------------------
-        snap_btop: true
+        # snap_btop: true
         # OTHER --------------------------------
         inst_git_conf: true
         inst_fonts: true
@@ -35,6 +35,7 @@
     - role: ansible-install-client
       clients: "{{ pl_a_clients }}"
       install_client_service_name: "{{ pl_a_service_name }}"
+      install_client_distribution_key_use_modern_sources: "{{ pl_a_apt_modern_src | default(false)}}"
       install_client_config:
         # GNOME ---------------------------------
         gnome_gui_setup: true
@@ -55,8 +56,8 @@
         snap_inkscape: true
         snap_spotify: true
         # FLATPAK -------------------------------
-        flatpak_loupe: true
-        flatpak_showtime: true
-        flatpak_papers: true
+        # flatpak_loupe: true
+        # flatpak_showtime: true
+        # flatpak_papers: true
         # OTHER -------------------------------
         firefox_setup: true

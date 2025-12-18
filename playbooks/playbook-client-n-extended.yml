@@ -27,7 +27,7 @@
         # apt_pandoc: true
         apt_nmap: true
         # SNAP ----------------------------------
-        snap_btop: true
+        # snap_btop: true
         snap_httpie: true
         snap_node: true
         snap_go: true
@@ -40,6 +40,7 @@
         apt_python_venv: true
         apt_python_dev: true
         pip_pre_commit: true
+        # pip_uv: true
         # pip_ansible: true
 
 # ------------------------------------------------------------------------------
@@ -52,6 +53,7 @@
     - role: ansible-install-client
       clients: "{{ pl_a_clients }}"
       install_client_service_name: "{{ pl_a_service_name }}"
+      install_client_distribution_key_use_modern_sources: "{{ pl_a_apt_modern_src | default(false)}}"
       install_client_config:
         # GNOME ---------------------------------
         gnome_gui_setup: true
@@ -63,8 +65,10 @@
         apt_virt_viewer: true
         # DPKG ----------------------------------
         dpkg_veracrypt: true
+        # DIST KEY ------------------------------
+        # distribution_key_tuxedo: true
         # SNAP ----------------------------------
-        snap_brave: true
+        # snap_brave: true
         snap_chromium: true
         snap_firefox: true
         snap_1password: true
@@ -74,19 +78,19 @@
         snap_inkscape: true
         snap_spotify: true
         snap_code: true
-        snap_remmina: true
-        snap_android_studio: true
+        # snap_remmina: true
+        # snap_android_studio: true
         # FLATPAK -------------------------------
-        flatpak_librewolf: true
+        # flatpak_librewolf: true
         flatpak_zed: true
-        flatpak_logseq: true
+        # flatpak_logseq: true
         # flatpak_flatseal: false
-        # flatpak_ultimaker: true
-        flatpak_loupe: true
-        flatpak_showtime: true
-        flatpak_papers: true
+        flatpak_ultimaker: true
+        # flatpak_loupe: true
+        # flatpak_showtime: true
+        # flatpak_papers: true
         # flatpak_upscayl: true
-        flatpak_connections: true
+        # flatpak_connections: true
         # OTHER -------------------------------
         firefox_setup: true
 

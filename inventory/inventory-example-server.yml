@@ -6,11 +6,9 @@ all:
     server:
       ## ANSIBLE DEFAULTS
       ## _______________________
-      ## NOTE: you need update public-key file for key selection in "playbooks/vars/default.yml"
-      ## NOTE: by "{{ ansible_user }}-{{ ansible_host }}":
       ansible_ssh_private_key_file: ~/.ssh/id_ed25519...
-      # pl_a_cis_setup_ssh_pub_key: < cat ~/.ssh/id_ed25519...
-      pl_a_cis_setup_ssh_pub_key: "..."
+      # pl_a_setup_ssh_pub_key: < cat ~/.ssh/id_ed25519...
+      pl_a_setup_ssh_pub_key: "..."
       ansible_user: <USERNAME>
       ansible_host: <192.168.0.0>
       ansible_port: 22
@@ -24,6 +22,7 @@ all:
       pl_a_host_default_ntp: time.cloudflare.com
       pl_a_host_fallback_ntp: ntp.ubuntu.com
       pl_a_time_synchronization_service: chrony # chrony | systemd-timesyncd
+      pl_a_apt_modern_src: false
       ## ANSIBLE CLIENT ACCESS SETUP
       ## _______________________
       pl_a_user_setup: true
@@ -112,9 +111,9 @@ all:
       pl_a_mailing_mail_password: ""
       pl_a_mailing_admin_mail_name: root
       pl_a_mailing_smtp_host: home.local
-      pl_a_mailing_smtp_port: 465
+      pl_a_mailing_smtp_port: 587
       pl_a_mailing_remote_ssl: true
-      pl_a_mailing_remote_starttls: false
+      pl_a_mailing_remote_starttls: true
       ## NULLMAILER SETUP
       ## _______________________
       pl_a_nullmailer_setup: false

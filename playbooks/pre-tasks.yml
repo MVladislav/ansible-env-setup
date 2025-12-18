@@ -10,7 +10,7 @@
   vars:
     ansible_user_conf_update: null
     ansible_user_conf_name: "{{ ansible_user }}"
-    ansible_user_conf_name_map: "{{ ansible_user }}-{{ ansible_host }}"
+    # ansible_user_conf_name_map: "{{ ansible_user }}-{{ ansible_host }}"
     ansible_user_conf_shell: /bin/bash
     ansible_user_conf_password: null
     ansible_user_conf_update_password: always # pragma: allowlist secret`
@@ -29,7 +29,7 @@
         msg:
           - "update          (if user should updated)                  : {{ ansible_user_conf_update | bool }}"
           - "name            (name of user for ansible)                : {{ ansible_user_conf_name }}"
-          - "name-map        (map for var/default.yml)                 : {{ ansible_user_conf_name_map }}"
+          # - "name-map        (map for var/default.yml)                 : {{ ansible_user_conf_name_map }}"
           - "password        (ansible-user password)                   : {{ ansible_user_conf_password }}"
           - "update_password (ansible-user password update method?)    : {{ ansible_user_conf_update_password }}"
           - "group           (ansible-user group)                      : {{ ansible_user_conf_group }}"
@@ -53,7 +53,7 @@
   vars:
     ansible_user_conf_update: null
     ansible_user_conf_name: "{{ ansible_user }}"
-    ansible_user_conf_name_map: "{{ ansible_user }}-{{ ansible_host }}"
+    # ansible_user_conf_name_map: "{{ ansible_user }}-{{ ansible_host }}"
     ansible_user_conf_shell: /bin/bash
     ansible_user_conf_password: null
     ansible_user_conf_update_password: always # pragma: allowlist secret
@@ -91,23 +91,25 @@
         - ansible_user_conf_update is defined
         - ansible_user_conf_update | bool
         - "'sudo' in ansible_user_conf_group"
-    - name: "PRE-INSTALL | read ssh key variables: {{ ansible_user_conf_name }}"
-      ansible.builtin.include_vars: "{{ item }}"
-      with_first_found:
-        - files:
-            - "{{ inventory_hostname }}.yml"
-            - "default.yml"
-          paths: "./vars/"
-      when:
-        - ansible_user_conf_add_ssh_key is defined
-        - ansible_user_conf_add_ssh_key | bool
+    # - name: "PRE-INSTALL | read ssh key variables: {{ ansible_user_conf_name }}"
+    #   ansible.builtin.include_vars: "{{ item }}"
+    #   with_first_found:
+    #     - files:
+    #         - "{{ inventory_hostname }}.yml"
+    #         - "default.yml"
+    #       paths: "./vars/"
+    #   when:
+    #     - ansible_user_conf_add_ssh_key is defined
+    #     - ansible_user_conf_add_ssh_key | bool
     - name: "PRE-INSTALL | deploy SSH-Keys to remote host: {{ ansible_user_conf_name }}"
       ansible.posix.authorized_key:
         user: "{{ ansible_user_conf_name }}"
-        key: "{{ keystodeploy[ansible_user_conf_name_map] | map(attribute='sshkey') | join('\n') }}"
+        # key: "{{ keystodeploy[ansible_user_conf_name_map] | map(attribute='sshkey') | join('\n') }}"
+        key: "{{ pl_a_setup_ssh_pub_key }}"
         state: present
         exclusive: true # will only allow specified key, in the authorized_keys file from the remote host
       when:
+        - pl_a_setup_ssh_pub_key is defined
         - ansible_user_conf_add_ssh_key is defined
         - ansible_user_conf_add_ssh_key | bool
 
