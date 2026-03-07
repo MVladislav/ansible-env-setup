@@ -16,7 +16,7 @@
     ansible_user_conf_home: "{{ pl_a_user_config.home | default('/home/' + ansible_user) }}"
     ansible_user_conf_add_ssh_key: "{{ pl_a_user_config.add_ssh_key | default('yes') | bool }}"
     ansible_user_conf_clients: "{{ pl_a_clients }}"
-    ansible_host_conf_hostname: "{{ ansible_host_hostname | default(ansible_hostname) }}"
+    ansible_host_conf_hostname: "{{ ansible_host_hostname | default(ansible_facts['hostname']) }}"
   when:
     - pl_a_user_setup is defined
     - pl_a_user_setup | bool

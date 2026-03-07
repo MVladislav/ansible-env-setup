@@ -66,7 +66,7 @@
         to_port: "{{ item.to_port | default('') }}"
         protocol: "{{ item.protocol | default('any') }}"
         route: "{{ item.route | default(omit) }}"
-        log: "{{ item.log | default(false) }}"
+        log: "{{ item.log | default(false) | bool }}"
         comment: "{{ item.comment | default(omit) }}"
       with_items: "{{ pl_a_ufw_rules_default + pl_a_ufw_rules_extended | default([]) }}"
       when:
@@ -82,10 +82,11 @@
       clients: "{{ pl_a_clients }}"
 
       security_setup_services:
-        auditd: "{{ pl_a_auditd_setup | default(true) }}"
-        fail2ban: "{{ pl_a_fail2ban_setup | default(true) }}"
-        snmp: "{{ pl_a_snmp_setup | default(false) }}"
-        ssh: "{{ pl_a_ssh_setup | default(true) }}"
+        auditd: "{{ pl_a_auditd_setup | default(true) | bool }}"
+        fail2ban: "{{ pl_a_fail2ban_setup | default(true) | bool }}"
+        usbguard: "{{ pl_a_usbguard_setup | default(false) | bool }}"
+        snmp: "{{ pl_a_snmp_setup | default(false) | bool }}"
+        ssh: "{{ pl_a_ssh_setup | default(true) | bool }}"
     ### -------------------------
     - role: ansible-netplan
       netplan_service_name: "{{ pl_a_service_name }}"

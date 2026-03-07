@@ -62,8 +62,8 @@ all:
       updater_ntp_fallback_server: "{{ pl_a_host_fallback_ntp }}"
       ## NETPLAN
       ## _______________________
-      pl_a_netplan_setup: false
-      netplan_remove_existing: false
+      # pl_a_netplan_setup: true
+      # netplan_remove_existing: false
       # netplan_configuration:
       #   network:
       #     version: 2
@@ -72,6 +72,7 @@ all:
       #         renderer: NetworkManager
       #         match: {}
       #         dhcp4: true
+      #         dhcp6: false
       #         networkmanager:
       #           # uuidgen
       #           uuid: "d18b4114-37b9-4b96-af69-6345636c5781"
@@ -120,13 +121,13 @@ all:
       ## MAILING SETUP
       ## _______________________
       pl_a_mailing_mail_to: root # used in 'MAILTO' if cis-aide will used
-      pl_a_mailing_mail_email: root@home.local
+      pl_a_mailing_mail_email: no-reply@home.local
       pl_a_mailing_mail_username: "{{ pl_a_mailing_mail_email }}"
-      pl_a_mailing_mail_password: ""
+      pl_a_mailing_mail_password: "''"
       pl_a_mailing_admin_mail_name: root
       pl_a_mailing_smtp_host: home.local
       pl_a_mailing_smtp_port: 587
-      pl_a_mailing_remote_ssl: true
+      pl_a_mailing_remote_ssl: false
       pl_a_mailing_remote_starttls: true
       ## NULLMAILER SETUP
       ## _______________________
@@ -143,12 +144,14 @@ all:
       ## _______________________
       pl_a_auditd_setup: true
       pl_a_fail2ban_setup: true
+      pl_a_usbguard_setup: false
       security_fail2ban_proxmox: false
       ## DOCKER
       ## _______________________
       # pl_a_docker_user_shell: /bin/zsh
       cis_docker_is_swarm_mode: true
       cis_docker_rule_2_1: false # install docker as non root
+      pl_a_cis_user_namespace_support: true
       # cis_docker_install_release_fallback: plucky
       # cis_docker_install_release_skip: plucky
       # NOTE: add origins below if docker will install, without docker unattended will fail

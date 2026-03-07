@@ -49,24 +49,24 @@ all:
       updater_ntp_fallback_server: "{{ pl_a_host_fallback_ntp }}"
       ## NETPLAN
       ## _______________________
-      pl_a_netplan_setup: true
-      netplan_remove_existing: false
-      netplan_configuration:
-        network:
-          version: 2
-          ethernets:
-            eth0:
-              dhcp4: true
-              dhcp6: false
-              addresses:
-                - "{{ ansible_host }}/24"
-              nameservers:
-                addresses:
-                  - "{{ pl_a_host_default_dns }}"
-                  - 9.9.9.9
-              routes:
-                - to: default
-                  via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
+      # pl_a_netplan_setup: true
+      # netplan_remove_existing: false
+      # netplan_configuration:
+      #   network:
+      #     version: 2
+      #     ethernets:
+      #       "{{ ansible_default_ipv4.interface }}":
+      #         dhcp4: true
+      #         dhcp6: false
+      #         # addresses:
+      #         #   - "{{ ansible_host }}/24"
+      #         # nameservers:
+      #         #   addresses:
+      #         #     - "{{ pl_a_host_default_dns }}"
+      #         #     - 9.9.9.9
+      #         # routes:
+      #         #   - to: default
+      #         #     via: "{{ ansible_host.split('.')[0:3] | join('.') }}.1"
       ## SSH
       ## NOTE: ssh not needed, is general setup by CIS
       ##       here only default conf to setup per user defaults
@@ -106,13 +106,13 @@ all:
       ## MAILING SETUP
       ## _______________________
       pl_a_mailing_mail_to: root # used in 'MAILTO' if cis-aide will used
-      pl_a_mailing_mail_email: root@home.local
+      pl_a_mailing_mail_email: no-reply@home.local
       pl_a_mailing_mail_username: "{{ pl_a_mailing_mail_email }}"
-      pl_a_mailing_mail_password: ""
+      pl_a_mailing_mail_password: "''"
       pl_a_mailing_admin_mail_name: root
       pl_a_mailing_smtp_host: home.local
       pl_a_mailing_smtp_port: 587
-      pl_a_mailing_remote_ssl: true
+      pl_a_mailing_remote_ssl: false
       pl_a_mailing_remote_starttls: true
       ## NULLMAILER SETUP
       ## _______________________
@@ -129,12 +129,14 @@ all:
       ## _______________________
       pl_a_auditd_setup: true
       pl_a_fail2ban_setup: true
+      pl_a_usbguard_setup: false
       security_fail2ban_proxmox: false
       ## DOCKER
       ## _______________________
       # pl_a_docker_user_shell: /bin/zsh
       cis_docker_is_swarm_mode: true
       cis_docker_rule_2_1: false # install docker as non root
+      pl_a_cis_user_namespace_support: true
       # cis_docker_install_release_fallback: noble
       # cis_docker_install_release_skip: noble
       # NOTE: add origins below if docker will install, without docker unattended will fail
