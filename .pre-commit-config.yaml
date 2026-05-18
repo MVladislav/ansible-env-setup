@@ -8,7 +8,7 @@ ci:
 repos:
   # Codespell for spelling corrections
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: v2.4.2
     hooks:
       - id: codespell
         args:
@@ -44,19 +44,19 @@ repos:
       - id: detect-secrets
 
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.30.0
+    rev: v8.30.1
     hooks:
       - id: gitleaks
 
   # YAML Linting
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.37.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
 
   # Ansible linting ############################################################
   - repo: https://github.com/ansible-community/ansible-lint
-    rev: v25.12.1
+    rev: v25.12.2
     hooks:
       - id: ansible-lint
         name: Ansible-lint
@@ -65,4 +65,4 @@ repos:
         pass_filenames: false
         always_run: true
         additional_dependencies:
-          - ansible-core==2.20.1
+          - ansible-core==2.21.0
