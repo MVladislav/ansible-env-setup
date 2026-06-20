@@ -110,7 +110,7 @@
         - pl_a_cis_setup is defined
         - pl_a_cis_setup | bool
         - ansible_facts['distribution'] | lower == "ubuntu"
-        - ansible_facts['distribution_version'] in ["24.04", "24.10", "25.04", "25.10"]
+        - ansible_facts['distribution_version'] in ["24.04", "24.10", "25.04", "25.10", "26.04"]
       vars:
         cis_ubuntu2404_rule_1_1_2_1: false # TODO: disable /tmp harden, as remap kills apt
         cis_ubuntu2404_section1: true
@@ -135,6 +135,8 @@
         #   - firefox
         # cis_ubuntu2404_apparmor_update_to_enforce_profiles:
         #   - firefox
+        # -------------------------
+        cis_ubuntu2404_sysctl_kernel_yama_ptrace_scope: 2
         # -------------------------
         cis_ubuntu2404_set_boot_pass: "{{ pl_a_set_boot_pass | default(false) | bool }}" # bootloader password (disabled)
         cis_ubuntu2404_disable_boot_pass: true # bootloader password

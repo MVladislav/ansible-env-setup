@@ -19,8 +19,8 @@ all:
       install_server_git_email: "{{ ansible_user }}"
       # NOTE: change to you needed dns and ntp server, or change in playbooks
       pl_a_host_default_dns: 9.9.9.9
-      pl_a_host_default_ntp: time.cloudflare.com
-      pl_a_host_fallback_ntp: ntp.ubuntu.com
+      pl_a_host_default_ntp: ntp.ubuntu.com
+      pl_a_host_fallback_ntp: ntp.hetzner.de
       pl_a_time_synchronization_service: chrony # chrony | systemd-timesyncd
       pl_a_apt_modern_src: false
       ## ANSIBLE CLIENT ACCESS SETUP
@@ -134,7 +134,8 @@ all:
       ## DOCKER
       ## _______________________
       # pl_a_docker_user_shell: /bin/zsh
-      cis_docker_is_swarm_mode: true
+      pl_a_cis_is_swarm_mode: true
+      pl_a_cis_init_swarm_mode: true
       cis_docker_rule_2_1: false # install docker as non root
       pl_a_cis_user_namespace_support: true
       # cis_docker_install_release_fallback: noble

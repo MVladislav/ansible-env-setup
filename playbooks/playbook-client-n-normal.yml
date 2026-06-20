@@ -45,7 +45,7 @@
         apt_snap: true
         apt_flatpak: true
         # DPKG ----------------------------------
-        dpkg_veracrypt: true
+        # dpkg_veracrypt: true
         # SNAP ----------------------------------
         snap_chromium: true
         snap_firefox: true

@@ -8,11 +8,17 @@
     - docker
   roles:
     - role: ansible-docker
+      cis_docker_distribution_key_use_modern_sources: "{{ pl_a_apt_modern_src | default(false)}}"
       cis_docker_user_shell: "{{ pl_a_docker_user_shell | default('/bin/bash') }}"
       cis_docker_users_to_add_group: "{{ pl_a_clients }}"
       cis_docker_storage_driver: overlay2
-      cis_docker_rule_2_9: "{{ pl_a_cis_user_namespace_support | default(false) | bool }}"
-      cis_docker_distribution_key_use_modern_sources: "{{ pl_a_apt_modern_src | default(false)}}"
+      cis_docker_rule_2_10: "{{ pl_a_cis_user_namespace_support | default(false) | bool }}"
+      cis_docker_is_swarm_mode: "{{ pl_a_cis_is_swarm_mode | default(true) | bool }}"
+      cis_docker_init_swarm_mode: "{{ pl_a_cis_init_swarm_mode | default(true) | bool }}"
+      cis_docker_rule_7_5: false
+      cis_docker_rule_7_6: false
+      cis_docker_rule_7_7: true
+      cis_docker_rule_7_8: true
 
 # ------------------------------------------------------------------------------
 - name: "Container | Kubernetes installer"

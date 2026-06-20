@@ -19,8 +19,8 @@ all:
       install_server_git_email: "{{ ansible_user }}"
       # NOTE: change to you needed dns and ntp server, or change in playbooks
       pl_a_host_default_dns: 9.9.9.9
-      pl_a_host_default_ntp: time.cloudflare.com
-      pl_a_host_fallback_ntp: ntp.ubuntu.com
+      pl_a_host_default_ntp: ntp.ubuntu.com
+      pl_a_host_fallback_ntp: ntp.hetzner.de
       pl_a_time_synchronization_service: chrony # chrony | systemd-timesyncd
       pl_a_apt_modern_src: false
       ## ANSIBLE CLIENT ACCESS SETUP
@@ -30,7 +30,7 @@ all:
         is_update: true
         ## sudo apt install whois && mkpasswd --method=sha-512
         password: "$6$BAyo.9vQm6NkOg0N$G8Gs39xyeqwRbsaG3HqPzaFJxAq3SQn9vYupTd0K2IinpHKi7YIn8ZI.RrKUjhS7WHf5vTr9y1a5hQKCxJ1hh1"
-        group: sudo,adm,disk,dip,lxd,dialout,tty,lpadmin,plugdev,audio,video,render,input,bluetooth,netdev
+        group: sudo,adm,disk,dip,lxd,dialout,tty,users,lpadmin,plugdev,audio,video,render,input,bluetooth,netdev
         system: false
         append: true
         add_ssh_key: true
@@ -46,7 +46,7 @@ all:
           dev: false # will used for install additional services per user as (git|zsh|tmux|nvim|python|go|npm)
           setup: true # if client should be setup with additional tools and gui (default true)
           shell: /bin/bash
-          group: lpadmin,plugdev,audio,video,render,input,bluetooth,netdev
+          group: users,lpadmin,plugdev,audio,video,render,input,bluetooth,netdev
           createhome: true
           # sudo apt install whois && mkpasswd --method=sha-512
           password: "$6$YF.tKVjwypoJm.Mv$78Z7b5L40voqI7yftgm0atwXsYadn0hSaGvv7smtl4pXrOXhO7hqqchlT.UpaWhz0.JN/8wqC.TMtE4W9JTaN."
@@ -149,7 +149,8 @@ all:
       ## DOCKER
       ## _______________________
       # pl_a_docker_user_shell: /bin/zsh
-      cis_docker_is_swarm_mode: true
+      pl_a_cis_is_swarm_mode: true
+      pl_a_cis_init_swarm_mode: true
       cis_docker_rule_2_1: false # install docker as non root
       pl_a_cis_user_namespace_support: true
       # cis_docker_install_release_fallback: plucky

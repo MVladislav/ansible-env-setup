@@ -25,12 +25,12 @@
         apt_snap: true
         # apt_latex: true
         # apt_pandoc: true
-        apt_nmap: true
+        # apt_nmap: true
         # SNAP ----------------------------------
         # snap_btop: true
-        snap_httpie: true
-        snap_node: true
-        snap_go: true
+        # snap_httpie: true
+        # snap_node: true
+        # snap_go: true
         # OTHER --------------------------------
         inst_git_conf: true
         inst_fonts: true
@@ -39,9 +39,6 @@
         apt_python_pip: true
         apt_python_venv: true
         apt_python_dev: true
-        pip_pre_commit: true
-        # pip_uv: true
-        # pip_ansible: true
 
 # ------------------------------------------------------------------------------
 - name: Client installer
@@ -78,19 +75,14 @@
         snap_inkscape: true
         snap_spotify: true
         snap_code: true
-        # snap_remmina: true
-        # snap_android_studio: true
         # FLATPAK -------------------------------
         # flatpak_librewolf: true
         flatpak_zed: true
-        # flatpak_logseq: true
-        # flatpak_flatseal: false
+        flatpak_flatseal: false
         flatpak_ultimaker: true
         # flatpak_loupe: true
         # flatpak_showtime: true
         # flatpak_papers: true
-        # flatpak_upscayl: true
-        # flatpak_connections: true
         # OTHER -------------------------------
         firefox_setup: true
 
