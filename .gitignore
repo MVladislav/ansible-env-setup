@@ -17,6 +17,7 @@
 
 !README.md
 
+!.editorconfig
 !.pre-commit-config.yaml
 !.prettierrc.yml
 !.yamllint
@@ -32,6 +33,7 @@
 
 !inventory/
 inventory/*
+!inventory/inventory-default.yml
 !inventory/inventory-example-client.yml
 !inventory/inventory-example-server.yml
 
@@ -40,17 +42,13 @@ playbooks/*
 
 !playbooks/pre-tasks.yml
 
-!playbooks/vars/
-playbooks/vars/*
-!playbooks/vars/default-example.yml
-
 !playbooks/README.md
 !playbooks/playbook-s-*.yml
 
 !playbooks/playbook-sec-short.yml
 
-!playbook-client-n-normal.yml
-!playbook-client-n-extended.yml
+!playbooks/playbook-client-n-normal.yml
+!playbooks/playbook-client-n-extended.yml
 
 !playbooks/playbook-client-dev.yml
 !playbooks/playbook-client-pentest.yml

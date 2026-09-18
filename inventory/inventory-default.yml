@@ -1,0 +1,151 @@
+---
+# Shared inventory defaults for all hosts.
+# Merged automatically into every run via `inventory = ./inventory/` in ansible.cfg.
+# These values are meant as a best-practice baseline and are rarely changed.
+# Per-device inventories (e.g. inventory/server1.yml, inventory/client1.yml)
+# only need to define the host-specific values (see inventory-example-*.yml).
+#
+# NOTE: dict vars (pl_a_user_config, pl_a_clients, ...) must stay in the
+#       per-device inventory - per-host vars replace the defaults, not merge.
+
+all:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    ansible_port: 22
+
+    # --------------------------------------------------------------------------
+    # SERVICE NAME
+    # used as systemd/service and netplan service name, per host unique
+    # --------------------------------------------------------------------------
+    pl_a_service_name: "{{ inventory_hostname }}_{{ ansible_user }}"
+
+    # --------------------------------------------------------------------------
+    # UPDATER (ansible-updater role)
+    # --------------------------------------------------------------------------
+    pl_a_time_synchronization_service: chrony # chrony | systemd-timesyncd
+    updater_time_timezone: Europe/Berlin
+    updater_ntp_serivce_use_time_synchronization_service: "{{ pl_a_time_synchronization_service }}"
+    updater_ntp_server: "{{ pl_a_host_default_ntp }}"
+    updater_ntp_fallback_server: "{{ pl_a_host_fallback_ntp }}"
+
+    # --------------------------------------------------------------------------
+    # SSH (ansible-security role)
+    # NOTE: ssh is generally setup by CIS, here only per user defaults
+    # --------------------------------------------------------------------------
+    pl_a_ssh_setup: true
+    security_ssh_only_client_setup: true
+
+    # --------------------------------------------------------------------------
+    # UFW
+    # NOTE: ufw is generally setup by CIS
+    # NOTE: use here to set logging level and ssh if not setup by cis
+    # --------------------------------------------------------------------------
+    pl_a_ufw_setup_enable: true
+    pl_a_ufw_logging_level: "medium" # low | medium | off
+    # # UFW EXTENDED RULES
+    # # used by playbook-s-hardening.yml (HARDEN | setup ufw | rules)
+    # # only uncomment on docker/swarm hosts - docker_gwbridge must exist
+    # # --------------------------------------------------------------------------
+    # pl_a_ufw_rules_extended:
+    #   - rule: allow
+    #     interface: docker_gwbridge
+    #     to_port: 443
+    #     protocol: tcp
+    #     comment: 'allow hairpin to Traefik https on docker_gwbridge (same-host docker -> host OIDC/token endpoint)'
+    #   - rule: allow
+    #     to_port: 161
+    #     protocol: udp
+    #     interface: "{{ ansible_default_ipv4['interface'] }}"
+    #     comment: 'allow incoming connection on standard snmp port'
+
+    # --------------------------------------------------------------------------
+    # SNMP (ansible-security role, enabled with pl_a_snmp_setup)
+    # --------------------------------------------------------------------------
+    pl_a_snmp_setup: false
+    security_snmp_user: snmp
+    security_snmp_password: <PASSWORD>
+    security_snmp_encryption: <ENC>
+    security_snmp_location: home
+    security_snmp_contact: root
+    security_snmp_address_ipv4: "{{ omit }}"
+    security_snmp_address_ipv6: "{{ omit }}"
+    security_snmp_port_ipv4: 161
+    # security_snmp_port_ipv6: 161
+
+    # --------------------------------------------------------------------------
+    # CIS (playbook-s-cis.yml)
+    # --------------------------------------------------------------------------
+    pl_a_cis_setup: true
+    pl_a_cis_setup_aide: false
+    pl_a_cis_ipv6_required: true
+
+    # --------------------------------------------------------------------------
+    # MAILING SETUP (playbook-s-pre-mailing.yml)
+    # --------------------------------------------------------------------------
+    pl_a_mailing_mail_to: root # used in 'MAILTO' if cis-aide will used
+    pl_a_mailing_mail_email: no-reply@home.local
+    pl_a_mailing_mail_username: "{{ pl_a_mailing_mail_email }}"
+    pl_a_mailing_mail_password: "''"
+    pl_a_mailing_admin_mail_name: root
+    pl_a_mailing_smtp_host: home.local
+    pl_a_mailing_smtp_port: 587
+    pl_a_mailing_remote_ssl: false
+    pl_a_mailing_remote_starttls: true
+
+    # --------------------------------------------------------------------------
+    # NULLMAILER SETUP (most cases not needed, by CIS nullmailer will set per default)
+    # --------------------------------------------------------------------------
+    pl_a_nullmailer_setup: false
+    # --------------------------------------------------------------------------
+    # POSTFIX SETUP (most case not needed, by CIS nullmailer will set per default)
+    # --------------------------------------------------------------------------
+    pl_a_postfix_setup: false
+
+    # --------------------------------------------------------------------------
+    # HARDENING SCAN (Lynis)
+    # --------------------------------------------------------------------------
+    pl_a_hardening_scan_setup: false
+    pl_a_hardening_lynis_report_from: "{{ pl_a_mailing_mail_email }}"
+    pl_a_hardening_lynis_report_to: "{{ pl_a_mailing_mail_email }}"
+
+    # --------------------------------------------------------------------------
+    # SECURITY SERVICES (ansible-security role)
+    # --------------------------------------------------------------------------
+    pl_a_auditd_setup: true
+    pl_a_fail2ban_setup: true
+    pl_a_usbguard_setup: false
+    security_fail2ban_proxmox: false
+
+    # --------------------------------------------------------------------------
+    # DOCKER (playbook-s-container.yml)
+    # --------------------------------------------------------------------------
+    # pl_a_docker_user_shell: /bin/zsh
+    pl_a_cis_is_swarm_mode: true
+    pl_a_cis_init_swarm_mode: true
+    cis_docker_rule_2_1: false # install docker as non root
+    # cis_docker_install_release_fallback: noble
+    # cis_docker_install_release_skip: noble
+
+    # --------------------------------------------------------------------------
+    # NETPLAN (ansible-netplan role, enabled with pl_a_netplan_setup)
+    # --------------------------------------------------------------------------
+    # pl_a_netplan_setup: true
+    # netplan_remove_existing: false
+    # netplan_configuration:
+    #   network:
+    #     version: 2
+    #     ethernets:
+    #       "{{ ansible_default_ipv4.interface }}":
+    #         renderer: NetworkManager
+    #         match: {}
+    #         dhcp4: true
+    #         dhcp6: false
+    #         networkmanager:
+    #           # uuidgen
+    #           uuid: "d18b4114-37b9-4b96-af69-6345636c5781"
+    #           name: "netplan-{{ ansible_default_ipv4.interface }}"
+    #           passthrough:
+    #             connection.timestamp: "1726957411"
+    #             ipv6.method: "disabled"
+    #             ipv6.ip6-privacy: "-1"
+    #             proxy._: ""
