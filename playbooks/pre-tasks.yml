@@ -13,7 +13,7 @@
     # ansible_user_conf_name_map: "{{ ansible_user }}-{{ ansible_host }}"
     ansible_user_conf_shell: /bin/bash
     ansible_user_conf_password: null
-    ansible_user_conf_update_password: always # pragma: allowlist secret`
+    ansible_user_conf_update_password: always # pragma: allowlist secret
     ansible_user_conf_group: sudo,adm,cdrom
     ansible_user_conf_system: null
     ansible_user_conf_append: null
@@ -184,7 +184,7 @@
         state: present
         # sudo apt install whois && mkpasswd --method=sha-512
         password: "{{ item.password }}"
-        update_password: on_create # pragma: allowlist secret`
+        update_password: on_create # pragma: allowlist secret
         groups: "{{ item.group | default('sudo, adm, cdrom') }}"
         system: "{{ item.system | default('no') | bool }}"
         shell: "{{ item.shell | default('/bin/bash') }}"
