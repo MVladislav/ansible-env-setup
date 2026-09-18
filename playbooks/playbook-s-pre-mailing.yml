@@ -86,10 +86,9 @@
       ansible.builtin.copy:
         dest: /etc/nullmailer/remotes
         content: >-
-          {{ pl_a_mailing_smtp_host }} smtp --port={{ pl_a_mailing_smtp_port }}
-          {% if pl_a_mailing_mail_username %}--auth-login --user={{ pl_a_mailing_mail_username }} --pass={{ pl_a_mailing_mail_password }}{% endif %}
-          {% if pl_a_mailing_remote_ssl %}--ssl{% endif %}
-          {% if pl_a_mailing_remote_starttls %}--starttls{% endif %}
+          {{ pl_a_mailing_smtp_host }} smtp --port={{ pl_a_mailing_smtp_port }} {% if pl_a_mailing_mail_username %}--auth-login
+          --user={{ pl_a_mailing_mail_username }} --pass={{ pl_a_mailing_mail_password }}{% endif %} {% if pl_a_mailing_remote_ssl
+          %}--ssl{% endif %} {% if pl_a_mailing_remote_starttls %}--starttls{% endif %}
         mode: "600"
         owner: mail
         group: mail

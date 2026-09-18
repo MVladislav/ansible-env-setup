@@ -19,6 +19,7 @@
       cis_docker_rule_7_6: false
       cis_docker_rule_7_7: true
       cis_docker_rule_7_8: true
+      cis_docker_apparmor_workaround: true
 
 # ------------------------------------------------------------------------------
 - name: "Container | Kubernetes installer"
