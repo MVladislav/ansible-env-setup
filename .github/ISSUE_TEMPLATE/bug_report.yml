@@ -1,90 +1,93 @@
-name: Report an issue
-description: Report an issue.
+---
+name: Report a bug
+description: Report a bug in the playbooks or roles.
 body:
   - type: markdown
     attributes:
       value: |
         This issue form is for reporting bugs only!
 
-        If you have a feature or enhancement request, please use the feature request issue template
+        If you have a feature or enhancement request, please use the feature request issue template.
   - type: textarea
+    id: problem
     validations:
       required: true
     attributes:
       label: Describe the problem
       description: >-
-        Describe the issue you are experiencing here to communicate to the
-        maintainers. Tell us what you were trying to do and what happened.
-
-        Provide a clear and concise description of what the problem is.
+        What you were trying to do and what happened instead. Include the playbook and role(s) involved.
+      placeholder: >-
+        Running `playbook-s-cis.yml` against a Ubuntu 24.04 host fails at the UFW step with ...
   - type: textarea
+    id: expected
     validations:
       required: true
     attributes:
       label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
       description: >-
-        A clear and concise description of what you expected to happen.
+        The exact command you ran, all relevant inventory variables and any host/group you targeted. Remove any secrets
+        (passwords, ssh keys, hashes).
+      placeholder: |
+        ansible-playbook playbooks/playbook-...yml --limit <host> -K
+        (inventory: inventory/inventory-<device>.yml)
   - type: markdown
     attributes:
       value: |
         ## Environment
   - type: input
-    id: version
+    id: ansible_version
     validations:
       required: true
     attributes:
-      label: What is version of application which has the issue?
-      placeholder: core-
-      description: >
-        Can be found in ...
+      label: ansible-core version
+      placeholder: 2.21.2
+      description: Output of `ansible --version`.
   - type: input
+    id: ansible_lint_version
     attributes:
-      label: What was the last working version of the application?
-      placeholder: core-
-      description: >
-        If known, otherwise leave blank.
-  - type: dropdown
+      label: ansible-lint version
+      placeholder: v26.6.0
+      description: If the issue is lint-related.
+  - type: input
+    id: target_os
     validations:
       required: true
     attributes:
-      label: What type of installation are you running?
-      description: >
-        If you don't know, you can find it in: Configuration panel -> Info.
-      options:
-        - OS (setup.py)
-        - Container (docker)
+      label: Target operating system
+      placeholder: Ubuntu 24.04 (noble)
   - type: dropdown
+    id: device_type
     validations:
       required: true
     attributes:
-      label: What type of device you use to interact with the application?
+      label: What kind of host is affected?
       description: >
-        The device where you open the application and the problem pops up.
+        Which profile the playbook was targeting.
       options:
-        - "OS: [e.g. linux, windows, ios]"
-        - "Browser: [e.g. firefox, chrome, safari]"
-        - "Smartphone: [e.g. android, ios]"
-
+        - Client device
+        - Server instance
+        - localhost (this machine)
+        - Not sure
   - type: markdown
     attributes:
       value: |
         # Details
   - type: textarea
+    id: logs
     attributes:
-      label: Example JSON snippet
-      description: |
-        If this issue has an example piece of JSON that can help reproducing this problem, please provide.
-        This can be an piece of JSON from, e.g., a response from the API.
-      render: json
+      label: Debug log
+      description: >-
+        Re-run with `-vvv` (`ansible-playbook ... -vvv`) and paste the relevant failure section here.
+      render: shell
   - type: textarea
-    attributes:
-      label: Anything in the logs that might be useful for us?
-      description: For example, error message, or stack traces.
-      render: txt
-  - type: textarea
+    id: additional
     attributes:
       label: Additional information
       description: >
-        If you have any additional information for us, use the field below.
-        Please note, you can attach screenshots or screen recordings here, by
-        dragging and dropping files in the field below.
+        Any other context. You can attach screenshots or screen recordings here by dragging and dropping files into the field
+        below.

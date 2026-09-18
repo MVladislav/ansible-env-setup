@@ -1,6 +1,6 @@
 # Description
 
-Please include a summary of the changes and the related issue. Please also include relevant motivation and context. List any dependencies that are required for this change.
+A short summary of the changes and the motivation/context behind them. List any dependencies that are required for this change.
 
 Fixes # (issue)
 
@@ -13,27 +13,27 @@ Please delete options that are not relevant.
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] This change requires a documentation update
 
-# How Has This Been Tested?
+## How Has This Been Tested?
 
-Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration
+Describe how you verified the change and in what environment.
 
-- [ ] Test A
-- [ ] Test B
+- [ ] `ansible-lint playbooks/` passes with the repository profile
+- [ ] `pre-commit run --all-files` passes
+- [ ] Ran against a target host: `ansible-playbook <playbook>.yml --limit <host> --start-at-task ...`
+- [ ] Only ran `ansible-playbook ... --syntax-check` (playbook can't be run in CI)
 
-**Test Configuration**:
+**Details**:
 
-- Firmware version:
-- Hardware:
-- Toolchain:
-- SDK:
+- ansible-core version:
+- ansible-lint version:
+- Target OS (if applicable):
 
-# Checklist:
+## Checklist:
 
-- [ ] My code follows the style guidelines of this project
+- [ ] My code follows the style guidelines of this project (2-space indent, yamllint/prettier clean)
 - [ ] I have performed a self-review of my code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] Any dependent changes have been merged and published in downstream modules
+- [ ] I have made corresponding changes to the documentation (README, inventory examples)
+- [ ] If I bumped/added a `roles/*` submodule, I updated the gitlink
+- [ ] My changes generate no new `ansible-lint` warnings
+- [ ] I have not committed any secrets (passwords, ssh keys, password hashes) -- replace with placeholders
+- [ ] I have run `ansible-playbook ... --syntax-check` at least
