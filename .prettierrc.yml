@@ -1,2 +1,6 @@
 ---
-jsonRecursiveSort: true
+proseWrap: always
+printWidth: 130
+tabWidth: 2
+singleQuote: false
+trailingComma: none
