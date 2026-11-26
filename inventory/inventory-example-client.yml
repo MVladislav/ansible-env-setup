@@ -4,7 +4,8 @@
 # from inventory/inventory-default.yml (see ansible.cfg).
 #
 # To run this example directly without copying:
-#   ansible-playbook playbooks/... -i inventory/inventory-default.yml -i inventory/inventory-example-client.yml
+#   ansible-playbook playbooks/playbook-sec-short.yml --ask-become-pass -k -i inventory/inventory-default.yml -i inventory/inventory-example-client.yml
+#   ansible-playbook playbooks/playbook-sec-short.yml --ask-become-pass -k --limit client
 all:
   hosts:
     ## CLIENT:: setup
@@ -24,19 +25,23 @@ all:
       pl_a_host_default_dns: 9.9.9.9
       pl_a_host_default_ntp: ntp.ubuntu.com
       pl_a_host_fallback_ntp: ntp.hetzner.de
-      pl_a_apt_modern_src: false
+      pl_a_apt_modern_src: true
+
       ## CIS
       ## _______________________
       pl_a_set_boot_pass: false # grub bootloader password, see playbook-s-cis.yml
       cis_ubuntu2404_bootloader_password: "random" # password hash, needed if pl_a_set_boot_pass is true # pragma: allowlist secret
+
       ## CIS DOCKER
       ## _______________________
       pl_a_cis_user_namespace_support: true
+      # cis_docker_install_release_fallback: resolute
       # NOTE: add origins below if docker will install, without docker unattended will fail
       # pl_a_updater_unattended_allowed_origins_ext:
       #   - "Docker:${distro_codename}"
       # pl_a_updater_unattended_origins_patterns_ext:
       #   - "o=Docker,a=${distro_codename},l=Docker CE"
+
       ## ANSIBLE USER ACCESS SETUP
       ## _______________________
       pl_a_user_setup: true
@@ -48,6 +53,7 @@ all:
         system: false
         append: true
         add_ssh_key: true
+
       ## CLIENTS USED FOR ADDING TO SERVICES
       ## _______________________
       pl_a_clients:
@@ -68,6 +74,41 @@ all:
           updateOrCreate: true
           locale: de_DE.UTF-8
           language: de_DE.UTF-8
+
+      # # --------------------------------------------------------------------------
+      # # NETPLAN (ansible-netplan role, enabled with pl_a_netplan_setup)
+      # # --------------------------------------------------------------------------
+      # pl_a_netplan_setup: true
+      # netplan_remove_existing: true
+      # netplan_default_iface: >-
+      #   {{ (ansible_facts['default_ipv4'] | default({})).get('interface')
+      #     or (ansible_facts['default_ipv6'] | default({})).get('interface') }}
+      # netplan_default_mac: >-
+      #   {{ (ansible_facts['default_ipv4'] | default({})).get('macaddress')
+      #     or (ansible_facts['default_ipv6'] | default({})).get('macaddress') }}
+      # netplan_renderer: NetworkManager
+      # netplan_nm_uuid: "{{ (inventory_hostname ~ '-' ~ netplan_default_iface) | to_uuid }}"
+      # netplan_file: "90-NM-{{ netplan_nm_uuid }}.yaml"
+      # netplan_iface_cfg_client:
+      #   renderer: NetworkManager
+      #   dhcp4: true
+      #   dhcp6: true
+      #   match:
+      #     macaddress: "{{ netplan_default_mac }}"
+      #   networkmanager:
+      #     # uuidgen
+      #     uuid: "{{ netplan_nm_uuid }}"
+      #     name: "{{ netplan_default_iface }}"
+      #     passthrough:
+      #       connection.timestamp: "1726957411"
+      #       # ipv6.method: "disabled"
+      #       ipv6.ip6-privacy: "-1"
+      #       proxy._: ""
+      # netplan_configuration:
+      #   network:
+      #     version: 2
+      #     ethernets: "{{ { netplan_default_iface: netplan_iface_cfg_client } }}"
+
   children:
     ## client playbook for install client (playbook-client-*.yml) + (playbook-s-cis.yml)
     clients:

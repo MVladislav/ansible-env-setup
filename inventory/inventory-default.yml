@@ -30,10 +30,10 @@ all:
 
     # --------------------------------------------------------------------------
     # SSH (ansible-security role)
-    # NOTE: ssh is generally setup by CIS, here only per user defaults
+    # ~~NOTE: ssh is generally setup by CIS, here only per user defaults~~
     # --------------------------------------------------------------------------
     pl_a_ssh_setup: true
-    security_ssh_only_client_setup: true
+    security_ssh_only_client_setup: false
 
     # --------------------------------------------------------------------------
     # UFW
@@ -125,27 +125,3 @@ all:
     cis_docker_rule_2_1: false # install docker as non root
     # cis_docker_install_release_fallback: noble
     # cis_docker_install_release_skip: noble
-
-    # --------------------------------------------------------------------------
-    # NETPLAN (ansible-netplan role, enabled with pl_a_netplan_setup)
-    # --------------------------------------------------------------------------
-    # pl_a_netplan_setup: true
-    # netplan_remove_existing: false
-    # netplan_configuration:
-    #   network:
-    #     version: 2
-    #     ethernets:
-    #       "{{ ansible_default_ipv4.interface }}":
-    #         renderer: NetworkManager
-    #         match: {}
-    #         dhcp4: true
-    #         dhcp6: false
-    #         networkmanager:
-    #           # uuidgen
-    #           uuid: "d18b4114-37b9-4b96-af69-6345636c5781"
-    #           name: "netplan-{{ ansible_default_ipv4.interface }}"
-    #           passthrough:
-    #             connection.timestamp: "1726957411"
-    #             ipv6.method: "disabled"
-    #             ipv6.ip6-privacy: "-1"
-    #             proxy._: ""

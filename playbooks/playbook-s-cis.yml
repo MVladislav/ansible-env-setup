@@ -110,7 +110,7 @@
         - pl_a_cis_setup is defined
         - pl_a_cis_setup | bool
         - ansible_facts['distribution'] | lower == "ubuntu"
-        - ansible_facts['distribution_version'] in ["24.04", "24.10", "25.04", "25.10", "26.04"]
+        - ansible_facts['distribution_version'] in ["24.04", "24.10", "25.04", "25.10", "26.04", "26.10"]
       vars:
         cis_ubuntu2404_rule_1_1_2_1: false # TODO: disable /tmp harden, as remap kills apt
         cis_ubuntu2404_section1: true

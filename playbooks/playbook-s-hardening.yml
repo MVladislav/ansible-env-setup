@@ -29,6 +29,7 @@
         set_language: true
         update_upgrade: true
         setup_zfs: true
+        setup_lvm: true
         setup_unattended: true
         setup_sysctl: true
       updater_unattended_allowed_origins:
@@ -45,9 +46,22 @@
       - rule: allow
         to_port: 22
         protocol: tcp
-        interface: "{{ ansible_default_ipv4['interface'] }}"
+        interface: >
+          {{ (ansible_facts['default_ipv4'] | default({})).get('interface') or (ansible_facts['default_ipv6'] |
+          default({})).get('interface') }}
         comment: "allow incoming connection on standard ssh port"
   tasks:
+    # --------------------------------------------------------------------------
+    - name: "HARDEN | setup ufw | install"
+      become: true
+      ansible.builtin.apt:
+        name: ufw
+        state: present
+        force_apt_get: true
+        update_cache: true
+      when:
+        - pl_a_ufw_setup_enable is defined
+        - pl_a_ufw_setup_enable | bool
     # --------------------------------------------------------------------------
     - name: "HARDEN | setup ufw | logging"
       become: true

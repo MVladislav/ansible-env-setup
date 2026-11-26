@@ -4,7 +4,8 @@
 # from inventory/inventory-default.yml (see ansible.cfg).
 #
 # To run this example directly without copying:
-#   ansible-playbook playbooks/... -i inventory/inventory-default.yml -i inventory/inventory-example-server.yml
+#   ansible-playbook playbooks/playbook-sec-short.yml --ask-become-pass -k -i inventory/inventory-default.yml -i inventory/inventory-example-server.yml
+#   ansible-playbook playbooks/playbook-sec-short.yml --ask-become-pass -k --limit server
 all:
   hosts:
     ## SERVER:: setup
@@ -24,19 +25,23 @@ all:
       pl_a_host_default_dns: 9.9.9.9
       pl_a_host_default_ntp: ntp.ubuntu.com
       pl_a_host_fallback_ntp: ntp.hetzner.de
-      pl_a_apt_modern_src: false
+      pl_a_apt_modern_src: true
+
       ## CIS
       ## _______________________
       pl_a_set_boot_pass: false # grub bootloader password, see playbook-s-cis.yml
       cis_ubuntu2404_bootloader_password: "random" # password hash, needed if pl_a_set_boot_pass is true # pragma: allowlist secret
+
       ## CIS DOCKER
       ## _______________________
       pl_a_cis_user_namespace_support: true
+      # cis_docker_install_release_fallback: resolute
       # NOTE: add origins below if docker will install, without docker unattended will fail
       # pl_a_updater_unattended_allowed_origins_ext:
       #   - "Docker:${distro_codename}"
       # pl_a_updater_unattended_origins_patterns_ext:
       #   - "o=Docker,a=${distro_codename},l=Docker CE"
+
       ## ANSIBLE USER ACCESS SETUP
       ## _______________________
       pl_a_user_setup: true
@@ -48,6 +53,7 @@ all:
         system: false
         append: true
         add_ssh_key: true
+
       ## CLIENTS USED FOR ADDING TO SERVICES
       ## _______________________
       pl_a_clients:
@@ -55,6 +61,46 @@ all:
           dev: true # will used for install additional services per user as (git|zsh|tmux|nvim|python|go|npm)
           setup: true # if client should be setup with additional tools and gui (default true)
           updateOrCreate: false
+
+      # # --------------------------------------------------------------------------
+      # # NETPLAN (ansible-netplan role, enabled with pl_a_netplan_setup)
+      # # --------------------------------------------------------------------------
+      # pl_a_netplan_setup: true
+      # netplan_remove_existing: true
+      # netplan_default_iface: >-
+      #   {{ (ansible_facts['default_ipv4'] | default({})).get('interface')
+      #     or (ansible_facts['default_ipv6'] | default({})).get('interface') }}
+      # netplan_default_mac: >-
+      #   {{ (ansible_facts['default_ipv4'] | default({})).get('macaddress')
+      #     or (ansible_facts['default_ipv6'] | default({})).get('macaddress') }}
+      # netplan_renderer: networkd
+      # # 1) Normal server example (DHCP on the network, networkd):
+      # netplan_iface_cfg_server:
+      #   dhcp4: true
+      #   dhcp6: true
+      #   match:
+      #     macaddress: "{{ netplan_default_mac }}"
+      #   set-name: "{{ netplan_default_iface }}"
+      # # # 2) Hetzner-style server example (provider-specific IPv6 routed via link-local gateway):
+      # # netplan_iface_cfg_server:
+      # #   dhcp4: true
+      # #   dhcp6: false
+      # #   match:
+      # #     macaddress: "{{ netplan_default_mac }}"
+      # #   set-name: "{{ netplan_default_iface }}"
+      # #   addresses:
+      # #     - "<YOUR_IPV6_ADDRESS_OR_PREFIX>/64" # replace with provider-assigned value
+      # #   nameservers:
+      # #     addresses:
+      # #       - 2a01:4ff:ff00::add:1
+      # #       - 2a01:4ff:ff00::add:2
+      # #   routes:
+      # #     - on-link: true
+      # #       to: default
+      # #       via: "fe80::1"
+      # netplan_configuration:
+      #   network:
+      #     ethernets: "{{ { netplan_default_iface: netplan_iface_cfg_server } }}"
       ## KUBERNETES (host need to be added below in children: kubernetes)
       ## _______________________
       kubernetes_setup_server: true
